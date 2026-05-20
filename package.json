@@ -1,0 +1,39 @@
+{
+	"name": "codescan",
+	"version": "0.1.0",
+	"private": true,
+	"license": "MIT",
+	"scripts": {
+		"dev": "next dev",
+		"build": "next build",
+		"start": "next start",
+		"lint": "biome check .",
+		"format": "biome format --write .",
+		"test": "vitest run",
+		"test:watch": "vitest",
+		"test:ui": "vitest --ui"
+	},
+	"dependencies": {
+		"@vercel/og": "^0.8.6",
+		"next": "16.1.6",
+		"react": "19.2.3",
+		"react-dom": "19.2.3",
+		"swr": "^2.4.0"
+	},
+	"devDependencies": {
+		"@biomejs/biome": "^2.4.2",
+		"@tailwindcss/postcss": "^4",
+		"@testing-library/jest-dom": "^6.9.1",
+		"@testing-library/react": "^16.3.2",
+		"@testing-library/user-event": "^14.6.1",
+		"@types/node": "^20",
+		"@types/react": "^19",
+		"@types/react-dom": "^19",
+		"@vitejs/plugin-react": "^5.1.4",
+		"@vitest/ui": "^4.0.18",
+		"jsdom": "^28.1.0",
+		"tailwindcss": "^4",
+		"typescript": "^5",
+		"vitest": "^4.0.18"
+	}
+}
