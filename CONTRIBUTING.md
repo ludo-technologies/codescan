@@ -7,10 +7,10 @@ Thanks for your interest in contributing! Here's how to get started.
 ```bash
 git clone https://github.com/ludo-technologies/codescan.git
 cd codescan
-npm install
+bun install
 cp .env.example .env.local
 # Edit .env.local with your values
-npm run dev
+bun run dev
 ```
 
 ## Workflow
@@ -20,8 +20,8 @@ npm run dev
 3. Make your changes
 4. Run linting and tests:
    ```bash
-   npm run lint
-   npm test
+   bun run lint
+   bun run test
    ```
 5. Commit your changes and push to your fork
 6. Open a Pull Request against `main`

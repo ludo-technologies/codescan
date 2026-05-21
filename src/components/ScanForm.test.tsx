@@ -1,13 +1,6 @@
-import {
-	afterEach,
-	beforeEach,
-	describe,
-	expect,
-	it,
-	vi,
-} from "vitest";
 import { render, screen, waitFor } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
+import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import ScanForm from "@/components/ScanForm";
 
 const mockPush = vi.fn();
@@ -118,7 +111,11 @@ describe("ScanForm", () => {
 
 	it("disables the input while the scan is loading", async () => {
 		const user = userEvent.setup();
-		let resolve: (v: { scan_id: string; status: string; cached: boolean }) => void;
+		let resolve: (v: {
+			scan_id: string;
+			status: string;
+			cached: boolean;
+		}) => void;
 		vi.mocked(requestScan).mockImplementation(
 			() =>
 				new Promise((res) => {
@@ -136,7 +133,7 @@ describe("ScanForm", () => {
 		});
 
 		// Cleanup: resolve the pending promise
-		resolve!({ scan_id: "x", status: "pending", cached: false });
+		resolve?.({ scan_id: "x", status: "pending", cached: false });
 	});
 
 	it("clears a previous error when a new valid submission is made", async () => {

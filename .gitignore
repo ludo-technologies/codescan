@@ -49,3 +49,6 @@ next-env.d.ts
 codescan_plan.md
 codescan_requirements.md
 share-card.html
+
+# local tool settings
+.claude/

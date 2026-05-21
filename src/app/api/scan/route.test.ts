@@ -1,6 +1,7 @@
 // @vitest-environment node
-import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
+
 import { NextRequest } from "next/server";
+import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import { POST } from "@/app/api/scan/route";
 
 function makeRequest(body: unknown) {
@@ -81,7 +82,11 @@ describe("POST /api/scan", () => {
 					status: 200,
 					text: () =>
 						Promise.resolve(
-							JSON.stringify({ scan_id: "abc", status: "pending", cached: false }),
+							JSON.stringify({
+								scan_id: "abc",
+								status: "pending",
+								cached: false,
+							}),
 						),
 				}),
 			);
@@ -102,7 +107,11 @@ describe("POST /api/scan", () => {
 					status: 200,
 					text: () =>
 						Promise.resolve(
-							JSON.stringify({ scan_id: "xyz", status: "pending", cached: false }),
+							JSON.stringify({
+								scan_id: "xyz",
+								status: "pending",
+								cached: false,
+							}),
 						),
 				}),
 			);
@@ -121,7 +130,11 @@ describe("POST /api/scan", () => {
 					status: 200,
 					text: () =>
 						Promise.resolve(
-							JSON.stringify({ scan_id: "xyz", status: "pending", cached: false }),
+							JSON.stringify({
+								scan_id: "xyz",
+								status: "pending",
+								cached: false,
+							}),
 						),
 				}),
 			);

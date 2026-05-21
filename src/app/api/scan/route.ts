@@ -29,7 +29,9 @@ export async function POST(req: NextRequest) {
 	const repoUrl = (body as Record<string, string>).repo_url.trim();
 	if (!GITHUB_URL_PATTERN.test(repoUrl)) {
 		return NextResponse.json(
-			{ error: "Invalid repository URL. Must be a valid GitHub repository URL." },
+			{
+				error: "Invalid repository URL. Must be a valid GitHub repository URL.",
+			},
 			{ status: 422 },
 		);
 	}

@@ -26,10 +26,10 @@ https://github.com/user-attachments/assets/db41df8e-881e-4303-9634-d3aba7c853e1
 ## Getting Started
 
 ```bash
-npm install
+bun install
 cp .env.example .env.local
 # Edit .env.local with your values
-npm run dev
+bun run dev
 ```
 
 Open [http://localhost:3000](http://localhost:3000).

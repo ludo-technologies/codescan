@@ -24,6 +24,7 @@ export default function ScoreRing({ score, grade }: ScoreRingProps) {
 				viewBox={`0 0 ${VIEWBOX_SIZE} ${VIEWBOX_SIZE}`}
 				className="h-full w-full -rotate-90"
 			>
+				<title>{`Score ${score} out of 100`}</title>
 				<defs>
 					<linearGradient id={gradientId} x1="0%" y1="0%" x2="100%" y2="0%">
 						<stop offset="0%" stopColor={from} />

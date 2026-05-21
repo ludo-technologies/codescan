@@ -1,70 +1,72 @@
 @import "tailwindcss";
 
 @theme inline {
-  --font-sans: var(--font-jakarta);
-  --font-mono: var(--font-jetbrains);
+	--font-sans: var(--font-jakarta);
+	--font-mono: var(--font-jetbrains);
 }
 
 :root {
-  /* Backgrounds */
-  --bg-body: #050505;
-  --bg-card: #141416;
-  --bg-subtle: rgba(255, 255, 255, 0.05);
-  --bg-subtle-hover: rgba(255, 255, 255, 0.1);
+	/* Backgrounds */
+	--bg-body: #050505;
+	--bg-card: #141416;
+	--bg-subtle: rgba(255, 255, 255, 0.05);
+	--bg-subtle-hover: rgba(255, 255, 255, 0.1);
 
-  /* Brand */
-  --brand-blue: #3b82f6;
-  --brand-blue-light: #60a5fa;
-  --glow-blue: rgba(59, 130, 246, 0.15);
+	/* Brand */
+	--brand-blue: #3b82f6;
+	--brand-blue-light: #60a5fa;
+	--glow-blue: rgba(59, 130, 246, 0.15);
 
-  /* Text */
-  --text-primary: #ffffff;
-  --text-secondary: #888888;
-  --text-muted: #555555;
-  --text-label: #aaaaaa;
-  --text-dimmed: #666666;
-  --text-subtle: #999999;
-  --text-light: #bbbbbb;
+	/* Text */
+	--text-primary: #ffffff;
+	--text-secondary: #888888;
+	--text-muted: #555555;
+	--text-label: #aaaaaa;
+	--text-dimmed: #666666;
+	--text-subtle: #999999;
+	--text-light: #bbbbbb;
 
-  /* Borders */
-  --border-subtle: rgba(255, 255, 255, 0.07);
-  --border-light: rgba(255, 255, 255, 0.1);
+	/* Borders */
+	--border-subtle: rgba(255, 255, 255, 0.07);
+	--border-light: rgba(255, 255, 255, 0.1);
 
-  /* Semantic */
-  --color-error: #ef4444;
+	/* Semantic */
+	--color-error: #ef4444;
 }
 
 body {
-  background: var(--bg-body);
-  color: var(--text-primary);
-  font-family: var(--font-sans), sans-serif;
-  overflow-x: hidden;
-  position: relative;
+	background: var(--bg-body);
+	color: var(--text-primary);
+	font-family: var(--font-sans), sans-serif;
+	overflow-x: hidden;
+	position: relative;
 }
 
 /* Background glows inspired by Code Wiki */
 body::before,
 body::after {
-  content: "";
-  position: fixed;
-  width: 60vw;
-  height: 60vw;
-  border-radius: 50%;
-  z-index: -1;
-  filter: blur(100px);
-  pointer-events: none;
+	content: "";
+	position: fixed;
+	width: 60vw;
+	height: 60vw;
+	border-radius: 50%;
+	z-index: -1;
+	filter: blur(100px);
+	pointer-events: none;
 }
 
 body::before {
-  top: -200px;
-  right: -200px;
-  background: radial-gradient(circle, var(--glow-blue) 0%, transparent 70%);
+	top: -200px;
+	right: -200px;
+	background: radial-gradient(circle, var(--glow-blue) 0%, transparent 70%);
 }
 
 body::after {
-  bottom: -200px;
-  left: -10vw;
-  background: radial-gradient(circle,
-      rgba(59, 130, 246, 0.1) 0%,
-      transparent 70%);
+	bottom: -200px;
+	left: -10vw;
+	background: radial-gradient(
+		circle,
+		rgba(59, 130, 246, 0.1) 0%,
+		transparent 70%
+	);
 }
