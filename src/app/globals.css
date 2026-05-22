@@ -7,15 +7,15 @@
 
 :root {
 	/* Backgrounds */
-	--bg-body: #050505;
-	--bg-card: #141416;
+	--bg-body: #07091a;
+	--bg-card: #0f1530;
 	--bg-subtle: rgba(255, 255, 255, 0.05);
 	--bg-subtle-hover: rgba(255, 255, 255, 0.1);
 
 	/* Brand */
-	--brand-blue: #3b82f6;
-	--brand-blue-light: #60a5fa;
-	--glow-blue: rgba(59, 130, 246, 0.15);
+	--brand-blue: #38bdf8;
+	--brand-blue-light: #7dd3fc;
+	--glow-blue: rgba(56, 189, 248, 0.18);
 
 	/* Text */
 	--text-primary: #ffffff;
@@ -66,7 +66,7 @@ body::after {
 	left: -10vw;
 	background: radial-gradient(
 		circle,
-		rgba(59, 130, 246, 0.1) 0%,
+		rgba(56, 189, 248, 0.12) 0%,
 		transparent 70%
 	);
 }
