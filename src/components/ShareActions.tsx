@@ -2,6 +2,7 @@
 
 import { useCallback } from "react";
 import { getGrade } from "@/lib/score-utils";
+import { buildSecurityReport } from "@/lib/security-report";
 import type { ScanResult } from "@/types/scan";
 
 interface ShareActionsProps {
@@ -14,22 +15,22 @@ export default function ShareActions({ result }: ShareActionsProps) {
 		(typeof window === "undefined" ? "" : window.location.origin);
 	const shareUrl = `${siteUrl.replace(/\/$/, "")}/scan/${result.id}`;
 
-	const handleDownload = useCallback(async () => {
+	const handleDownload = useCallback(() => {
 		try {
-			const res = await fetch(`/scan/${result.id}/og`);
-			if (!res.ok) throw new Error("Download failed");
-			const blob = await res.blob();
+			const blob = new Blob([buildSecurityReport(result)], {
+				type: "text/markdown;charset=utf-8",
+			});
 			const url = URL.createObjectURL(blob);
 			const a = document.createElement("a");
 			a.href = url;
-			a.download = `${result.owner}-${result.repo}-codescan.png`;
+			a.download = `${result.owner}-${result.repo}-security-report.md`;
 			a.click();
 			URL.revokeObjectURL(url);
 		} catch {
 			// TODO: show user-facing error toast
-			console.error("Failed to download card");
+			console.error("Failed to download security report");
 		}
-	}, [result.id, result.owner, result.repo]);
+	}, [result]);
 
 	const handleCopyLink = useCallback(async () => {
 		try {
@@ -80,7 +81,7 @@ export default function ShareActions({ result }: ShareActionsProps) {
 					<polyline points="7 10 12 15 17 10" />
 					<line x1="12" y1="15" x2="12" y2="3" />
 				</svg>
-				Download Card
+				Download Security Report
 			</button>
 			<button
 				type="button"

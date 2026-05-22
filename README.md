@@ -13,7 +13,7 @@ https://github.com/user-attachments/assets/db41df8e-881e-4303-9634-d3aba7c853e1
 - Hardcoded secret detection powered by Gitleaks
 - Dependency vulnerability (CVE) detection powered by Trivy
 - Severity breakdown with per-finding file, line, and rule details
-- Shareable result cards with OG image generation (share to X / download / copy link)
+- Shareable result cards with OG image generation and downloadable security reports
 
 ## Tech Stack
 

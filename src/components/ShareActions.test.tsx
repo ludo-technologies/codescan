@@ -29,7 +29,7 @@ describe("ShareActions", () => {
 	it("renders all three action buttons", () => {
 		render(<ShareActions result={mockResult} />);
 		expect(screen.getByText("Share on X")).toBeInTheDocument();
-		expect(screen.getByText("Download Card")).toBeInTheDocument();
+		expect(screen.getByText("Download Security Report")).toBeInTheDocument();
 		expect(screen.getByText("Copy Link")).toBeInTheDocument();
 	});
 
@@ -106,17 +106,9 @@ describe("ShareActions", () => {
 		});
 	});
 
-	describe("Download Card", () => {
-		it("fetches the OG image and triggers a download", async () => {
+	describe("Download Security Report", () => {
+		it("creates the report file and triggers a download", async () => {
 			const user = userEvent.setup();
-			const mockBlob = new Blob(["image-data"], { type: "image/png" });
-			vi.stubGlobal(
-				"fetch",
-				vi.fn().mockResolvedValue({
-					ok: true,
-					blob: () => Promise.resolve(mockBlob),
-				}),
-			);
 
 			// Render before setting up the createElement mock, so React's own
 			// 'a' element creation during render is not intercepted.
@@ -130,25 +122,19 @@ describe("ShareActions", () => {
 				return originalCreateElement(tag);
 			});
 
-			await user.click(screen.getByText("Download Card"));
+			await user.click(screen.getByText("Download Security Report"));
 
 			await waitFor(() => {
-				expect(fetch).toHaveBeenCalledWith("/scan/scan-123/og");
-				expect(mockAnchor.download).toBe("testowner-testrepo-codescan.png");
+				expect(URL.createObjectURL).toHaveBeenCalledWith(expect.any(Blob));
+				expect(mockAnchor.download).toBe(
+					"testowner-testrepo-security-report.md",
+				);
 				expect(mockClick).toHaveBeenCalled();
 			});
 		});
 
 		it("revokes the object URL after download", async () => {
 			const user = userEvent.setup();
-			const mockBlob = new Blob(["image-data"], { type: "image/png" });
-			vi.stubGlobal(
-				"fetch",
-				vi.fn().mockResolvedValue({
-					ok: true,
-					blob: () => Promise.resolve(mockBlob),
-				}),
-			);
 
 			render(<ShareActions result={mockResult} />);
 
@@ -163,25 +149,29 @@ describe("ShareActions", () => {
 				return originalCreateElement(tag);
 			});
 
-			await user.click(screen.getByText("Download Card"));
+			await user.click(screen.getByText("Download Security Report"));
 
 			await waitFor(() => {
 				expect(URL.revokeObjectURL).toHaveBeenCalledWith("blob:mock-url");
 			});
 		});
 
-		it("handles a failed download response gracefully", async () => {
+		it("handles report download failure gracefully", async () => {
 			const user = userEvent.setup();
-			vi.stubGlobal("fetch", vi.fn().mockResolvedValue({ ok: false }));
+			URL.createObjectURL = vi.fn(() => {
+				throw new Error("Download failed");
+			});
 			const consoleSpy = vi
 				.spyOn(console, "error")
 				.mockImplementation(() => {});
 
 			render(<ShareActions result={mockResult} />);
-			await user.click(screen.getByText("Download Card"));
+			await user.click(screen.getByText("Download Security Report"));
 
 			await waitFor(() => {
-				expect(consoleSpy).toHaveBeenCalledWith("Failed to download card");
+				expect(consoleSpy).toHaveBeenCalledWith(
+					"Failed to download security report",
+				);
 			});
 		});
 	});
