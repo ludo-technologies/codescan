@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import ErrorBoundary from "@/components/ErrorBoundary";
 import ScanResultView from "@/components/ScanResult";
+import { getGrade } from "@/lib/score-utils";
 
 interface PageProps {
 	params: Promise<{ id: string }>;
@@ -29,8 +30,9 @@ export async function generateMetadata({
 		if (res.ok) {
 			const data = await res.json();
 			if (data.status === "completed") {
-				const title = `${data.owner}/${data.repo} — Security Score ${data.total_score} | codescan.dev`;
-				const description = `${data.owner}/${data.repo} scored ${data.total_score}/100 on codescan.dev`;
+				const grade = getGrade(data.total_score ?? 0);
+				const title = `${data.owner}/${data.repo} — Security Grade ${grade} | codescan.dev`;
+				const description = `${data.owner}/${data.repo} earned grade ${grade} on codescan.dev`;
 				const siteUrl = getSiteUrl();
 				const scanUrl = `${siteUrl}/scan/${id}`;
 				const ogImage = `${scanUrl}/og`;
@@ -49,7 +51,7 @@ export async function generateMetadata({
 								url: ogImage,
 								width: 1200,
 								height: 630,
-								alt: `${data.owner}/${data.repo} security score card`,
+								alt: `${data.owner}/${data.repo} security grade card`,
 							},
 						],
 					},

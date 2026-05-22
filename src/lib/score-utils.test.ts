@@ -1,6 +1,7 @@
 import { describe, expect, it } from "vitest";
 import {
 	getGrade,
+	getGradeLabel,
 	getGradient,
 	getTier,
 	getTierColors,
@@ -65,6 +66,18 @@ describe("getGrade", () => {
 		["F", 19],
 	])("returns %s for score %i", (expected, score) => {
 		expect(getGrade(score)).toBe(expected);
+	});
+});
+
+describe("getGradeLabel", () => {
+	it.each([
+		["Excellent", 80],
+		["Good", 60],
+		["Fair", 40],
+		["Needs work", 20],
+		["At risk", 19],
+	])("returns %s for score %i", (expected, score) => {
+		expect(getGradeLabel(score)).toBe(expected);
 	});
 });
 

@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { getGrade } from "@/lib/score-utils";
+import { getGrade, getGradeLabel } from "@/lib/score-utils";
 import type { ScanResult } from "@/types/scan";
 import ScoreRing from "./ScoreRing";
 
@@ -11,7 +11,7 @@ type Tone = "critical" | "high" | "warn" | "low";
 
 interface CategoryRowProps {
 	label: string;
-	counts: { label: string; value: number; tone: Tone }[];
+	counts: { label: string; value: number | null; tone: Tone }[];
 }
 
 const TONE_COLORS: Record<Tone, string> = {
@@ -23,22 +23,30 @@ const TONE_COLORS: Record<Tone, string> = {
 
 function CategoryRow({ label, counts }: CategoryRowProps) {
 	return (
-		<div className="flex items-center gap-3">
-			<span className="w-[110px] shrink-0 text-right text-[11px] font-semibold text-[var(--text-light)] tracking-wide">
+		<div className="grid grid-cols-[92px_1fr] items-center gap-3 py-3">
+			<span className="shrink-0 text-[11px] font-semibold text-[var(--text-light)]">
 				{label}
 			</span>
-			<div className="flex flex-1 items-center gap-3 font-mono text-[12px] tabular-nums">
+			<div className="flex min-w-0 flex-wrap items-center justify-end gap-x-4 gap-y-1 font-mono text-[12px] tabular-nums sm:justify-start">
 				{counts.map((count) => (
 					<span key={count.label} className="flex items-center gap-1">
-						<span
-							className="font-bold"
-							style={{ color: TONE_COLORS[count.tone] }}
-						>
-							{count.value}
-						</span>
-						<span className="text-[10px] text-[var(--text-dimmed)]">
-							{count.label}
-						</span>
+						{count.value === null ? (
+							<span className="text-[11px] text-[var(--text-dimmed)]">
+								{count.label}
+							</span>
+						) : (
+							<>
+								<span
+									className="font-bold"
+									style={{ color: TONE_COLORS[count.tone] }}
+								>
+									{count.value}
+								</span>
+								<span className="text-[10px] text-[var(--text-dimmed)]">
+									{count.label}
+								</span>
+							</>
+						)}
 					</span>
 				))}
 			</div>
@@ -48,13 +56,14 @@ function CategoryRow({ label, counts }: CategoryRowProps) {
 
 export default function ShareCard({ result }: ShareCardProps) {
 	const grade = getGrade(result.total_score);
+	const gradeLabel = getGradeLabel(result.total_score);
 
 	const sastCounts: CategoryRowProps["counts"] = result.sast
 		? [
 				{ label: "errors", value: result.sast.error_count, tone: "high" },
 				{ label: "warnings", value: result.sast.warning_count, tone: "warn" },
 			]
-		: [{ label: "N/A", value: 0, tone: "low" }];
+		: [{ label: "N/A", value: null, tone: "low" }];
 
 	const secretsCounts: CategoryRowProps["counts"] = result.secrets
 		? [
@@ -64,7 +73,7 @@ export default function ShareCard({ result }: ShareCardProps) {
 					tone: "critical",
 				},
 			]
-		: [{ label: "N/A", value: 0, tone: "low" }];
+		: [{ label: "N/A", value: null, tone: "low" }];
 
 	const depsCounts: CategoryRowProps["counts"] = result.dependencies
 		? [
@@ -80,36 +89,41 @@ export default function ShareCard({ result }: ShareCardProps) {
 					tone: "warn",
 				},
 			]
-		: [{ label: "N/A", value: 0, tone: "low" }];
+		: [{ label: "N/A", value: null, tone: "low" }];
 
 	return (
-		<div className="relative w-full max-w-[420px] rounded-2xl bg-[var(--bg-card)] px-5 py-5 sm:px-7 sm:py-6 border border-[var(--border-subtle)] shadow-[0_20px_60px_rgba(0,0,0,0.4)] overflow-hidden">
-			<div className="pointer-events-none absolute -inset-0.5 rounded-[17px] bg-gradient-to-br from-[rgba(59,130,246,0.15)] via-transparent to-[rgba(59,130,246,0.05)]" />
+		<div className="relative w-full max-w-[560px] overflow-hidden rounded-lg border border-[var(--border-subtle)] bg-[var(--bg-card)] px-5 py-5 shadow-[0_20px_60px_rgba(0,0,0,0.4)] sm:px-7 sm:py-6">
+			<div className="pointer-events-none absolute inset-0 bg-[linear-gradient(135deg,rgba(59,130,246,0.12),transparent_42%,rgba(34,197,94,0.05))]" />
 
-			<div className="relative z-[1]">
-				<div className="flex items-center justify-between mb-5">
-					<div className="font-mono text-[13px] font-extrabold text-[var(--brand-blue)] tracking-tight">
+			<div className="relative z-[1] flex flex-col gap-5">
+				<div className="flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between">
+					<div className="font-mono text-[13px] font-extrabold text-[var(--brand-blue)]">
 						codescan<span className="text-[var(--text-muted)]">.dev</span>
 					</div>
-					<div className="font-mono text-[11px] text-[var(--text-light)] bg-[var(--bg-subtle)] px-2.5 py-1 rounded-md border border-[var(--border-light)]">
+					<div className="max-w-full truncate rounded-md border border-[var(--border-light)] bg-[var(--bg-subtle)] px-2.5 py-1 font-mono text-[11px] text-[var(--text-light)] sm:max-w-[300px]">
 						{result.owner}/{result.repo}
 					</div>
 				</div>
 
-				<div className="text-center mb-5">
+				<div className="grid gap-5 sm:grid-cols-[180px_1fr] sm:items-center">
 					<ScoreRing score={result.total_score} grade={grade} />
-					<div className="text-[11px] text-[var(--text-subtle)] tracking-wider uppercase font-medium">
-						Security Score
+					<div className="min-w-0 text-center sm:text-left">
+						<div className="text-[11px] font-semibold uppercase text-[var(--text-subtle)]">
+							Security Grade
+						</div>
+						<div className="mt-1 text-2xl font-extrabold text-white">
+							{gradeLabel}
+						</div>
 					</div>
 				</div>
 
-				<div className="flex flex-col gap-[14px] mb-5">
+				<div className="divide-y divide-[var(--border-subtle)] border-y border-[var(--border-subtle)]">
 					<CategoryRow label="SAST" counts={sastCounts} />
 					<CategoryRow label="Secrets" counts={secretsCounts} />
 					<CategoryRow label="Dependencies" counts={depsCounts} />
 				</div>
 
-				<div className="flex items-center justify-center pt-4 border-t border-[var(--border-subtle)]">
+				<div className="flex items-center justify-center">
 					<Link
 						href="/"
 						className="font-mono text-[11px] text-white bg-[rgba(59,130,246,0.12)] border border-[rgba(59,130,246,0.25)] px-3 py-1.5 rounded-md inline-flex items-center gap-1.5 transition-colors hover:bg-[rgba(59,130,246,0.2)]"

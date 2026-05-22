@@ -1,6 +1,6 @@
 # codescan.dev
 
-Frontend for [codescan.dev](https://codescan.dev) — a tool that scans public GitHub repositories and generates a health score based on code quality metrics.
+Frontend for [codescan.dev](https://codescan.dev) — a tool that scans public GitHub repositories and generates a letter grade based on code quality metrics.
 
 
 ## Demo
@@ -10,7 +10,7 @@ https://github.com/user-attachments/assets/db41df8e-881e-4303-9634-d3aba7c853e1
 ## Features
 
 - Scan any public GitHub repository by URL
-- Health score (0–100) with letter grade
+- Letter-grade security result
 - Detailed breakdown: complexity, dead code, duplication, coupling, dependencies, architecture, security
 - Shareable result cards with OG image generation
 - Share to X / download card / copy link

@@ -7,12 +7,24 @@ const GRADE_D_MIN = 20;
 
 export type Grade = "A" | "B" | "C" | "D" | "F";
 
+const GRADE_LABELS: Record<Grade, string> = {
+	A: "Excellent",
+	B: "Good",
+	C: "Fair",
+	D: "Needs work",
+	F: "At risk",
+};
+
 export function getGrade(score: number): Grade {
 	if (score >= TIER_EXCELLENT_MIN) return "A";
 	if (score >= TIER_GOOD_MIN) return "B";
 	if (score >= TIER_FAIR_MIN) return "C";
 	if (score >= GRADE_D_MIN) return "D";
 	return "F";
+}
+
+export function getGradeLabel(score: number): string {
+	return GRADE_LABELS[getGrade(score)];
 }
 
 export function getTier(score: number): Tier {

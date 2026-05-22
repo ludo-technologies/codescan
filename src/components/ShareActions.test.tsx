@@ -40,11 +40,11 @@ describe("ShareActions", () => {
 			expect(link?.href).toContain("twitter.com/intent/tweet");
 		});
 
-		it("encodes the share text including owner, repo, and score", () => {
+		it("encodes the share text including owner, repo, and grade", () => {
 			render(<ShareActions result={mockResult} />);
 			const link = screen.getByText("Share on X").closest("a");
 			expect(link?.href).toContain(
-				encodeURIComponent("testowner/testrepo scored 85/100 on codescan.dev"),
+				encodeURIComponent("testowner/testrepo earned grade A on codescan.dev"),
 			);
 		});
 

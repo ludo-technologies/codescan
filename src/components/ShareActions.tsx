@@ -1,6 +1,7 @@
 "use client";
 
 import { useCallback } from "react";
+import { getGrade } from "@/lib/score-utils";
 import type { ScanResult } from "@/types/scan";
 
 interface ShareActionsProps {
@@ -39,7 +40,8 @@ export default function ShareActions({ result }: ShareActionsProps) {
 		}
 	}, [shareUrl]);
 
-	const shareText = `${result.owner}/${result.repo} scored ${result.total_score}/100 on codescan.dev`;
+	const grade = getGrade(result.total_score);
+	const shareText = `${result.owner}/${result.repo} earned grade ${grade} on codescan.dev`;
 
 	return (
 		<div className="flex flex-wrap justify-center gap-3">

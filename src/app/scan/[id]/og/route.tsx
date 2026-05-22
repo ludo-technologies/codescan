@@ -1,6 +1,6 @@
 import { ImageResponse } from "@vercel/og";
 import type { NextRequest } from "next/server";
-import { getGrade, getTier, type Tier } from "@/lib/score-utils";
+import { getGrade, getGradeLabel, getTier, type Tier } from "@/lib/score-utils";
 
 export const runtime = "edge";
 
@@ -21,7 +21,7 @@ const OGP_TIER_COLORS: Record<Tier, { from: string; to: string }> = {
 
 interface CategoryProps {
 	label: string;
-	counts: { label: string; value: number; color: string }[];
+	counts: { label: string; value: number | null; color: string }[];
 }
 
 function CategoryCard({ label, counts }: CategoryProps) {
@@ -43,7 +43,6 @@ function CategoryCard({ label, counts }: CategoryProps) {
 					fontSize: "20px",
 					fontWeight: 700,
 					color: "#9ca3af",
-					letterSpacing: "1px",
 					textTransform: "uppercase",
 				}}
 			>
@@ -55,19 +54,27 @@ function CategoryCard({ label, counts }: CategoryProps) {
 						key={count.label}
 						style={{ display: "flex", alignItems: "baseline", gap: "6px" }}
 					>
-						<span
-							style={{
-								fontSize: "32px",
-								fontWeight: 800,
-								color: count.color,
-								fontFamily: "monospace",
-							}}
-						>
-							{count.value}
-						</span>
-						<span style={{ fontSize: "16px", color: COLOR_MUTED }}>
-							{count.label}
-						</span>
+						{count.value === null ? (
+							<span style={{ fontSize: "18px", color: COLOR_MUTED }}>
+								{count.label}
+							</span>
+						) : (
+							<>
+								<span
+									style={{
+										fontSize: "32px",
+										fontWeight: 800,
+										color: count.color,
+										fontFamily: "monospace",
+									}}
+								>
+									{count.value}
+								</span>
+								<span style={{ fontSize: "16px", color: COLOR_MUTED }}>
+									{count.label}
+								</span>
+							</>
+						)}
 					</div>
 				))}
 			</div>
@@ -94,6 +101,7 @@ export async function GET(
 
 	const score = data.total_score ?? 0;
 	const grade = getGrade(score);
+	const gradeLabel = getGradeLabel(score);
 	const { from: ringFrom, to: ringTo } = OGP_TIER_COLORS[getTier(score)];
 
 	const sast = data.sast ?? null;
@@ -109,7 +117,7 @@ export async function GET(
 					color: COLOR_WARN,
 				},
 			]
-		: [{ label: "N/A", value: 0, color: COLOR_MUTED }];
+		: [{ label: "N/A", value: null, color: COLOR_MUTED }];
 
 	const secretsCounts = secrets
 		? [
@@ -119,7 +127,7 @@ export async function GET(
 					color: COLOR_CRITICAL,
 				},
 			]
-		: [{ label: "N/A", value: 0, color: COLOR_MUTED }];
+		: [{ label: "N/A", value: null, color: COLOR_MUTED }];
 
 	const depsCounts = deps
 		? [
@@ -131,14 +139,12 @@ export async function GET(
 				{ label: "high", value: deps.high_count ?? 0, color: COLOR_HIGH },
 				{ label: "medium", value: deps.medium_count ?? 0, color: COLOR_WARN },
 			]
-		: [{ label: "N/A", value: 0, color: COLOR_MUTED }];
+		: [{ label: "N/A", value: null, color: COLOR_MUTED }];
 
 	const ringSize = 260;
 	const center = ringSize / 2;
 	const radius = 112;
 	const strokeWidth = 16;
-	const circumference = 2 * Math.PI * radius;
-	const dashoffset = circumference - (score / 100) * circumference;
 
 	const imageResponse = new ImageResponse(
 		<div
@@ -207,8 +213,6 @@ export async function GET(
 							stroke={ringFrom}
 							strokeWidth={strokeWidth}
 							strokeLinecap="round"
-							strokeDasharray={`${circumference}`}
-							strokeDashoffset={`${dashoffset}`}
 						/>
 					</svg>
 					<div
@@ -221,25 +225,24 @@ export async function GET(
 					>
 						<span
 							style={{
-								fontSize: "76px",
+								fontSize: "132px",
 								fontWeight: 800,
 								color: "#fff",
 								lineHeight: 1,
 								fontFamily: "monospace",
 							}}
 						>
-							{score}
+							{grade}
 						</span>
 						<span
 							style={{
-								fontSize: "24px",
+								fontSize: "28px",
 								fontWeight: 700,
 								color: ringTo,
-								letterSpacing: "4px",
 								marginTop: "4px",
 							}}
 						>
-							{grade}
+							{gradeLabel}
 						</span>
 					</div>
 				</div>
@@ -275,6 +278,17 @@ export async function GET(
 				>
 					<span style={{ color: "#3B82F6" }}>codescan</span>
 					<span style={{ color: "#555" }}>.dev</span>
+				</div>
+				<div
+					style={{
+						fontSize: "52px",
+						fontWeight: 800,
+						color: "#fff",
+						display: "flex",
+						marginBottom: "8px",
+					}}
+				>
+					Security Grade
 				</div>
 
 				<CategoryCard label="SAST" counts={sastCounts} />

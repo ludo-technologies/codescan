@@ -18,7 +18,7 @@ const jetbrains = JetBrains_Mono({
 export const metadata: Metadata = {
 	title: "codescan.dev — Scan any public GitHub repo",
 	description:
-		"Instant code health analysis for any public GitHub repository. Get a health score, find complexity issues, dead code, duplication, and more.",
+		"Instant code health analysis for any public GitHub repository. Get a letter grade, find complexity issues, dead code, duplication, and more.",
 };
 
 export const viewport: Viewport = {
