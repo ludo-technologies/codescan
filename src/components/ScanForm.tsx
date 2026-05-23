@@ -87,6 +87,7 @@ export default function ScanForm() {
 						<SearchIcon className="h-4 sm:h-5 w-4 sm:w-5" />
 					</div>
 					<input
+						id="scan-url-input"
 						type="url"
 						value={url}
 						onChange={(e) => setUrl(e.target.value)}
