@@ -18,9 +18,23 @@ const jetbrains = JetBrains_Mono({
 
 export const metadata: Metadata = {
 	metadataBase: new URL(getSiteUrl()),
-	title: "codescan.dev — Scan any public GitHub repo",
+	title: "codescan.dev — Simple security checks for public GitHub repos",
 	description:
-		"Instant code health analysis for any public GitHub repository. Get a letter grade, find complexity issues, dead code, duplication, and more.",
+		"Free security checks for public GitHub repositories. Find risky code, exposed keys, and outdated packages, then get a shareable letter-grade report.",
+	keywords: [
+		"GitHub security scanner",
+		"repository security checker",
+		"code security checker",
+		"exposed API keys",
+		"outdated packages",
+		"open source security",
+	],
+	openGraph: {
+		title: "codescan.dev — Simple security checks for public GitHub repos",
+		description:
+			"Scan any public GitHub repo for risky code, exposed keys, and outdated packages. Get a letter-grade security report you can share.",
+		type: "website",
+	},
 };
 
 export const viewport: Viewport = {
@@ -54,12 +68,12 @@ export default function RootLayout({
 			)}
 			<body className={`${jakarta.variable} ${jetbrains.variable} antialiased`}>
 				{children}
-				<footer className="fixed bottom-0 left-0 right-0 py-3 text-center">
+				<footer className="border-t border-[var(--border-subtle)] bg-white px-4 py-6 text-center">
 					<a
 						href="https://github.com/ludo-technologies/codescan"
 						target="_blank"
 						rel="noopener noreferrer"
-						className="inline-flex items-center gap-1.5 text-[11px] text-[var(--text-muted)] transition-colors hover:text-[var(--text-secondary)]"
+						className="inline-flex items-center gap-1.5 text-xs font-medium text-[var(--text-muted)] transition-colors hover:text-[var(--text-primary)]"
 					>
 						<svg
 							className="h-3.5 w-3.5"

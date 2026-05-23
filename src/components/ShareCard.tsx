@@ -1,5 +1,7 @@
 import Link from "next/link";
+import { CATEGORY_LABELS } from "@/lib/categories";
 import { getGrade, getGradeLabel } from "@/lib/score-utils";
+import { type Tone, TONE_CLASSES } from "@/lib/severity-styles";
 import type { ScanResult } from "@/types/scan";
 import ScoreRing from "./ScoreRing";
 
@@ -7,44 +9,29 @@ interface ShareCardProps {
 	result: ScanResult;
 }
 
-type Tone = "critical" | "high" | "warn" | "low";
-
 interface CategoryRowProps {
 	label: string;
 	counts: { label: string; value: number | null; tone: Tone }[];
 }
 
-const TONE_COLORS: Record<Tone, string> = {
-	critical: "#EF4444",
-	high: "#F59E0B",
-	warn: "#FBBF24",
-	low: "#60A5FA",
-};
-
 function CategoryRow({ label, counts }: CategoryRowProps) {
 	return (
-		<div className="grid grid-cols-[92px_1fr] items-center gap-3 py-3">
-			<span className="shrink-0 text-[11px] font-semibold text-[var(--text-light)]">
+		<div className="grid gap-3 py-4 sm:grid-cols-[140px_1fr] sm:items-center">
+			<span className="shrink-0 text-sm font-semibold text-[var(--text-primary)]">
 				{label}
 			</span>
-			<div className="flex min-w-0 flex-wrap items-center justify-end gap-x-4 gap-y-1 font-mono text-[12px] tabular-nums sm:justify-start">
+			<div className="flex min-w-0 flex-wrap items-center gap-2 font-mono text-xs tabular-nums">
 				{counts.map((count) => (
-					<span key={count.label} className="flex items-center gap-1">
+					<span
+						key={count.label}
+						className={`inline-flex items-center gap-1 rounded-md border px-2 py-1 ${TONE_CLASSES[count.tone]}`}
+					>
 						{count.value === null ? (
-							<span className="text-[11px] text-[var(--text-dimmed)]">
-								{count.label}
-							</span>
+							<span>{count.label}</span>
 						) : (
 							<>
-								<span
-									className="font-bold"
-									style={{ color: TONE_COLORS[count.tone] }}
-								>
-									{count.value}
-								</span>
-								<span className="text-[10px] text-[var(--text-dimmed)]">
-									{count.label}
-								</span>
+								<span className="font-bold">{count.value}</span>
+								<span>{count.label}</span>
 							</>
 						)}
 					</span>
@@ -60,20 +47,20 @@ export default function ShareCard({ result }: ShareCardProps) {
 
 	const sastCounts: CategoryRowProps["counts"] = result.sast
 		? [
-				{ label: "errors", value: result.sast.error_count, tone: "high" },
+				{ label: "serious", value: result.sast.error_count, tone: "high" },
 				{ label: "warnings", value: result.sast.warning_count, tone: "warn" },
 			]
-		: [{ label: "N/A", value: null, tone: "low" }];
+		: [{ label: "not checked", value: null, tone: "neutral" }];
 
 	const secretsCounts: CategoryRowProps["counts"] = result.secrets
 		? [
 				{
-					label: "critical",
+					label: "found",
 					value: result.secrets.critical_count,
-					tone: "critical",
+					tone: result.secrets.critical_count > 0 ? "critical" : "good",
 				},
 			]
-		: [{ label: "N/A", value: null, tone: "low" }];
+		: [{ label: "not checked", value: null, tone: "neutral" }];
 
 	const depsCounts: CategoryRowProps["counts"] = result.dependencies
 		? [
@@ -89,51 +76,53 @@ export default function ShareCard({ result }: ShareCardProps) {
 					tone: "warn",
 				},
 			]
-		: [{ label: "N/A", value: null, tone: "low" }];
+		: [{ label: "not checked", value: null, tone: "neutral" }];
 
 	return (
-		<div className="relative w-full max-w-[560px] overflow-hidden rounded-lg border border-[var(--border-subtle)] bg-[var(--bg-card)] px-5 py-5 shadow-[0_20px_60px_rgba(0,0,0,0.4)] sm:px-7 sm:py-6">
-			<div className="pointer-events-none absolute inset-0 bg-[linear-gradient(135deg,rgba(59,130,246,0.12),transparent_42%,rgba(34,197,94,0.05))]" />
-
-			<div className="relative z-[1] flex flex-col gap-5">
-				<div className="flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between">
-					<div className="font-mono text-[13px] font-extrabold text-[var(--brand-blue)]">
-						codescan<span className="text-[var(--text-muted)]">.dev</span>
-					</div>
-					<div className="max-w-full truncate rounded-md border border-[var(--border-light)] bg-[var(--bg-subtle)] px-2.5 py-1 font-mono text-[11px] text-[var(--text-light)] sm:max-w-[300px]">
+		<div className="w-full overflow-hidden rounded-lg border border-[var(--border-light)] bg-[var(--bg-card)] shadow-sm">
+			<div className="border-b border-[var(--border-subtle)] px-5 py-4 sm:px-7">
+				<div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+					<Link
+						href="/"
+						className="font-mono text-sm font-extrabold text-[var(--brand-blue)]"
+					>
+						codescan<span className="text-[var(--text-primary)]">.dev</span>
+					</Link>
+					<div className="max-w-full truncate rounded-md border border-[var(--border-light)] bg-[var(--bg-subtle)] px-3 py-1.5 font-mono text-xs text-[var(--text-light)] sm:max-w-[420px]">
 						{result.owner}/{result.repo}
 					</div>
 				</div>
+			</div>
 
-				<div className="grid gap-5 sm:grid-cols-[180px_1fr] sm:items-center">
-					<ScoreRing score={result.total_score} grade={grade} />
-					<div className="min-w-0 text-center sm:text-left">
-						<div className="text-[11px] font-semibold uppercase text-[var(--text-subtle)]">
-							Security Grade
-						</div>
-						<div className="mt-1 text-2xl font-extrabold text-white">
-							{gradeLabel}
-						</div>
+			<div className="grid gap-6 px-5 py-6 sm:grid-cols-[210px_1fr] sm:items-center sm:px-7">
+				<ScoreRing score={result.total_score} grade={grade} />
+				<div className="min-w-0 text-center sm:text-left">
+					<div className="text-xs font-semibold uppercase tracking-wide text-[var(--text-subtle)]">
+						Security grade
 					</div>
+					<div className="mt-2 text-3xl font-extrabold text-[var(--text-primary)]">
+						{gradeLabel}
+					</div>
+					<p className="mt-3 max-w-xl text-sm leading-relaxed text-[var(--text-secondary)]">
+						This report summarizes risky code, exposed keys, and outdated
+						packages found in this repository.
+					</p>
 				</div>
+			</div>
 
-				<div className="divide-y divide-[var(--border-subtle)] border-y border-[var(--border-subtle)]">
-					<CategoryRow label="SAST" counts={sastCounts} />
-					<CategoryRow label="Secrets" counts={secretsCounts} />
-					<CategoryRow label="Dependencies" counts={depsCounts} />
-				</div>
+			<div className="divide-y divide-[var(--border-subtle)] border-y border-[var(--border-subtle)] px-5 sm:px-7">
+				<CategoryRow label={CATEGORY_LABELS.sast} counts={sastCounts} />
+				<CategoryRow label={CATEGORY_LABELS.secrets} counts={secretsCounts} />
+				<CategoryRow label={CATEGORY_LABELS.deps} counts={depsCounts} />
+			</div>
 
-				<div className="flex items-center justify-center">
-					<Link
-						href="/"
-						className="font-mono text-[11px] text-white bg-[rgba(59,130,246,0.12)] border border-[rgba(59,130,246,0.25)] px-3 py-1.5 rounded-md inline-flex items-center gap-1.5 transition-colors hover:bg-[rgba(59,130,246,0.2)]"
-					>
-						Scan yours <span className="text-[var(--brand-blue-light)]">→</span>{" "}
-						<strong className="text-[var(--brand-blue-light)]">
-							codescan.dev
-						</strong>
-					</Link>
-				</div>
+			<div className="flex items-center justify-center px-5 py-4 sm:px-7">
+				<Link
+					href="/"
+					className="inline-flex items-center gap-1.5 rounded-md border border-[var(--brand-blue)] bg-[var(--brand-blue)] px-3 py-1.5 font-mono text-xs font-semibold text-white transition-colors hover:bg-[var(--brand-blue-hover)]"
+				>
+					Scan another repo <span>→</span>
+				</Link>
 			</div>
 		</div>
 	);

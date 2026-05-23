@@ -40,7 +40,7 @@ export default function ScanResult({ id }: ScanResultProps) {
 	if (!result) return null;
 
 	return (
-		<div className="flex flex-col items-center gap-5">
+		<div className="flex w-full max-w-5xl flex-col items-center gap-5">
 			<ShareCard result={result} />
 			<FindingsList result={result} />
 			<ShareActions result={result} />

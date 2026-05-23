@@ -34,8 +34,6 @@ export function getTier(score: number): Tier {
 	return "poor";
 }
 
-// Note: excellent/fair/poor use hex literals as no CSS variables are defined for them.
-// The good tier matches --brand-blue and --brand-blue-light.
 const TIER_COLORS: Record<Tier, { from: string; to: string }> = {
 	excellent: { from: "#22c55e", to: "#4ade80" },
 	good: { from: "var(--brand-blue)", to: "var(--brand-blue-light)" },

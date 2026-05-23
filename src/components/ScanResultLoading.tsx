@@ -2,21 +2,26 @@ const SKELETON_ROWS = ["sast", "secrets", "dependencies"];
 
 export default function ScanResultLoading() {
 	return (
-		<div className="flex flex-col items-center gap-5">
-			{/* Skeleton card */}
-			<div className="w-full max-w-[420px] rounded-2xl bg-[var(--bg-card)] px-7 py-6 border border-[var(--border-subtle)] animate-pulse">
-				<div className="flex justify-between mb-5">
-					<div className="h-3.5 w-20 rounded bg-white/5" />
-					<div className="h-3.5 w-28 rounded bg-white/5" />
+		<div className="flex w-full max-w-5xl flex-col items-center gap-5">
+			<div className="w-full animate-pulse rounded-lg border border-[var(--border-light)] bg-[var(--bg-card)] px-5 py-6 shadow-sm sm:px-7">
+				<div className="mb-6 flex justify-between">
+					<div className="h-4 w-24 rounded bg-[var(--bg-subtle)]" />
+					<div className="h-4 w-36 rounded bg-[var(--bg-subtle)]" />
 				</div>
-				<div className="flex justify-center mb-5">
-					<div className="h-[120px] w-[120px] rounded-full bg-white/5" />
+				<div className="mb-6 grid gap-6 sm:grid-cols-[210px_1fr] sm:items-center">
+					<div className="mx-auto h-[150px] w-[150px] rounded-full bg-[var(--bg-subtle)]" />
+					<div className="space-y-4">
+						<div className="h-4 w-28 rounded bg-[var(--bg-subtle)]" />
+						<div className="h-8 w-52 rounded bg-[var(--bg-subtle)]" />
+						<div className="h-4 max-w-lg rounded bg-[var(--bg-subtle)]" />
+						<div className="h-4 w-2/3 rounded bg-[var(--bg-subtle)]" />
+					</div>
 				</div>
-				<div className="flex flex-col gap-[14px]">
+				<div className="flex flex-col gap-3 border-t border-[var(--border-subtle)] pt-5">
 					{SKELETON_ROWS.map((row) => (
 						<div key={row} className="flex items-center gap-3">
-							<div className="h-2.5 w-[110px] rounded bg-white/5" />
-							<div className="flex-1 h-2.5 rounded bg-white/5" />
+							<div className="h-4 w-[140px] rounded bg-[var(--bg-subtle)]" />
+							<div className="h-4 flex-1 rounded bg-[var(--bg-subtle)]" />
 						</div>
 					))}
 				</div>

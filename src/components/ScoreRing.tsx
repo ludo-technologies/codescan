@@ -15,11 +15,10 @@ export default function ScoreRing({ score, grade }: ScoreRingProps) {
 	const gradeLabel = getGradeLabel(score);
 	const { from, to } = getTierColors(tier);
 	const gradientId = `ring-grad-${tier}`;
-	const glowId = `ring-glow-${tier}`;
 
 	return (
 		<div
-			className="relative mx-auto h-[156px] w-[156px] rounded-full bg-white/[0.03] sm:h-[172px] sm:w-[172px]"
+			className="relative mx-auto h-[156px] w-[156px] rounded-full bg-white sm:h-[172px] sm:w-[172px]"
 			role="img"
 			aria-label={`Security grade ${grade}: ${gradeLabel}`}
 		>
@@ -34,20 +33,13 @@ export default function ScoreRing({ score, grade }: ScoreRingProps) {
 						<stop offset="0%" stopColor={from} />
 						<stop offset="100%" stopColor={to} />
 					</linearGradient>
-					<filter id={glowId}>
-						<feGaussianBlur stdDeviation="3" result="blur" />
-						<feMerge>
-							<feMergeNode in="blur" />
-							<feMergeNode in="SourceGraphic" />
-						</feMerge>
-					</filter>
 				</defs>
 				<circle
 					cx={CENTER}
 					cy={CENTER}
 					r={RADIUS}
 					fill="none"
-					stroke="rgba(255,255,255,0.08)"
+					stroke="#e4e7ec"
 					strokeWidth={STROKE_WIDTH}
 				/>
 				<circle
@@ -58,11 +50,10 @@ export default function ScoreRing({ score, grade }: ScoreRingProps) {
 					stroke={`url(#${gradientId})`}
 					strokeWidth={STROKE_WIDTH}
 					strokeLinecap="round"
-					filter={`url(#${glowId})`}
 				/>
 			</svg>
 			<div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 text-center">
-				<div className="font-mono text-[78px] font-extrabold leading-none text-white sm:text-[86px]">
+				<div className="font-mono text-[78px] font-extrabold leading-none text-[var(--text-primary)] sm:text-[86px]">
 					{grade}
 				</div>
 				<div

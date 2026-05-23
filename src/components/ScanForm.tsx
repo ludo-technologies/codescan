@@ -80,10 +80,10 @@ export default function ScanForm() {
 	);
 
 	return (
-		<form onSubmit={handleSubmit} className="w-full max-w-2xl px-4">
+		<form onSubmit={handleSubmit} className="w-full max-w-2xl">
 			<div className="flex flex-col gap-3 sm:block">
 				<div className="group relative flex items-center">
-					<div className="pointer-events-none absolute left-4 sm:left-6 text-[var(--text-muted)] group-focus-within:text-[var(--brand-blue)] transition-colors">
+					<div className="pointer-events-none absolute left-4 text-[var(--text-muted)] transition-colors group-focus-within:text-[var(--brand-blue)] sm:left-5">
 						<SearchIcon className="h-4 sm:h-5 w-4 sm:w-5" />
 					</div>
 					<input
@@ -91,30 +91,28 @@ export default function ScanForm() {
 						value={url}
 						onChange={(e) => setUrl(e.target.value)}
 						placeholder="https://github.com/owner/repo"
-						className="h-14 sm:h-16 w-full rounded-2xl sm:rounded-full border border-[var(--border-light)] bg-[var(--bg-subtle)] pl-11 sm:pl-16 pr-4 sm:pr-36 font-mono text-sm sm:text-base text-[var(--text-primary)] placeholder-[var(--text-muted)] outline-none ring-[var(--brand-blue)]/0 backdrop-blur-xl focus:border-[var(--brand-blue)]/50 focus:ring-4 focus:ring-[var(--brand-blue)]/10 transition-all duration-300"
+						className="h-14 w-full rounded-lg border border-[var(--border-light)] bg-white pl-11 pr-4 font-mono text-sm text-[var(--text-primary)] shadow-sm outline-none ring-[var(--brand-blue)]/0 transition-all duration-200 placeholder:text-[var(--text-muted)] focus:border-[var(--brand-blue)] focus:ring-4 focus:ring-[var(--brand-blue)]/10 sm:h-16 sm:pl-14 sm:pr-36 sm:text-base"
 						disabled={loading}
 					/>
-					{/* Desktop: button overlaid inside the input (absolutely positioned) */}
 					<button
 						type="submit"
 						disabled={loading}
-						className="hidden sm:flex absolute right-2 items-center h-12 rounded-full bg-[var(--brand-blue)] px-8 text-sm font-bold text-[var(--text-primary)] shadow-lg shadow-[var(--brand-blue)]/20 transition-all hover:scale-[1.02] active:scale-[0.98] disabled:opacity-50"
+						className="absolute right-2 hidden h-12 items-center rounded-md bg-[var(--brand-blue)] px-7 text-sm font-bold text-white shadow-sm transition-colors hover:bg-[var(--brand-blue-hover)] active:bg-[var(--brand-blue-active)] disabled:opacity-50 sm:flex"
 					>
 						{buttonContent}
 					</button>
 				</div>
-				{/* Mobile: full-width button stacked below the input */}
 				<button
 					type="submit"
 					disabled={loading}
-					className="sm:hidden h-14 w-full rounded-2xl bg-[var(--brand-blue)] text-sm font-bold text-[var(--text-primary)] shadow-lg shadow-[var(--brand-blue)]/20 transition-all active:scale-[0.98] disabled:opacity-50"
+					className="h-14 w-full rounded-lg bg-[var(--brand-blue)] text-sm font-bold text-white shadow-sm transition-colors active:bg-[var(--brand-blue-active)] disabled:opacity-50 sm:hidden"
 				>
 					{buttonContent}
 				</button>
 			</div>
 
 			{error && (
-				<p className="mt-4 text-center text-sm font-medium text-[var(--color-error)] animate-in fade-in slide-in-from-top-2 duration-300">
+				<p className="mt-3 text-sm font-medium text-[var(--color-error)] animate-in fade-in slide-in-from-top-2 duration-300">
 					{error}
 				</p>
 			)}

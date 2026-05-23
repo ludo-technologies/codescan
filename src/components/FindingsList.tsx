@@ -1,6 +1,8 @@
 "use client";
 
 import { useState } from "react";
+import { CATEGORY_LABELS } from "@/lib/categories";
+import { severityClasses } from "@/lib/severity-styles";
 import type {
 	DepFinding,
 	SastFinding,
@@ -13,16 +15,6 @@ interface FindingsListProps {
 }
 
 type Tab = "sast" | "secrets" | "deps";
-
-const SEVERITY_BADGE: Record<string, string> = {
-	CRITICAL: "bg-[#7f1d1d] text-[#fca5a5] border-[#dc2626]/40",
-	HIGH: "bg-[#78350f] text-[#fcd34d] border-[#ea580c]/40",
-	ERROR: "bg-[#78350f] text-[#fcd34d] border-[#ea580c]/40",
-	MEDIUM: "bg-[#713f12] text-[#fde68a] border-[#ca8a04]/40",
-	WARNING: "bg-[#713f12] text-[#fde68a] border-[#ca8a04]/40",
-	LOW: "bg-[#1e3a8a] text-[#bfdbfe] border-[#3b82f6]/40",
-	INFO: "bg-[#1f2937] text-[#9ca3af] border-[#374151]",
-};
 
 function getSastKey(f: SastFinding) {
 	return `${f.file}:${f.line}:${f.rule_id}:${f.message}`;
@@ -37,10 +29,9 @@ function getDepKey(f: DepFinding) {
 }
 
 function SeverityBadge({ severity }: { severity: string }) {
-	const cls = SEVERITY_BADGE[severity] ?? SEVERITY_BADGE.INFO;
 	return (
 		<span
-			className={`inline-flex items-center rounded-md border px-1.5 py-0.5 text-[10px] font-bold tracking-wide ${cls}`}
+			className={`inline-flex items-center rounded-md border px-2 py-0.5 text-[10px] font-bold tracking-wide ${severityClasses(severity)}`}
 		>
 			{severity}
 		</span>
@@ -49,55 +40,67 @@ function SeverityBadge({ severity }: { severity: string }) {
 
 function FileLine({ file, line }: { file: string; line: number }) {
 	return (
-		<span className="font-mono text-[11px] text-[#888]">
+		<span className="min-w-0 truncate font-mono text-[11px] text-[var(--text-muted)]">
 			{file}
-			<span className="text-[#555]">:</span>
-			<span className="text-[#aaa]">{line}</span>
+			<span className="text-[var(--text-dimmed)]">:</span>
+			<span className="text-[var(--text-label)]">{line}</span>
 		</span>
 	);
 }
 
 function SastRow({ f }: { f: SastFinding }) {
 	return (
-		<li className="rounded-md border border-white/[0.06] bg-white/[0.02] px-3 py-2.5">
-			<div className="flex items-center gap-2 mb-1">
+		<li className="rounded-lg border border-[var(--border-subtle)] bg-white px-4 py-3">
+			<div className="mb-2 flex min-w-0 flex-wrap items-center gap-2">
 				<SeverityBadge severity={f.severity} />
 				<FileLine file={f.file} line={f.line} />
 			</div>
-			<p className="text-[12px] text-[#ddd] leading-relaxed">{f.message}</p>
-			<p className="mt-1 font-mono text-[10px] text-[#666]">{f.rule_id}</p>
+			<p className="text-sm leading-relaxed text-[var(--text-primary)]">
+				{f.message}
+			</p>
+			<p className="mt-2 break-all font-mono text-[11px] text-[var(--text-muted)]">
+				{f.rule_id}
+			</p>
 		</li>
 	);
 }
 
 function SecretRow({ f }: { f: SecretFinding }) {
 	return (
-		<li className="rounded-md border border-white/[0.06] bg-white/[0.02] px-3 py-2.5">
-			<div className="flex items-center gap-2 mb-1">
+		<li className="rounded-lg border border-[var(--border-subtle)] bg-white px-4 py-3">
+			<div className="mb-2 flex min-w-0 flex-wrap items-center gap-2">
 				<SeverityBadge severity="CRITICAL" />
 				<FileLine file={f.file} line={f.line} />
 			</div>
-			<p className="text-[12px] text-[#ddd] leading-relaxed">{f.description}</p>
-			<p className="mt-1 font-mono text-[10px] text-[#666]">{f.rule_id}</p>
+			<p className="text-sm leading-relaxed text-[var(--text-primary)]">
+				{f.description}
+			</p>
+			<p className="mt-2 break-all font-mono text-[11px] text-[var(--text-muted)]">
+				{f.rule_id}
+			</p>
 		</li>
 	);
 }
 
 function DepRow({ f }: { f: DepFinding }) {
 	return (
-		<li className="rounded-md border border-white/[0.06] bg-white/[0.02] px-3 py-2.5">
-			<div className="flex items-center gap-2 mb-1">
+		<li className="rounded-lg border border-[var(--border-subtle)] bg-white px-4 py-3">
+			<div className="mb-2 flex min-w-0 flex-wrap items-center gap-2">
 				<SeverityBadge severity={f.severity} />
-				<span className="font-mono text-[11px] text-[#aaa]">
-					{f.package} <span className="text-[#666]">@</span>{" "}
+				<span className="min-w-0 truncate font-mono text-[11px] text-[var(--text-label)]">
+					{f.package} <span className="text-[var(--text-dimmed)]">@</span>{" "}
 					{f.installed_version}
 				</span>
 			</div>
-			<p className="text-[12px] text-[#ddd] leading-relaxed">{f.title}</p>
-			<div className="mt-1 flex items-center gap-3 font-mono text-[10px] text-[#666]">
+			<p className="text-sm leading-relaxed text-[var(--text-primary)]">
+				{f.title}
+			</p>
+			<div className="mt-2 flex flex-wrap items-center gap-3 font-mono text-[11px] text-[var(--text-muted)]">
 				<span>{f.cve}</span>
 				{f.fixed_version && (
-					<span className="text-[#4ade80]">→ fix: {f.fixed_version}</span>
+					<span className="text-[var(--brand-green)]">
+						Update to {f.fixed_version}
+					</span>
 				)}
 			</div>
 		</li>
@@ -118,37 +121,37 @@ export default function FindingsList({ result }: FindingsListProps) {
 	}
 
 	return (
-		<details className="w-full max-w-[680px] rounded-2xl bg-[#0f0f10] border border-white/[0.07] overflow-hidden">
-			<summary className="cursor-pointer select-none px-5 py-3 text-[12px] font-semibold text-[#bbb] tracking-wide hover:bg-white/[0.02] transition-colors">
+		<details className="w-full overflow-hidden rounded-lg border border-[var(--border-light)] bg-[var(--bg-card)] shadow-sm">
+			<summary className="cursor-pointer select-none px-5 py-4 text-sm font-semibold text-[var(--text-primary)] transition-colors hover:bg-[var(--bg-subtle)] sm:px-7">
 				View {sastCount + secretsCount + depsCount} findings
 			</summary>
 
-			<div className="border-t border-white/[0.05]">
-				<div className="flex gap-1 px-3 pt-3">
+			<div className="border-t border-[var(--border-subtle)]">
+				<div className="flex flex-wrap gap-2 px-5 pt-5 sm:px-7">
 					<TabBtn
 						active={tab === "sast"}
 						onClick={() => setTab("sast")}
 						count={sastCount}
 					>
-						SAST
+						{CATEGORY_LABELS.sast}
 					</TabBtn>
 					<TabBtn
 						active={tab === "secrets"}
 						onClick={() => setTab("secrets")}
 						count={secretsCount}
 					>
-						Secrets
+						{CATEGORY_LABELS.secrets}
 					</TabBtn>
 					<TabBtn
 						active={tab === "deps"}
 						onClick={() => setTab("deps")}
 						count={depsCount}
 					>
-						Dependencies
+						{CATEGORY_LABELS.deps}
 					</TabBtn>
 				</div>
 
-				<ul className="flex flex-col gap-2 p-3 max-h-[480px] overflow-y-auto">
+				<ul className="flex max-h-[520px] flex-col gap-3 overflow-y-auto p-5 sm:px-7">
 					{tab === "sast" &&
 						result.sast?.findings.map((finding) => (
 							<SastRow key={getSastKey(finding)} f={finding} />
@@ -182,14 +185,14 @@ function TabBtn({
 		<button
 			type="button"
 			onClick={onClick}
-			className={`rounded-md px-3 py-1.5 text-[11px] font-semibold transition-colors ${
+			className={`rounded-md border px-3 py-2 text-xs font-semibold transition-colors ${
 				active
-					? "bg-[#3B82F6]/[0.18] text-white border border-[#3B82F6]/40"
-					: "text-[#888] hover:text-[#bbb] border border-transparent"
+					? "border-[var(--brand-blue)] bg-[var(--brand-blue-light)] text-[var(--brand-blue)]"
+					: "border-[var(--border-subtle)] text-[var(--text-muted)] hover:bg-[var(--bg-subtle)] hover:text-[var(--text-primary)]"
 			}`}
 		>
 			{children}
-			<span className="ml-1.5 font-mono text-[10px] text-[#999]">
+			<span className="ml-1.5 font-mono text-[11px] text-[var(--text-muted)]">
 				({count})
 			</span>
 		</button>

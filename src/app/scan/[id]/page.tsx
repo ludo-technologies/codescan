@@ -75,14 +75,14 @@ export default async function ScanPage({ params }: PageProps) {
 	const { id } = await params;
 
 	return (
-		<main className="flex min-h-screen flex-col items-center justify-start pt-10 sm:justify-center sm:pt-0 px-4 py-6 sm:py-12">
-			<div className="mb-8">
+		<main className="flex min-h-screen flex-col items-center px-4 py-6 sm:py-10">
+			<div className="mb-8 w-full max-w-5xl">
 				<Link
 					href="/"
 					className="font-mono text-xl font-extrabold tracking-tight"
 				>
 					<span className="text-[var(--brand-blue)]">codescan</span>
-					<span className="text-[var(--text-muted)]">.dev</span>
+					<span className="text-[var(--text-primary)]">.dev</span>
 				</Link>
 			</div>
 			<ErrorBoundary>
