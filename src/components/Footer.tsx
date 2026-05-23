@@ -4,6 +4,8 @@ const productLinks = [
 	{ label: "Start a scan", href: "/#scan" },
 	{ label: "What it checks", href: "/#what-it-does" },
 	{ label: "How it works", href: "/#how-it-works" },
+	{ label: "Examples", href: "/examples" },
+	{ label: "Methodology", href: "/methodology" },
 	{ label: "FAQ", href: "/#faq" },
 ];
 

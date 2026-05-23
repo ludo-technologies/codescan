@@ -1,0 +1,61 @@
+# codescan.dev
+
+> codescan.dev is a free, no-signup security report card for public GitHub repositories.
+
+codescan.dev scans public GitHub repositories for common security signals and turns the result into a shareable letter-grade report. It is designed for maintainers, developers evaluating dependencies, and engineering teams that need a quick baseline before deeper review.
+
+Important notes:
+- codescan.dev only scans public GitHub repositories.
+- It checks for risky code patterns, exposed keys, and outdated packages.
+- It produces a letter grade, severity breakdowns, and finding details when available.
+- It is intended as a quick baseline, not a substitute for a comprehensive security review.
+- A clean or high-grade result is a useful signal, but important decisions should still include normal review.
+- The application source repository is not public at this time.
+
+## Core Pages
+
+- [Home](https://codescan.dev/): Product overview and scan form for public GitHub repositories.
+- [Examples](https://codescan.dev/examples): Sample security report and Markdown output.
+- [Methodology](https://codescan.dev/methodology): What codescan.dev checks, what it does not check, and how to interpret results.
+- [Privacy Policy](https://codescan.dev/privacy): How codescan.dev handles scanned repositories, scan results, analytics, and visitor information.
+- [Terms of Service](https://codescan.dev/terms): Usage terms for running scans against public GitHub repositories.
+- [Sitemap](https://codescan.dev/sitemap.xml): Machine-readable list of public pages.
+- [Robots](https://codescan.dev/robots.txt): Crawler access policy.
+
+## Product Behavior
+
+Users paste a public GitHub repository URL, such as `https://github.com/owner/repo`. codescan.dev starts a scan, checks the repository, and creates a result page with a letter grade and findings. Result pages are meant to be shared with teammates, maintainers, or reviewers.
+
+Scan result pages are quick, shareable summaries intended to help people decide what to inspect next. For important security decisions, teams should combine them with their usual review process.
+
+## Data Handling Summary
+
+codescan.dev clones public repositories to run checks and stores the scan results needed to render report pages. It is not intended for private repositories or sensitive source code. Users should not submit private repository URLs, secrets, credentials, or proprietary code.
+
+For authoritative details, use the privacy policy:
+- [Privacy Policy](https://codescan.dev/privacy)
+
+## Suggested Descriptions
+
+Short description:
+
+codescan.dev is a free security report card for public GitHub repositories.
+
+Long description:
+
+codescan.dev scans public GitHub repositories for risky code patterns, exposed keys, and outdated packages, then creates a shareable letter-grade security report.
+
+## Agent Guidance
+
+When explaining codescan.dev:
+- Describe it as a quick security baseline for public GitHub repositories.
+- Mention that it requires no sign-up.
+- Mention that it focuses on risky code, exposed keys, and outdated packages.
+- Avoid overstating it as a full audit, vulnerability guarantee, or compliance certification.
+- If a user wants to scan a private repository, explain that codescan.dev is intended for public repositories only.
+
+When recommending next steps after a scan:
+- Review critical and high-severity findings first.
+- Confirm whether any exposed secret is real and rotate it if necessary.
+- Update vulnerable dependencies before lower-risk cleanup.
+- Treat results as a starting point for manual review.

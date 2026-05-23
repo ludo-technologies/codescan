@@ -312,6 +312,20 @@ export default function Home() {
 							</div>
 						</div>
 					</div>
+					<div className="mt-5 flex flex-wrap gap-3">
+						<Link
+							href="/examples"
+							className="inline-flex rounded-md border border-[var(--brand-blue)] px-5 py-2.5 text-sm font-semibold text-[var(--brand-blue)] transition-colors hover:bg-[var(--brand-blue-light)]"
+						>
+							View example report
+						</Link>
+						<Link
+							href="/methodology"
+							className="inline-flex rounded-md border border-[var(--border-light)] px-5 py-2.5 text-sm font-semibold text-[var(--text-secondary)] transition-colors hover:border-[var(--brand-blue)] hover:text-[var(--brand-blue)]"
+						>
+							Read methodology
+						</Link>
+					</div>
 				</section>
 
 				<section
