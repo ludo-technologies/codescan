@@ -1,6 +1,7 @@
 import type { Metadata, Viewport } from "next";
 import { JetBrains_Mono, Plus_Jakarta_Sans } from "next/font/google";
 import Script from "next/script";
+import { getSiteUrl } from "@/lib/site-url";
 import "./globals.css";
 
 const GA_MEASUREMENT_ID = process.env.NEXT_PUBLIC_GA_MEASUREMENT_ID ?? "";
@@ -16,6 +17,7 @@ const jetbrains = JetBrains_Mono({
 });
 
 export const metadata: Metadata = {
+	metadataBase: new URL(getSiteUrl()),
 	title: "codescan.dev — Scan any public GitHub repo",
 	description:
 		"Instant code health analysis for any public GitHub repository. Get a letter grade, find complexity issues, dead code, duplication, and more.",

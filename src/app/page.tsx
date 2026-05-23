@@ -1,4 +1,11 @@
+import type { Metadata } from "next";
 import ScanForm from "@/components/ScanForm";
+
+export const metadata: Metadata = {
+	alternates: {
+		canonical: "/",
+	},
+};
 
 export default function Home() {
 	return (

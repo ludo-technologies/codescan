@@ -3,20 +3,10 @@ import Link from "next/link";
 import ErrorBoundary from "@/components/ErrorBoundary";
 import ScanResultView from "@/components/ScanResult";
 import { getGrade } from "@/lib/score-utils";
+import { getSiteUrl } from "@/lib/site-url";
 
 interface PageProps {
 	params: Promise<{ id: string }>;
-}
-
-function getSiteUrl() {
-	return (
-		process.env.SITE_URL ??
-		process.env.NEXT_PUBLIC_SITE_URL ??
-		(process.env.VERCEL_PROJECT_PRODUCTION_URL
-			? `https://${process.env.VERCEL_PROJECT_PRODUCTION_URL}`
-			: undefined) ??
-		(process.env.VERCEL_URL ? `https://${process.env.VERCEL_URL}` : "")
-	).replace(/\/$/, "");
 }
 
 export async function generateMetadata({
@@ -39,7 +29,11 @@ export async function generateMetadata({
 				return {
 					title,
 					description,
-					metadataBase: siteUrl ? new URL(siteUrl) : undefined,
+					metadataBase: new URL(siteUrl),
+					robots: {
+						index: false,
+						follow: true,
+					},
 					openGraph: {
 						title,
 						description,
@@ -70,6 +64,10 @@ export async function generateMetadata({
 
 	return {
 		title: `Scan Results | codescan.dev`,
+		robots: {
+			index: false,
+			follow: true,
+		},
 	};
 }
 
