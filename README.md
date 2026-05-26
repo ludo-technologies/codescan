@@ -1,56 +1,72 @@
+<div align="center">
+
 # codescan.dev
 
-Frontend for [codescan.dev](https://codescan.dev) — a security scanner for public GitHub repositories. It runs SAST, secret detection, and dependency CVE checks, then presents the findings with a shareable result card.
+### Scan public GitHub repos for security issues.
+
+Risky code, exposed keys, outdated packages — one shareable grade.
+
+**[Start a scan](https://codescan.dev)** · [Example report](https://codescan.dev/examples) · [Methodology](https://codescan.dev/methodology)
+
+</div>
+
+---
 
 ## Demo
 
 https://github.com/user-attachments/assets/db41df8e-881e-4303-9634-d3aba7c853e1
 
-## Features
+## What it checks
 
-- Scan any public GitHub repository by URL
-- Static analysis (SAST) findings powered by Semgrep
-- Hardcoded secret detection powered by Gitleaks
-- Dependency vulnerability (CVE) detection powered by Trivy
-- Severity breakdown with per-finding file, line, and rule details
-- Shareable result cards with OG image generation and downloadable security reports
+| Category | Description | Powered by |
+|---|---|---|
+| **Static Analysis (SAST)** | Finds patterns that can lead to security bugs, including unsafe input handling and other common mistakes | [Semgrep](https://semgrep.dev/) |
+| **Secret Detection** | Checks whether API keys, tokens, private keys, or credentials were accidentally committed | [Gitleaks](https://gitleaks.io/) |
+| **Dependency Vulnerabilities** | Looks for packages with known security problems so you can update the risky ones first | [Trivy](https://trivy.dev/) |
 
-## Tech Stack
+## How it works
 
-- [Next.js](https://nextjs.org/) 16 (App Router)
-- [React](https://react.dev/) 19
-- [Tailwind CSS](https://tailwindcss.com/) 4
-- [SWR](https://swr.vercel.app/) for scan status polling
-- [@vercel/og](https://vercel.com/docs/functions/og-image-generation) for OG image generation
-- [Biome](https://biomejs.dev/) for lint/format, [Vitest](https://vitest.dev/) for tests
-- Deployed on [Vercel](https://vercel.com/)
+1. **Paste a GitHub URL** — Drop the URL of any public repository into the scan box.
+2. **Run the checks** — codescan.dev looks for risky code, exposed keys, and packages that should be updated.
+3. **Read the report card** — See a letter grade, a severity breakdown, and per-finding file, line, and rule details you can share.
 
-## Getting Started
+No installation. No GitHub app. No sign-up.
 
-```bash
-bun install
-cp .env.example .env.local
-# Edit .env.local with your values
-bun run dev
-```
+## Who it's for
 
-Open [http://localhost:3000](http://localhost:3000).
+- **Maintainers** — Get a quick security baseline before publishing a release or accepting a large pull request.
+- **Developers evaluating dependencies** — Check a third-party repository for exposed credentials and risky packages before adopting it.
+- **Engineering teams** — Share a letter-grade report card alongside a PR or audit instead of pasting raw tool output.
 
-### Scripts
+## FAQ
 
-```bash
-bun run dev      # start dev server
-bun run build    # production build
-bun run lint     # biome check
-bun run test     # vitest run
-```
+<details>
+<summary><strong>Is codescan.dev free?</strong></summary>
+<br>
+Yes. Scans of public GitHub repositories are free and require no sign-up.
+</details>
 
-## Environment Variables
+<details>
+<summary><strong>Which repositories can I scan?</strong></summary>
+<br>
+Any public GitHub repository. Paste the repo URL (<code>https://github.com/owner/name</code>) into the scan box.
+</details>
 
-| Variable   | Description                                  | Example                     |
-|------------|----------------------------------------------|-----------------------------|
-| `API_URL`  | Backend scanner API endpoint                 | `https://api.codescan.dev`  |
-| `SITE_URL` | Public URL of the frontend (for OG images)   | `https://codescan.dev`      |
+<details>
+<summary><strong>What does the letter grade mean?</strong></summary>
+<br>
+The grade summarizes how many issues were found and how serious they are, so you can compare repositories at a glance.
+</details>
+
+<details>
+<summary><strong>Do you store my code?</strong></summary>
+<br>
+No. codescan.dev clones the repository to run the scanners and only persists the resulting findings needed to render the report card.
+</details>
+
+## Contributing
+
+See [CONTRIBUTING.md](CONTRIBUTING.md) for development setup and guidelines.
 
 ## License
 
