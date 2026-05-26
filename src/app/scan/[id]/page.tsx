@@ -9,11 +9,17 @@ interface PageProps {
 	params: Promise<{ id: string }>;
 }
 
+const SCAN_ID_PATTERN = /^[a-zA-Z0-9_-]+$/;
+
 export async function generateMetadata({
 	params,
 }: PageProps): Promise<Metadata> {
 	const { id } = await params;
 	const apiUrl = process.env.API_URL ?? "";
+
+	if (!SCAN_ID_PATTERN.test(id)) {
+		return { title: "Invalid Scan | codescan.dev" };
+	}
 
 	try {
 		const res = await fetch(`${apiUrl}/api/scan/${id}`, { cache: "no-store" });

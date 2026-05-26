@@ -44,7 +44,7 @@ export async function POST(req: NextRequest) {
 		const res = await fetch(`${API_URL}/api/scan`, {
 			method: "POST",
 			headers: { "Content-Type": "application/json" },
-			body: JSON.stringify(body),
+			body: JSON.stringify({ repo_url: repoUrl }),
 			signal: controller.signal,
 		});
 		clearTimeout(timeoutId);

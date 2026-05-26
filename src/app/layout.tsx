@@ -5,7 +5,10 @@ import Footer from "@/components/Footer";
 import { getSiteUrl } from "@/lib/site-url";
 import "./globals.css";
 
-const GA_MEASUREMENT_ID = process.env.NEXT_PUBLIC_GA_MEASUREMENT_ID ?? "";
+const GA_MEASUREMENT_ID_RAW = process.env.NEXT_PUBLIC_GA_MEASUREMENT_ID ?? "";
+const GA_MEASUREMENT_ID = /^G-[A-Z0-9]+$/.test(GA_MEASUREMENT_ID_RAW)
+	? GA_MEASUREMENT_ID_RAW
+	: "";
 
 const jakarta = Plus_Jakarta_Sans({
 	variable: "--font-jakarta",
@@ -41,7 +44,6 @@ export const metadata: Metadata = {
 export const viewport: Viewport = {
 	width: "device-width",
 	initialScale: 1,
-	maximumScale: 1,
 };
 
 export default function RootLayout({

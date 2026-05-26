@@ -1,7 +1,7 @@
 import Link from "next/link";
 import { CATEGORY_LABELS } from "@/lib/categories";
 import { getGrade, getGradeLabel } from "@/lib/score-utils";
-import { type Tone, TONE_CLASSES } from "@/lib/severity-styles";
+import { TONE_CLASSES, type Tone } from "@/lib/severity-styles";
 import type { ScanResult } from "@/types/scan";
 import ScoreRing from "./ScoreRing";
 

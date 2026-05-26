@@ -111,7 +111,7 @@ describe("ScanForm", () => {
 
 	it("disables the input while the scan is loading", async () => {
 		const user = userEvent.setup();
-		let resolve: (v: {
+		let resolve!: (v: {
 			scan_id: string;
 			status: string;
 			cached: boolean;

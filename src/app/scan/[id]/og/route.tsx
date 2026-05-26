@@ -82,14 +82,34 @@ function CategoryCard({ label, counts }: CategoryProps) {
 	);
 }
 
+const SCAN_ID_PATTERN = /^[a-zA-Z0-9_-]+$/;
+
 export async function GET(
 	_req: NextRequest,
 	{ params }: { params: Promise<{ id: string }> },
 ) {
 	const { id } = await params;
+
+	if (!SCAN_ID_PATTERN.test(id)) {
+		return new Response("Invalid scan ID", { status: 400 });
+	}
+
 	const apiUrl = process.env.API_URL ?? "";
 
-	const res = await fetch(`${apiUrl}/api/scan/${id}`);
+	const controller = new AbortController();
+	const timeoutId = setTimeout(() => controller.abort(), 8000);
+
+	let res: Response;
+	try {
+		res = await fetch(`${apiUrl}/api/scan/${id}`, {
+			signal: controller.signal,
+		});
+	} catch {
+		return new Response("Backend unavailable", { status: 504 });
+	} finally {
+		clearTimeout(timeoutId);
+	}
+
 	if (!res.ok) {
 		return new Response("Scan not found", { status: 404 });
 	}

@@ -32,9 +32,9 @@ export default function TermsPage() {
 					<p>
 						These Terms of Service (&quot;Terms&quot;) govern your use of
 						codescan.dev (&quot;the Service&quot;), operated by Ludo
-						Technologies Inc. (&quot;we&quot;, &quot;us&quot;). By accessing
-						the Service or submitting a repository for scanning, you agree to
-						these Terms. If you do not agree, do not use the Service.
+						Technologies Inc. (&quot;we&quot;, &quot;us&quot;). By accessing the
+						Service or submitting a repository for scanning, you agree to these
+						Terms. If you do not agree, do not use the Service.
 					</p>
 				</section>
 
@@ -57,10 +57,10 @@ export default function TermsPage() {
 					</h2>
 					<p>
 						You must be at least the age of majority in your jurisdiction (or
-						have permission from a parent or guardian) and legally able to
-						enter into these Terms to use the Service. If you are using the
-						Service on behalf of an organization, you represent that you have
-						authority to bind that organization to these Terms.
+						have permission from a parent or guardian) and legally able to enter
+						into these Terms to use the Service. If you are using the Service on
+						behalf of an organization, you represent that you have authority to
+						bind that organization to these Terms.
 					</p>
 				</section>
 
@@ -80,20 +80,19 @@ export default function TermsPage() {
 							which you do not have explicit permission;
 						</li>
 						<li>
-							Submit volumes of scan requests that are abusive or that
-							interfere with the Service&apos;s availability for other users,
-							including via automated scripts that bypass on-page rate
-							limiting;
+							Submit volumes of scan requests that are abusive or that interfere
+							with the Service&apos;s availability for other users, including
+							via automated scripts that bypass on-page rate limiting;
 						</li>
 						<li>
 							Attempt to reverse-engineer, exploit, or otherwise compromise the
-							Service or its infrastructure, except through good-faith
-							security research disclosed to us privately;
+							Service or its infrastructure, except through good-faith security
+							research disclosed to us privately;
 						</li>
 						<li>
 							Use the Service to violate any applicable law or third-party
-							right, including intellectual property, privacy, or
-							anti-spam laws.
+							right, including intellectual property, privacy, or anti-spam
+							laws.
 						</li>
 					</ul>
 					<p className="mt-3">
@@ -107,8 +106,8 @@ export default function TermsPage() {
 						5. Scan reports
 					</h2>
 					<p>
-						When a scan completes, we generate a report page at a unique URL
-						(<code className="font-mono text-sm">/scan/&lt;id&gt;</code>) so it
+						When a scan completes, we generate a report page at a unique URL (
+						<code className="font-mono text-sm">/scan/&lt;id&gt;</code>) so it
 						can be revisited and shared. Anyone with the URL can view the
 						report. We mark scan pages as <em>noindex</em> to keep them out of
 						search engines, but they are not otherwise access-controlled. By
@@ -116,8 +115,8 @@ export default function TermsPage() {
 						may be viewed by anyone you share the URL with.
 					</p>
 					<p className="mt-3">
-						If you would like a particular scan report removed, contact us
-						using the address below. See the{" "}
+						If you would like a particular scan report removed, contact us using
+						the address below. See the{" "}
 						<Link
 							href="/privacy"
 							className="font-medium text-[var(--brand-blue)] hover:underline"
@@ -144,8 +143,8 @@ export default function TermsPage() {
 						The Service itself — including the site, branding, design, and the
 						text of reports outside the reproduced code — is owned by Ludo
 						Technologies Inc. and protected by applicable laws. You may share
-						scan report URLs and link to the Service freely. Other uses
-						require our prior permission.
+						scan report URLs and link to the Service freely. Other uses require
+						our prior permission.
 					</p>
 				</section>
 
@@ -154,11 +153,11 @@ export default function TermsPage() {
 						7. Third-party content and services
 					</h2>
 					<p>
-						The Service depends on third parties — including GitHub, open
-						source security scanners, vulnerability databases, and cloud
-						infrastructure providers. Their availability, accuracy, and
-						licensing terms are outside our control. We are not responsible
-						for the content of any repository scanned through the Service.
+						The Service depends on third parties — including GitHub, open source
+						security scanners, vulnerability databases, and cloud infrastructure
+						providers. Their availability, accuracy, and licensing terms are
+						outside our control. We are not responsible for the content of any
+						repository scanned through the Service.
 					</p>
 				</section>
 
@@ -168,18 +167,18 @@ export default function TermsPage() {
 					</h2>
 					<p>
 						The Service is provided <strong>&quot;as is&quot;</strong> and{" "}
-						<strong>&quot;as available&quot;</strong>, without warranties of
-						any kind, whether express, implied, or statutory, including
-						warranties of merchantability, fitness for a particular purpose,
+						<strong>&quot;as available&quot;</strong>, without warranties of any
+						kind, whether express, implied, or statutory, including warranties
+						of merchantability, fitness for a particular purpose,
 						non-infringement, accuracy, or uninterrupted availability.
 					</p>
 					<p className="mt-3">
-						Scan results are best-effort summaries produced by automated
-						tools. They may include false positives, miss real issues, or
-						become outdated as new vulnerabilities are disclosed. Scan reports
-						are <strong>not</strong> a substitute for a professional security
-						audit. You are responsible for independently evaluating the safety
-						of any code before relying on it.
+						Scan results are best-effort summaries produced by automated tools.
+						They may include false positives, miss real issues, or become
+						outdated as new vulnerabilities are disclosed. Scan reports are{" "}
+						<strong>not</strong> a substitute for a professional security audit.
+						You are responsible for independently evaluating the safety of any
+						code before relying on it.
 					</p>
 				</section>
 
@@ -188,19 +187,18 @@ export default function TermsPage() {
 						9. Limitation of liability
 					</h2>
 					<p>
-						To the maximum extent permitted by applicable law, Ludo
-						Technologies Inc. and its officers, employees, and contractors
-						will not be liable for any indirect, incidental, special,
-						consequential, or punitive damages, or for any loss of profits,
-						revenue, data, or goodwill, arising out of or in connection with
-						your use of the Service.
+						To the maximum extent permitted by applicable law, Ludo Technologies
+						Inc. and its officers, employees, and contractors will not be liable
+						for any indirect, incidental, special, consequential, or punitive
+						damages, or for any loss of profits, revenue, data, or goodwill,
+						arising out of or in connection with your use of the Service.
 					</p>
 					<p className="mt-3">
 						To the extent we are found liable despite the above, our total
-						aggregate liability for any claim related to the Service is
-						limited to JPY 1,000. Some jurisdictions do not allow certain
-						limitations of liability, in which case the limitations apply only
-						to the extent permitted by law.
+						aggregate liability for any claim related to the Service is limited
+						to JPY 1,000. Some jurisdictions do not allow certain limitations of
+						liability, in which case the limitations apply only to the extent
+						permitted by law.
 					</p>
 				</section>
 
@@ -221,11 +219,11 @@ export default function TermsPage() {
 						11. Suspension and termination
 					</h2>
 					<p>
-						We may suspend, throttle, or terminate access to the Service for
-						any user at any time, with or without notice, if we reasonably
-						believe these Terms have been violated or if continued use would
-						harm the Service or other users. We may also discontinue the
-						Service, in whole or in part, at any time.
+						We may suspend, throttle, or terminate access to the Service for any
+						user at any time, with or without notice, if we reasonably believe
+						these Terms have been violated or if continued use would harm the
+						Service or other users. We may also discontinue the Service, in
+						whole or in part, at any time.
 					</p>
 				</section>
 
@@ -248,11 +246,11 @@ export default function TermsPage() {
 						13. Governing law and venue
 					</h2>
 					<p>
-						These Terms are governed by the laws of Japan, without regard to
-						its conflict-of-laws rules. Any dispute arising out of or relating
-						to these Terms or the Service will be submitted to the exclusive
-						jurisdiction of the Yokohama District Court, Japan, as the court
-						of first instance, except where applicable consumer protection law
+						These Terms are governed by the laws of Japan, without regard to its
+						conflict-of-laws rules. Any dispute arising out of or relating to
+						these Terms or the Service will be submitted to the exclusive
+						jurisdiction of the Yokohama District Court, Japan, as the court of
+						first instance, except where applicable consumer protection law
 						gives you a different non-waivable right.
 					</p>
 				</section>
@@ -264,10 +262,10 @@ export default function TermsPage() {
 					<p>
 						If any provision of these Terms is held to be unenforceable, the
 						remaining provisions will remain in full force and effect. Our
-						failure to enforce a provision is not a waiver of our right to do
-						so later. You may not assign these Terms without our consent. We
-						may assign these Terms in connection with a reorganization or
-						sale of our business.
+						failure to enforce a provision is not a waiver of our right to do so
+						later. You may not assign these Terms without our consent. We may
+						assign these Terms in connection with a reorganization or sale of
+						our business.
 					</p>
 				</section>
 

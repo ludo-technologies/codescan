@@ -54,28 +54,25 @@ export default function PrivacyPage() {
 							<strong className="text-[var(--text-primary)]">
 								Repository URLs you submit.
 							</strong>{" "}
-							When you start a scan, we record the public GitHub URL,
-							normalize the owner and repository name, and use it to fetch the
-							repository.
+							When you start a scan, we record the public GitHub URL, normalize
+							the owner and repository name, and use it to fetch the repository.
 						</li>
 						<li>
 							<strong className="text-[var(--text-primary)]">
 								Cloned repository contents (transient).
 							</strong>{" "}
 							We temporarily clone the public repository so that scanners can
-							inspect it. Source files are deleted from our infrastructure
-							after the scan completes; we do not retain a long-term copy of
-							the code.
+							inspect it. Source files are deleted from our infrastructure after
+							the scan completes; we do not retain a long-term copy of the code.
 						</li>
 						<li>
 							<strong className="text-[var(--text-primary)]">
 								Scan findings and metadata.
 							</strong>{" "}
-							We persist the structured results of each scan — for example
-							rule identifiers, severity, file paths, line numbers, dependency
-							names and versions, and short code snippets reproduced from the
-							public repository. These results are what we render on the
-							report page.
+							We persist the structured results of each scan — for example rule
+							identifiers, severity, file paths, line numbers, dependency names
+							and versions, and short code snippets reproduced from the public
+							repository. These results are what we render on the report page.
 						</li>
 						<li>
 							<strong className="text-[var(--text-primary)]">
@@ -83,8 +80,8 @@ export default function PrivacyPage() {
 							</strong>{" "}
 							Like most web services, our servers log information about
 							requests, including IP address, user agent, requested URL,
-							referrer, and timestamp. This data is used to operate the
-							Service, prevent abuse, and diagnose problems.
+							referrer, and timestamp. This data is used to operate the Service,
+							prevent abuse, and diagnose problems.
 						</li>
 						<li>
 							<strong className="text-[var(--text-primary)]">
@@ -102,8 +99,8 @@ export default function PrivacyPage() {
 						</li>
 					</ul>
 					<p className="mt-4">
-						We do not knowingly request or store sensitive personal data, and
-						we do not ask you for your name, address, or payment information.
+						We do not knowingly request or store sensitive personal data, and we
+						do not ask you for your name, address, or payment information.
 					</p>
 				</section>
 
@@ -126,7 +123,9 @@ export default function PrivacyPage() {
 							prioritize improvements.
 						</li>
 						<li>To respond to questions or feedback you send us.</li>
-						<li>To comply with applicable law and respond to lawful requests.</li>
+						<li>
+							To comply with applicable law and respond to lawful requests.
+						</li>
 					</ul>
 				</section>
 
@@ -174,8 +173,8 @@ export default function PrivacyPage() {
 						>
 							Google Analytics Opt-out Browser Add-on
 						</a>{" "}
-						or by configuring your browser to block analytics cookies. We do
-						not use cookies for advertising.
+						or by configuring your browser to block analytics cookies. We do not
+						use cookies for advertising.
 					</p>
 				</section>
 
@@ -229,8 +228,7 @@ export default function PrivacyPage() {
 						</li>
 						<li>
 							Server and access logs are retained for a limited period — long
-							enough to investigate incidents and abuse — and then rotated
-							out.
+							enough to investigate incidents and abuse — and then rotated out.
 						</li>
 						<li>
 							Analytics data is retained according to the default settings of
@@ -244,9 +242,9 @@ export default function PrivacyPage() {
 						8. Security
 					</h2>
 					<p>
-						We apply reasonable technical and organizational measures to
-						protect the data we hold, including encryption in transit (HTTPS),
-						access controls on our infrastructure, and isolation between scan
+						We apply reasonable technical and organizational measures to protect
+						the data we hold, including encryption in transit (HTTPS), access
+						controls on our infrastructure, and isolation between scan
 						workloads. No service connected to the internet can be made
 						perfectly secure, and we cannot guarantee absolute security.
 					</p>
@@ -259,15 +257,15 @@ export default function PrivacyPage() {
 					<p>
 						Depending on where you live, you may have rights under applicable
 						privacy laws, including Japan&apos;s Act on the Protection of
-						Personal Information (APPI), the EU/UK GDPR, or similar laws.
-						These may include the right to access, correct, or delete personal
-						data we hold about you, or to object to certain processing.
+						Personal Information (APPI), the EU/UK GDPR, or similar laws. These
+						may include the right to access, correct, or delete personal data we
+						hold about you, or to object to certain processing.
 					</p>
 					<p className="mt-3">
 						Because we do not require an account, the personal data we hold
 						about visitors is typically limited to server logs and analytics
-						data tied to a browser. To exercise any of these rights, contact
-						us using the address below. We may need to ask for additional
+						data tied to a browser. To exercise any of these rights, contact us
+						using the address below. We may need to ask for additional
 						information to locate the relevant records.
 					</p>
 				</section>
@@ -278,8 +276,8 @@ export default function PrivacyPage() {
 					</h2>
 					<p>
 						The Service is intended for developers and is not directed at
-						children under the age of 13 (or the equivalent minimum age in
-						your jurisdiction). We do not knowingly collect personal data from
+						children under the age of 13 (or the equivalent minimum age in your
+						jurisdiction). We do not knowingly collect personal data from
 						children.
 					</p>
 				</section>
@@ -291,9 +289,9 @@ export default function PrivacyPage() {
 					<p>
 						We may update this policy as the Service evolves or as the law
 						requires. When we make material changes we will update the
-						&quot;Last updated&quot; date at the top of this page. Continued
-						use of the Service after a change indicates acceptance of the
-						revised policy.
+						&quot;Last updated&quot; date at the top of this page. Continued use
+						of the Service after a change indicates acceptance of the revised
+						policy.
 					</p>
 				</section>
 
