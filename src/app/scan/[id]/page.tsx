@@ -16,13 +16,22 @@ export async function generateMetadata({
 }: PageProps): Promise<Metadata> {
 	const { id } = await params;
 	const apiUrl = process.env.API_URL ?? "";
+	const backendApiKey = process.env.BACKEND_API_KEY ?? "";
 
 	if (!SCAN_ID_PATTERN.test(id)) {
 		return { title: "Invalid Scan | codescan.dev" };
 	}
 
+	const headers: Record<string, string> = {};
+	if (backendApiKey) {
+		headers.Authorization = `Bearer ${backendApiKey}`;
+	}
+
 	try {
-		const res = await fetch(`${apiUrl}/api/scan/${id}`, { cache: "no-store" });
+		const res = await fetch(`${apiUrl}/api/scan/${id}`, {
+			headers,
+			cache: "no-store",
+		});
 		if (res.ok) {
 			const data = await res.json();
 			if (data.status === "completed") {

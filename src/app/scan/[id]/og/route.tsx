@@ -95,13 +95,20 @@ export async function GET(
 	}
 
 	const apiUrl = process.env.API_URL ?? "";
+	const backendApiKey = process.env.BACKEND_API_KEY ?? "";
 
 	const controller = new AbortController();
 	const timeoutId = setTimeout(() => controller.abort(), 8000);
 
+	const headers: Record<string, string> = {};
+	if (backendApiKey) {
+		headers.Authorization = `Bearer ${backendApiKey}`;
+	}
+
 	let res: Response;
 	try {
 		res = await fetch(`${apiUrl}/api/scan/${id}`, {
+			headers,
 			signal: controller.signal,
 		});
 	} catch {

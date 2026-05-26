@@ -1,6 +1,7 @@
 import { type NextRequest, NextResponse } from "next/server";
 
 const API_URL = process.env.API_URL ?? "";
+const BACKEND_API_KEY = process.env.BACKEND_API_KEY ?? "";
 const BACKEND_TIMEOUT_MS = 8000; // 8s — kept below Vercel's 10s function limit
 
 const SCAN_ID_PATTERN = /^[a-zA-Z0-9_-]+$/;
@@ -20,7 +21,13 @@ export async function GET(
 	const timeoutId = setTimeout(() => controller.abort(), BACKEND_TIMEOUT_MS);
 
 	try {
+		const headers: Record<string, string> = {};
+		if (BACKEND_API_KEY) {
+			headers.Authorization = `Bearer ${BACKEND_API_KEY}`;
+		}
+
 		const res = await fetch(`${API_URL}/api/scan/${id}`, {
+			headers,
 			signal: controller.signal,
 		});
 		clearTimeout(timeoutId);

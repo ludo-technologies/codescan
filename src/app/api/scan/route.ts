@@ -1,6 +1,7 @@
 import { type NextRequest, NextResponse } from "next/server";
 
 const API_URL = process.env.API_URL ?? "";
+const BACKEND_API_KEY = process.env.BACKEND_API_KEY ?? "";
 const BACKEND_TIMEOUT_MS = 8000; // 8s — kept below Vercel's 10s function limit
 
 const GITHUB_URL_PATTERN =
@@ -41,9 +42,16 @@ export async function POST(req: NextRequest) {
 	const timeoutId = setTimeout(() => controller.abort(), BACKEND_TIMEOUT_MS);
 
 	try {
+		const headers: Record<string, string> = {
+			"Content-Type": "application/json",
+		};
+		if (BACKEND_API_KEY) {
+			headers.Authorization = `Bearer ${BACKEND_API_KEY}`;
+		}
+
 		const res = await fetch(`${API_URL}/api/scan`, {
 			method: "POST",
-			headers: { "Content-Type": "application/json" },
+			headers,
 			body: JSON.stringify({ repo_url: repoUrl }),
 			signal: controller.signal,
 		});
