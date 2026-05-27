@@ -1,4 +1,5 @@
 import { type NextRequest, NextResponse } from "next/server";
+import { getSession } from "@/lib/auth";
 
 const API_URL = process.env.API_URL ?? "";
 const BACKEND_API_KEY = process.env.BACKEND_API_KEY ?? "";
@@ -37,6 +38,10 @@ export async function POST(req: NextRequest) {
 		);
 	}
 
+	// Extract GitHub token from session for private repo access
+	const session = await getSession();
+	const githubToken = session?.accessToken ?? null;
+
 	// Timeout setup
 	const controller = new AbortController();
 	const timeoutId = setTimeout(() => controller.abort(), BACKEND_TIMEOUT_MS);
@@ -49,10 +54,15 @@ export async function POST(req: NextRequest) {
 			headers.Authorization = `Bearer ${BACKEND_API_KEY}`;
 		}
 
+		const scanBody: Record<string, string> = { repo_url: repoUrl };
+		if (githubToken) {
+			scanBody.github_token = githubToken;
+		}
+
 		const res = await fetch(`${API_URL}/api/scan`, {
 			method: "POST",
 			headers,
-			body: JSON.stringify({ repo_url: repoUrl }),
+			body: JSON.stringify(scanBody),
 			signal: controller.signal,
 		});
 		clearTimeout(timeoutId);

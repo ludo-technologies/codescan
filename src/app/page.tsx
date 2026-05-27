@@ -70,7 +70,7 @@ const faqs = [
 	},
 	{
 		q: "Which repositories can I scan?",
-		a: "Any public GitHub repository. Paste the repo URL (https://github.com/owner/name) into the scan box above.",
+		a: "Any public GitHub repository. Sign in with GitHub to scan private repositories too.",
 	},
 	{
 		q: "What does the letter grade mean?",

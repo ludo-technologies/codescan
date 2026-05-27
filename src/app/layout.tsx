@@ -1,6 +1,7 @@
 import type { Metadata, Viewport } from "next";
 import { JetBrains_Mono, Plus_Jakarta_Sans } from "next/font/google";
 import Script from "next/script";
+import AuthButton from "@/components/AuthButton";
 import Footer from "@/components/Footer";
 import { getSiteUrl } from "@/lib/site-url";
 import "./globals.css";
@@ -70,6 +71,9 @@ export default function RootLayout({
 				</>
 			)}
 			<body className={`${jakarta.variable} ${jetbrains.variable} antialiased`}>
+				<header className="relative z-20 flex items-center justify-end px-4 pt-4 sm:px-6">
+					<AuthButton />
+				</header>
 				{children}
 				<Footer />
 			</body>

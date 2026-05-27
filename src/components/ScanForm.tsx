@@ -2,6 +2,7 @@
 
 import { useRouter } from "next/navigation";
 import { useState } from "react";
+import { useAuth } from "@/hooks/useAuth";
 import { requestScan } from "@/lib/api";
 
 const GITHUB_URL_PATTERN = /^https:\/\/github\.com\/[\w.-]+\/[\w.-]+\/?$/;
@@ -47,6 +48,7 @@ function Spinner({ className }: { className: string }) {
 
 export default function ScanForm() {
 	const router = useRouter();
+	const { user } = useAuth();
 	const [url, setUrl] = useState("");
 	const [error, setError] = useState("");
 	const [loading, setLoading] = useState(false);
@@ -115,6 +117,23 @@ export default function ScanForm() {
 			{error && (
 				<p className="mt-3 text-sm font-medium text-[var(--color-error)] animate-in fade-in slide-in-from-top-2 duration-300">
 					{error}
+				</p>
+			)}
+
+			{user ? (
+				<p className="mt-3 text-xs text-[var(--text-muted)]">
+					<span className="inline-block h-1.5 w-1.5 rounded-full bg-green-500 mr-1.5 align-middle" />
+					Signed in — public and private repos supported.
+				</p>
+			) : (
+				<p className="mt-3 text-xs text-[var(--text-muted)]">
+					<a
+						href="/api/auth/github"
+						className="text-[var(--brand-blue)] hover:underline"
+					>
+						Sign in with GitHub
+					</a>{" "}
+					to scan private repos.
 				</p>
 			)}
 		</form>
