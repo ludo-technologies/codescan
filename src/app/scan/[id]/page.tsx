@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import ErrorBoundary from "@/components/ErrorBoundary";
 import ScanResultView from "@/components/ScanResult";
+import { getSession } from "@/lib/auth";
 import { getGrade } from "@/lib/score-utils";
 import { getSiteUrl } from "@/lib/site-url";
 
@@ -25,6 +26,14 @@ export async function generateMetadata({
 	const headers: Record<string, string> = {};
 	if (backendApiKey) {
 		headers.Authorization = `Bearer ${backendApiKey}`;
+
+		// Only assert the viewer's identity over an authenticated backend channel
+		// (see the scan proxy route). The owner of a private scan then gets a
+		// descriptive title; everyone else falls through to the generic metadata.
+		const session = await getSession();
+		if (session?.userId) {
+			headers["X-Viewer-User-ID"] = String(session.userId);
+		}
 	}
 
 	try {

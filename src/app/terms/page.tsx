@@ -4,11 +4,11 @@ import Link from "next/link";
 export const metadata: Metadata = {
 	title: "Terms of Service — codescan.dev",
 	description:
-		"Terms of service for using codescan.dev to run security scans against public GitHub repositories.",
+		"Terms of service for using codescan.dev to run security scans against GitHub repositories, including private repositories you sign in to access.",
 	alternates: { canonical: "/terms" },
 };
 
-const LAST_UPDATED = "2026-05-23";
+const LAST_UPDATED = "2026-05-28";
 const CONTACT_EMAIL = "contact@ludo-tech.org";
 
 export default function TermsPage() {
@@ -43,11 +43,13 @@ export default function TermsPage() {
 						2. What the Service does
 					</h2>
 					<p>
-						The Service accepts the URL of a public GitHub repository, runs a
-						set of automated security checks (such as static analysis, secret
+						The Service accepts the URL of a GitHub repository, runs a set of
+						automated security checks (such as static analysis, secret
 						detection, and dependency vulnerability lookup), and presents the
-						findings as a report identified by a unique URL. The Service is
-						currently provided free of charge and does not require an account.
+						findings as a report identified by a unique URL. Scanning a public
+						repository requires no account; to scan a private repository you
+						sign in with GitHub so the Service can access it on your behalf. The
+						Service is currently provided free of charge.
 					</p>
 				</section>
 
@@ -71,9 +73,8 @@ export default function TermsPage() {
 					<p className="mb-3">You agree that you will not:</p>
 					<ul className="list-disc space-y-2 pl-5">
 						<li>
-							Submit URLs that are not public GitHub repositories, or
-							repositories that you do not have the right to submit for
-							scanning;
+							Submit repositories that you do not own or otherwise have the
+							right to submit for scanning;
 						</li>
 						<li>
 							Use the Service to attack, overload, probe, or test systems for
@@ -108,11 +109,14 @@ export default function TermsPage() {
 					<p>
 						When a scan completes, we generate a report page at a unique URL (
 						<code className="font-mono text-sm">/scan/&lt;id&gt;</code>) so it
-						can be revisited and shared. Anyone with the URL can view the
-						report. We mark scan pages as <em>noindex</em> to keep them out of
-						search engines, but they are not otherwise access-controlled. By
-						submitting a repository you acknowledge that the resulting report
-						may be viewed by anyone you share the URL with.
+						can be revisited and shared. For a public repository, anyone with
+						the URL can view the report; we mark scan pages as <em>noindex</em>{" "}
+						to keep them out of search engines, but they are not otherwise
+						access-controlled, so by submitting a public repository you
+						acknowledge that the resulting report may be viewed by anyone you
+						share the URL with. For a private repository, the report is
+						restricted to the signed-in GitHub account that started the scan and
+						is not served to other visitors.
 					</p>
 					<p className="mt-3">
 						If you would like a particular scan report removed, contact us using
@@ -134,10 +138,11 @@ export default function TermsPage() {
 					<p>
 						The repositories you submit remain owned by their original authors
 						under their existing licenses. We do not claim ownership of that
-						code. Scan findings reproduce small portions of public source code
-						for the purpose of pointing at the issue; this reproduction is
-						intended to be a fair, descriptive use of publicly available
-						material.
+						code. Scan findings reproduce small portions of source code for the
+						sole purpose of pointing at the issue; for public repositories this
+						is intended to be a fair, descriptive use of publicly available
+						material, and for private repositories these snippets are shown only
+						to the signed-in owner who submitted the scan.
 					</p>
 					<p className="mt-3">
 						The Service itself — including the site, branding, design, and the

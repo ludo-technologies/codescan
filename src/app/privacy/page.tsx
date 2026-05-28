@@ -4,11 +4,11 @@ import Link from "next/link";
 export const metadata: Metadata = {
 	title: "Privacy Policy — codescan.dev",
 	description:
-		"How codescan.dev handles the public repositories it scans, the scan results it stores, and the limited information it collects from visitors.",
+		"How codescan.dev handles the repositories it scans, the GitHub sign-in data it processes, the scan results it stores, and the limited information it collects from visitors.",
 	alternates: { canonical: "/privacy" },
 };
 
-const LAST_UPDATED = "2026-05-23";
+const LAST_UPDATED = "2026-05-28";
 const CONTACT_EMAIL = "contact@ludo-tech.org";
 
 export default function PrivacyPage() {
@@ -31,16 +31,18 @@ export default function PrivacyPage() {
 					</h2>
 					<p>
 						codescan.dev (&quot;the Service&quot;) is a free security scanner
-						for public GitHub repositories operated by Ludo Technologies Inc.
+						for GitHub repositories operated by Ludo Technologies Inc.
 						(&quot;we&quot;, &quot;us&quot;), a company headquartered in
 						Kanagawa, Japan. This policy explains what information we handle
 						when you use the Service, why we handle it, and the choices you
 						have.
 					</p>
 					<p className="mt-3">
-						The Service does not require an account. You interact with it by
-						submitting the URL of a public GitHub repository and viewing the
-						resulting report.
+						Scanning a public repository does not require an account: you simply
+						submit its URL and view the resulting report. To scan a private
+						repository, you sign in with GitHub so the Service can access it on
+						your behalf — see &quot;Information we process&quot; below for what
+						that involves.
 					</p>
 				</section>
 
@@ -54,16 +56,31 @@ export default function PrivacyPage() {
 							<strong className="text-[var(--text-primary)]">
 								Repository URLs you submit.
 							</strong>{" "}
-							When you start a scan, we record the public GitHub URL, normalize
-							the owner and repository name, and use it to fetch the repository.
+							When you start a scan, we record the GitHub URL, normalize the
+							owner and repository name, and use it to fetch the repository.
+						</li>
+						<li>
+							<strong className="text-[var(--text-primary)]">
+								GitHub sign-in data (when you scan a private repository).
+							</strong>{" "}
+							If you sign in with GitHub, we receive your GitHub account
+							identifier and username and an OAuth access token. The token is
+							granted GitHub&apos;s{" "}
+							<code className="font-mono text-sm">repo</code> scope, which
+							GitHub defines broadly — it can read and write your public and
+							private repositories. codescan.dev only uses it to read repository
+							contents in order to run scans, and never creates, modifies, or
+							deletes anything in your repositories. The token is encrypted and
+							stored only in a session cookie in your browser, and it is
+							discarded when you sign out.
 						</li>
 						<li>
 							<strong className="text-[var(--text-primary)]">
 								Cloned repository contents (transient).
 							</strong>{" "}
-							We temporarily clone the public repository so that scanners can
-							inspect it. Source files are deleted from our infrastructure after
-							the scan completes; we do not retain a long-term copy of the code.
+							We temporarily clone the repository so that scanners can inspect
+							it. Source files are deleted from our infrastructure after the
+							scan completes; we do not retain a long-term copy of the code.
 						</li>
 						<li>
 							<strong className="text-[var(--text-primary)]">
@@ -71,7 +88,7 @@ export default function PrivacyPage() {
 							</strong>{" "}
 							We persist the structured results of each scan — for example rule
 							identifiers, severity, file paths, line numbers, dependency names
-							and versions, and short code snippets reproduced from the public
+							and versions, and short code snippets reproduced from the
 							repository. These results are what we render on the report page.
 						</li>
 						<li>
@@ -131,23 +148,39 @@ export default function PrivacyPage() {
 
 				<section>
 					<h2 className="mb-3 text-xl font-bold text-[var(--text-primary)]">
-						4. Scan reports are accessible by URL
+						4. Who can view a scan report
 					</h2>
 					<p>
 						When a scan completes, we generate a unique scan ID and host the
 						report at a URL of the form{" "}
-						<code className="font-mono text-sm">/scan/&lt;id&gt;</code>. Anyone
-						who knows or guesses that URL can view the report. The URLs use
-						unguessable identifiers and are marked{" "}
-						<code className="font-mono text-sm">noindex</code> so that search
-						engines do not list them, but the reports themselves are not
-						password-protected.
+						<code className="font-mono text-sm">/scan/&lt;id&gt;</code>.
+						Visibility depends on the repository:
 					</p>
+					<ul className="mt-3 list-disc space-y-2 pl-5">
+						<li>
+							<strong className="text-[var(--text-primary)]">
+								Public repositories.
+							</strong>{" "}
+							Anyone who knows the URL can view the report. The URLs use
+							unguessable identifiers and are marked{" "}
+							<code className="font-mono text-sm">noindex</code> so that search
+							engines do not list them, but the reports themselves are not
+							password-protected. Because the scanned code is already public on
+							GitHub, the findings describe code that is publicly available.
+						</li>
+						<li>
+							<strong className="text-[var(--text-primary)]">
+								Private repositories.
+							</strong>{" "}
+							Reports for private repositories are restricted to the signed-in
+							GitHub user who started the scan. The report page, its data API,
+							and its social preview image are not served to anyone else, and
+							private reports are excluded from any shared cache.
+						</li>
+					</ul>
 					<p className="mt-3">
-						Because the scanned repositories are public on GitHub, the findings
-						describe code that is already publicly available. If you would like
-						a specific scan report removed, please contact us using the address
-						below.
+						If you would like a specific scan report removed, please contact us
+						using the address below.
 					</p>
 				</section>
 
@@ -189,7 +222,8 @@ export default function PrivacyPage() {
 					<ul className="list-disc space-y-2 pl-5">
 						<li>
 							<strong className="text-[var(--text-primary)]">GitHub</strong> —
-							source of the public repositories we clone for scanning.
+							source of the repositories we clone for scanning, and the identity
+							provider used when you sign in to scan private repositories.
 						</li>
 						<li>
 							<strong className="text-[var(--text-primary)]">
@@ -244,9 +278,10 @@ export default function PrivacyPage() {
 					<p>
 						We apply reasonable technical and organizational measures to protect
 						the data we hold, including encryption in transit (HTTPS), access
-						controls on our infrastructure, and isolation between scan
-						workloads. No service connected to the internet can be made
-						perfectly secure, and we cannot guarantee absolute security.
+						controls on our infrastructure, isolation between scan workloads,
+						and encryption of GitHub access tokens before they are stored in
+						your session cookie. No service connected to the internet can be
+						made perfectly secure, and we cannot guarantee absolute security.
 					</p>
 				</section>
 

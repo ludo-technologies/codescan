@@ -38,9 +38,10 @@ export async function POST(req: NextRequest) {
 		);
 	}
 
-	// Extract GitHub token from session for private repo access
+	// Extract GitHub token + user identity from session for private repo access.
 	const session = await getSession();
 	const githubToken = session?.accessToken ?? null;
+	const requesterUserId = session?.userId ?? null;
 
 	// Timeout setup
 	const controller = new AbortController();
@@ -54,9 +55,12 @@ export async function POST(req: NextRequest) {
 			headers.Authorization = `Bearer ${BACKEND_API_KEY}`;
 		}
 
-		const scanBody: Record<string, string> = { repo_url: repoUrl };
+		const scanBody: Record<string, string | number> = { repo_url: repoUrl };
 		if (githubToken) {
 			scanBody.github_token = githubToken;
+		}
+		if (requesterUserId) {
+			scanBody.requester_user_id = requesterUserId;
 		}
 
 		const res = await fetch(`${API_URL}/api/scan`, {

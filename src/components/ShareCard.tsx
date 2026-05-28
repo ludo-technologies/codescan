@@ -88,8 +88,15 @@ export default function ShareCard({ result }: ShareCardProps) {
 					>
 						codescan<span className="text-[var(--text-primary)]">.dev</span>
 					</Link>
-					<div className="max-w-full truncate rounded-md border border-[var(--border-light)] bg-[var(--bg-subtle)] px-3 py-1.5 font-mono text-xs text-[var(--text-light)] sm:max-w-[420px]">
-						{result.owner}/{result.repo}
+					<div className="flex items-center gap-2">
+						<div className="max-w-full truncate rounded-md border border-[var(--border-light)] bg-[var(--bg-subtle)] px-3 py-1.5 font-mono text-xs text-[var(--text-light)] sm:max-w-[420px]">
+							{result.owner}/{result.repo}
+						</div>
+						{result.is_private && (
+							<span className="shrink-0 rounded-md border border-[var(--border-light)] bg-[var(--bg-subtle)] px-2 py-1 font-mono text-[10px] font-semibold uppercase tracking-wide text-[var(--text-subtle)]">
+								Private
+							</span>
+						)}
 					</div>
 				</div>
 			</div>

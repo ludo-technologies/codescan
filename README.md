@@ -2,7 +2,7 @@
 
 # codescan.dev
 
-### Scan public GitHub repos for security issues.
+### Scan any GitHub repo for security issues.
 
 Risky code, exposed keys, outdated packages — one shareable grade.
 
@@ -26,11 +26,11 @@ https://github.com/user-attachments/assets/db41df8e-881e-4303-9634-d3aba7c853e1
 
 ## How it works
 
-1. **Paste a GitHub URL** — Drop the URL of any public repository into the scan box.
+1. **Paste a GitHub URL** — Drop the URL of any public repository into the scan box, or sign in with GitHub to scan your private repos.
 2. **Run the checks** — codescan.dev looks for risky code, exposed keys, and packages that should be updated.
 3. **Read the report card** — See a letter grade, a severity breakdown, and per-finding file, line, and rule details you can share.
 
-No installation. No GitHub app. No sign-up.
+No installation. No GitHub app. Public repos need no sign-up.
 
 ## Who it's for
 
@@ -43,13 +43,13 @@ No installation. No GitHub app. No sign-up.
 <details>
 <summary><strong>Is codescan.dev free?</strong></summary>
 <br>
-Yes. Scans of public GitHub repositories are free and require no sign-up.
+Yes. Public repository scans are free and require no sign-up. Sign in with GitHub to scan private repositories — also free.
 </details>
 
 <details>
 <summary><strong>Which repositories can I scan?</strong></summary>
 <br>
-Any public GitHub repository. Paste the repo URL (<code>https://github.com/owner/name</code>) into the scan box.
+Any public GitHub repository — just paste the repo URL (<code>https://github.com/owner/name</code>) into the scan box. Sign in with GitHub to scan private repositories you have access to.
 </details>
 
 <details>

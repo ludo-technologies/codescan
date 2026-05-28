@@ -1,4 +1,5 @@
 import { type NextRequest, NextResponse } from "next/server";
+import { getSession } from "@/lib/auth";
 
 const API_URL = process.env.API_URL ?? "";
 const BACKEND_API_KEY = process.env.BACKEND_API_KEY ?? "";
@@ -24,6 +25,15 @@ export async function GET(
 		const headers: Record<string, string> = {};
 		if (BACKEND_API_KEY) {
 			headers.Authorization = `Bearer ${BACKEND_API_KEY}`;
+
+			// The viewer ID is only meaningful as authorization proof when the
+			// backend request is itself authenticated. Without the API key the
+			// channel is untrusted, so we never assert an identity — private
+			// reports then fail closed at the backend rather than being spoofable.
+			const session = await getSession();
+			if (session?.userId) {
+				headers["X-Viewer-User-ID"] = String(session.userId);
+			}
 		}
 
 		const res = await fetch(`${API_URL}/api/scan/${id}`, {

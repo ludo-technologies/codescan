@@ -30,7 +30,7 @@ const proofPoints = [...scanners.map((s) => s.title), "No sign-up"];
 const steps = [
 	{
 		title: "Paste a GitHub URL",
-		body: "Drop the URL of any public repository into the scan box at the top of the page.",
+		body: "Drop the URL of any public repository into the scan box at the top of the page, or sign in with GitHub to scan a private repo.",
 	},
 	{
 		title: "Run the checks",
@@ -66,7 +66,7 @@ const audience = [
 const faqs = [
 	{
 		q: "Is codescan.dev free?",
-		a: "Yes. Scans of public GitHub repositories are free and require no sign-up.",
+		a: "Yes. Public repository scans are free and require no sign-up. Sign in with GitHub to scan private repositories — also free.",
 	},
 	{
 		q: "Which repositories can I scan?",
@@ -103,7 +103,7 @@ const SOFTWARE_JSON_LD = JSON.stringify({
 	applicationCategory: "SecurityApplication",
 	operatingSystem: "Web",
 	description:
-		"Security scanner for public GitHub repositories. Checks for risky code, exposed keys, and outdated packages, then presents the findings as a shareable letter-grade report.",
+		"Security scanner for GitHub repositories, public or private. Checks for risky code, exposed keys, and outdated packages, then presents the findings as a shareable letter-grade report.",
 	offers: { "@type": "Offer", price: "0", priceCurrency: "USD" },
 });
 
@@ -134,7 +134,7 @@ export default function Home() {
 						<span className="text-[var(--brand-blue)]">.dev</span>
 					</h1>
 					<p className="mb-4 max-w-2xl text-xl font-semibold leading-relaxed text-[var(--text-primary)] sm:text-2xl">
-						Scan public repos for security issues.
+						Scan any GitHub repo for security issues.
 					</p>
 					<p className="mb-6 max-w-2xl text-base leading-relaxed text-[var(--text-secondary)] sm:text-lg">
 						Risky code, exposed keys, outdated packages. One shareable grade.
@@ -168,7 +168,7 @@ export default function Home() {
 						id="scan-section-title"
 						className="mb-3 text-3xl font-bold tracking-tight text-[var(--text-primary)] sm:text-4xl"
 					>
-						Paste a public GitHub repo URL
+						Paste a GitHub repo URL
 					</h2>
 					<p className="mx-auto mb-8 max-w-xl text-[var(--text-secondary)]">
 						No sign-up. Results in under a minute, with a shareable letter

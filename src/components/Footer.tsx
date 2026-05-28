@@ -42,7 +42,7 @@ export default function Footer() {
 					</Link>
 					<span className="hidden text-[var(--border-light)] sm:block">|</span>
 					<p className="text-sm text-[var(--text-secondary)]">
-						Security checks for public GitHub repos.
+						Security checks for GitHub repos.
 					</p>
 				</div>
 

@@ -4,7 +4,7 @@ import Link from "next/link";
 export const metadata: Metadata = {
 	title: "Methodology — codescan.dev",
 	description:
-		"What codescan.dev checks, what it does not check, and how to interpret security grades for public GitHub repository scans.",
+		"What codescan.dev checks, what it does not check, and how to interpret security grades for GitHub repository scans.",
 	alternates: { canonical: "/methodology" },
 };
 
@@ -17,7 +17,7 @@ const checks = [
 	{
 		title: "Exposed keys",
 		tool: "Gitleaks",
-		body: "Secret detection looks for committed credentials, API keys, tokens, private keys, and related high-risk strings in the public repository.",
+		body: "Secret detection looks for committed credentials, API keys, tokens, private keys, and related high-risk strings in the repository.",
 	},
 	{
 		title: "Outdated packages",
@@ -27,10 +27,6 @@ const checks = [
 ];
 
 const outOfScope = [
-	{
-		title: "Private repositories",
-		body: "codescan.dev currently accepts public GitHub repository URLs only.",
-	},
 	{
 		title: "Runtime testing",
 		body: "Scans do not start the application, crawl a deployed service, log in as users, or test live endpoints.",
@@ -71,10 +67,10 @@ export default function MethodologyPage() {
 					What codescan.dev checks
 				</h1>
 				<p className="text-lg leading-relaxed text-[var(--text-secondary)]">
-					codescan.dev runs automated checks against public GitHub repositories
-					and turns the findings into a shareable security report card. The goal
-					is to give maintainers and reviewers a quick baseline before deeper
-					review.
+					codescan.dev runs automated checks against GitHub repositories —
+					public, or private when you sign in with GitHub — and turns the
+					findings into a shareable security report card. The goal is to give
+					maintainers and reviewers a quick baseline before deeper review.
 				</p>
 			</section>
 

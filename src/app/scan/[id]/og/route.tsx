@@ -126,6 +126,13 @@ export async function GET(
 		return new Response("Scan not completed", { status: 404 });
 	}
 
+	// Social preview images are public and cacheable, so they must never expose a
+	// private scan. This request carries no viewer identity, so the backend already
+	// 404s private scans above; this is defense in depth against that ever relaxing.
+	if (data.is_private) {
+		return new Response("Not found", { status: 404 });
+	}
+
 	const score = data.total_score ?? 0;
 	const grade = getGrade(score);
 	const gradeLabel = getGradeLabel(score);

@@ -65,6 +65,7 @@ export interface ScanResult {
 	owner: string;
 	repo: string;
 	language?: string;
+	is_private?: boolean;
 	status: ScanStatus;
 	error_message?: string;
 	total_score: number;

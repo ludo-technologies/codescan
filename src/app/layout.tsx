@@ -23,9 +23,9 @@ const jetbrains = JetBrains_Mono({
 
 export const metadata: Metadata = {
 	metadataBase: new URL(getSiteUrl()),
-	title: "codescan.dev — Simple security checks for public GitHub repos",
+	title: "codescan.dev — Simple security checks for GitHub repos",
 	description:
-		"Free security checks for public GitHub repositories. Find risky code, exposed keys, and outdated packages, then get a shareable letter-grade report.",
+		"Free security checks for GitHub repositories. Find risky code, exposed keys, and outdated packages, then get a shareable letter-grade report. Sign in to scan private repos.",
 	keywords: [
 		"GitHub security scanner",
 		"repository security checker",
@@ -35,9 +35,9 @@ export const metadata: Metadata = {
 		"open source security",
 	],
 	openGraph: {
-		title: "codescan.dev — Simple security checks for public GitHub repos",
+		title: "codescan.dev — Simple security checks for GitHub repos",
 		description:
-			"Scan any public GitHub repo for risky code, exposed keys, and outdated packages. Get a letter-grade security report you can share.",
+			"Scan any GitHub repo — public or private — for risky code, exposed keys, and outdated packages. Get a letter-grade security report you can share.",
 		type: "website",
 	},
 };
