@@ -123,24 +123,21 @@ export default function Home() {
 
 			<section
 				id="top"
-				className="relative z-10 grid w-full max-w-6xl gap-10 px-4 pt-16 pb-10 sm:px-6 sm:pt-20 sm:pb-12 lg:grid-cols-[1.05fr_0.95fr] lg:items-center lg:pt-20"
+				className="relative z-10 grid w-full max-w-6xl gap-8 px-4 pt-8 pb-6 sm:gap-10 sm:px-6 sm:pt-20 sm:pb-12 lg:grid-cols-[1.05fr_0.95fr] lg:items-center lg:pt-20"
 			>
 				<div className="animate-in fade-in slide-in-from-bottom-12 duration-1000 ease-out">
-					<p className="mb-5 inline-flex rounded-md border border-[var(--brand-blue-light)] bg-[var(--brand-blue-light)] px-3 py-1 text-xs font-semibold uppercase text-[var(--brand-blue)]">
+					<p className="mb-3 hidden rounded-md border border-[var(--brand-blue-light)] bg-[var(--brand-blue-light)] px-3 py-1 text-xs font-semibold uppercase text-[var(--brand-blue)] sm:mb-5 sm:inline-flex">
 						GitHub security scanner
 					</p>
-					<h1 className="mb-6 text-5xl font-black tracking-tight text-[var(--text-primary)] sm:text-7xl lg:text-8xl">
+					<h1 className="mb-4 text-4xl font-black tracking-tight text-[var(--text-primary)] sm:mb-6 sm:text-7xl lg:text-8xl">
 						<span>codescan</span>
 						<span className="text-[var(--brand-blue)]">.dev</span>
 					</h1>
-					<p className="mb-4 max-w-2xl text-xl font-semibold leading-relaxed text-[var(--text-primary)] sm:text-2xl">
-						Scan any GitHub repo for security issues.
-					</p>
-					<p className="mb-6 max-w-2xl text-base leading-relaxed text-[var(--text-secondary)] sm:text-lg">
-						Risky code, exposed keys, outdated packages. One shareable grade.
+					<p className="mb-5 max-w-2xl text-lg font-semibold leading-relaxed text-[var(--text-primary)] sm:mb-6 sm:text-2xl">
+						Scan any GitHub repo for security issues — get one shareable grade.
 					</p>
 
-					<ul className="flex max-w-2xl flex-wrap gap-2 text-sm text-[var(--text-secondary)]">
+					<ul className="hidden max-w-2xl flex-wrap gap-2 text-sm text-[var(--text-secondary)] sm:flex">
 						{proofPoints.map((point) => (
 							<li
 								key={point}
@@ -152,7 +149,9 @@ export default function Home() {
 					</ul>
 				</div>
 
-				<ScanFlowDemo />
+				<div className="hidden lg:block">
+					<ScanFlowDemo />
+				</div>
 			</section>
 
 			<section
@@ -160,17 +159,17 @@ export default function Home() {
 				className="relative z-10 w-full border-y-2 border-[var(--brand-blue)] bg-[var(--brand-blue-light)]/60"
 				id="scan"
 			>
-				<div className="mx-auto w-full max-w-3xl px-4 py-12 text-center sm:px-6 sm:py-16">
-					<p className="mb-3 text-xs font-bold uppercase tracking-[0.2em] text-[var(--brand-blue)]">
+				<div className="mx-auto w-full max-w-3xl px-4 py-8 text-center sm:px-6 sm:py-16">
+					<p className="mb-3 hidden text-xs font-bold uppercase tracking-[0.2em] text-[var(--brand-blue)] sm:block">
 						Start a scan
 					</p>
 					<h2
 						id="scan-section-title"
-						className="mb-3 text-3xl font-bold tracking-tight text-[var(--text-primary)] sm:text-4xl"
+						className="mb-3 text-2xl font-bold tracking-tight text-[var(--text-primary)] sm:text-4xl"
 					>
 						Paste a GitHub repo URL
 					</h2>
-					<p className="mx-auto mb-8 max-w-xl text-[var(--text-secondary)]">
+					<p className="mx-auto mb-6 max-w-xl text-sm text-[var(--text-secondary)] sm:mb-8 sm:text-base">
 						No sign-up. Results in under a minute, with a shareable letter
 						grade.
 					</p>
