@@ -16,10 +16,14 @@
 	"dependencies": {
 		"@vercel/og": "^0.8.6",
 		"jsonwebtoken": "^9.0.3",
-		"next": "16.2.6",
+		"next": "16.2.7",
 		"react": "19.2.3",
 		"react-dom": "19.2.3",
-		"swr": "^2.4.0"
+		"swr": "^2.4.0",
+		"zod": "^4.4.3"
+	},
+	"overrides": {
+		"postcss": "8.5.15"
 	},
 	"devDependencies": {
 		"@biomejs/biome": "^2.4.2",

@@ -1,8 +1,8 @@
 import { type NextRequest, NextResponse } from "next/server";
 import { getSession } from "@/lib/auth";
+import { scanResultSchema } from "@/lib/scan-schema";
+import { getBackendConfig } from "@/lib/server-env";
 
-const API_URL = process.env.API_URL ?? "";
-const BACKEND_API_KEY = process.env.BACKEND_API_KEY ?? "";
 const BACKEND_TIMEOUT_MS = 8000; // 8s — kept below Vercel's 10s function limit
 
 const SCAN_ID_PATTERN = /^[a-zA-Z0-9_-]+$/;
@@ -11,6 +11,19 @@ export async function GET(
 	_req: NextRequest,
 	{ params }: { params: Promise<{ id: string }> },
 ) {
+	let backendConfig: ReturnType<typeof getBackendConfig>;
+	try {
+		backendConfig = getBackendConfig();
+	} catch (error) {
+		console.error("Scan result API is not configured:", {
+			error: error instanceof Error ? error.message : String(error),
+		});
+		return NextResponse.json(
+			{ error: "Scan service is not configured" },
+			{ status: 503 },
+		);
+	}
+
 	const { id } = await params;
 
 	if (!SCAN_ID_PATTERN.test(id)) {
@@ -23,20 +36,15 @@ export async function GET(
 
 	try {
 		const headers: Record<string, string> = {};
-		if (BACKEND_API_KEY) {
-			headers.Authorization = `Bearer ${BACKEND_API_KEY}`;
+		headers.Authorization = `Bearer ${backendConfig.backendApiKey}`;
 
-			// The viewer ID is only meaningful as authorization proof when the
-			// backend request is itself authenticated. Without the API key the
-			// channel is untrusted, so we never assert an identity — private
-			// reports then fail closed at the backend rather than being spoofable.
-			const session = await getSession();
-			if (session?.userId) {
-				headers["X-Viewer-User-ID"] = String(session.userId);
-			}
+		// The viewer ID is only meaningful over an authenticated backend channel.
+		const session = await getSession();
+		if (session?.userId) {
+			headers["X-Viewer-User-ID"] = String(session.userId);
 		}
 
-		const res = await fetch(`${API_URL}/api/scan/${id}`, {
+		const res = await fetch(`${backendConfig.apiUrl}/api/scan/${id}`, {
 			headers,
 			signal: controller.signal,
 		});
@@ -64,7 +72,19 @@ export async function GET(
 		}
 
 		try {
-			return NextResponse.json(JSON.parse(text), { status: res.status });
+			const parsed = scanResultSchema.safeParse(JSON.parse(text));
+			if (!parsed.success) {
+				console.error("Invalid upstream scan result response:", {
+					scanId: id,
+					issues: parsed.error.issues,
+				});
+				return NextResponse.json(
+					{ error: "Invalid upstream response" },
+					{ status: 502 },
+				);
+			}
+
+			return NextResponse.json(parsed.data, { status: res.status });
 		} catch {
 			return NextResponse.json(
 				{ error: "Invalid upstream response" },

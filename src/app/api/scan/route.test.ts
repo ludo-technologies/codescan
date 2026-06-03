@@ -14,10 +14,13 @@ function makeRequest(body: unknown) {
 
 describe("POST /api/scan", () => {
 	beforeEach(() => {
+		vi.stubEnv("API_URL", "https://backend.example.com");
+		vi.stubEnv("BACKEND_API_KEY", "test-backend-api-key");
 		vi.stubGlobal("fetch", vi.fn());
 	});
 
 	afterEach(() => {
+		vi.unstubAllEnvs();
 		vi.unstubAllGlobals();
 	});
 

@@ -1,11 +1,12 @@
 import { cookies } from "next/headers";
 import { NextResponse } from "next/server";
-
-const GITHUB_CLIENT_ID = process.env.GITHUB_CLIENT_ID ?? "";
-const SITE_URL = process.env.SITE_URL ?? "http://localhost:3000";
+import { getAuthConfig } from "@/lib/server-env";
 
 export async function GET() {
-	if (!GITHUB_CLIENT_ID) {
+	let config: ReturnType<typeof getAuthConfig>;
+	try {
+		config = getAuthConfig();
+	} catch {
 		return NextResponse.json(
 			{ error: "GitHub OAuth not configured" },
 			{ status: 500 },
@@ -17,15 +18,18 @@ export async function GET() {
 	const cookieStore = await cookies();
 	cookieStore.set("oauth_state", state, {
 		httpOnly: true,
-		secure: SITE_URL.startsWith("https://"),
+		secure: config.siteUrl.startsWith("https://"),
 		sameSite: "lax",
 		path: "/",
 		maxAge: 600,
 	});
 
 	const githubUrl = new URL("https://github.com/login/oauth/authorize");
-	githubUrl.searchParams.set("client_id", GITHUB_CLIENT_ID);
-	githubUrl.searchParams.set("redirect_uri", `${SITE_URL}/api/auth/callback`);
+	githubUrl.searchParams.set("client_id", config.githubClientId);
+	githubUrl.searchParams.set(
+		"redirect_uri",
+		`${config.siteUrl}/api/auth/callback`,
+	);
 	githubUrl.searchParams.set("scope", "repo");
 	githubUrl.searchParams.set("state", state);
 

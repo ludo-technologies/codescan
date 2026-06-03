@@ -1,9 +1,8 @@
 import { createCipheriv, createDecipheriv, randomBytes } from "node:crypto";
 import jwt from "jsonwebtoken";
 import { cookies } from "next/headers";
+import { getSessionConfig } from "@/lib/server-env";
 
-const JWT_SECRET = process.env.JWT_SECRET ?? "";
-const SITE_URL = process.env.SITE_URL ?? "http://localhost:3000";
 const SESSION_COOKIE = "session";
 const SESSION_MAX_AGE = 60 * 60 * 24 * 7; // 7 days
 
@@ -12,7 +11,8 @@ const IV_LENGTH = 12;
 const AUTH_TAG_LENGTH = 16;
 
 function getEncryptionKey(): Buffer {
-	return Buffer.from(JWT_SECRET.padEnd(32, "0").slice(0, 32));
+	const { jwtSecret } = getSessionConfig();
+	return Buffer.from(jwtSecret.slice(0, 32));
 }
 
 function encrypt(plaintext: string): string {
@@ -60,14 +60,16 @@ export function signSession(user: {
 		login: user.login,
 		encryptedToken: encrypt(user.accessToken),
 	};
-	return jwt.sign(payload, JWT_SECRET, { expiresIn: SESSION_MAX_AGE });
+	const { jwtSecret } = getSessionConfig();
+	return jwt.sign(payload, jwtSecret, { expiresIn: SESSION_MAX_AGE });
 }
 
 export function verifySession(
 	token: string,
 ): (SessionPayload & { accessToken: string }) | null {
 	try {
-		const payload = jwt.verify(token, JWT_SECRET) as SessionPayload;
+		const { jwtSecret } = getSessionConfig();
+		const payload = jwt.verify(token, jwtSecret) as SessionPayload;
 		return {
 			...payload,
 			accessToken: decrypt(payload.encryptedToken),
@@ -80,7 +82,12 @@ export function verifySession(
 export async function getSession(): Promise<
 	(SessionPayload & { accessToken: string }) | null
 > {
-	if (!JWT_SECRET) return null;
+	try {
+		getSessionConfig();
+	} catch {
+		return null;
+	}
+
 	const cookieStore = await cookies();
 	const token = cookieStore.get(SESSION_COOKIE)?.value;
 	if (!token) return null;
@@ -88,7 +95,8 @@ export async function getSession(): Promise<
 }
 
 function isSecure(): boolean {
-	return SITE_URL.startsWith("https://");
+	const { siteUrl } = getSessionConfig();
+	return siteUrl.startsWith("https://");
 }
 
 export function createSessionCookieHeader(token: string): string {

@@ -1,14 +1,27 @@
 import { type NextRequest, NextResponse } from "next/server";
 import { getSession } from "@/lib/auth";
+import { scanResponseSchema } from "@/lib/scan-schema";
+import { getBackendConfig } from "@/lib/server-env";
 
-const API_URL = process.env.API_URL ?? "";
-const BACKEND_API_KEY = process.env.BACKEND_API_KEY ?? "";
 const BACKEND_TIMEOUT_MS = 8000; // 8s — kept below Vercel's 10s function limit
 
 const GITHUB_URL_PATTERN =
 	/^https:\/\/github\.com\/[a-zA-Z0-9_.-]+\/[a-zA-Z0-9_.-]+\/?$/;
 
 export async function POST(req: NextRequest) {
+	let backendConfig: ReturnType<typeof getBackendConfig>;
+	try {
+		backendConfig = getBackendConfig();
+	} catch (error) {
+		console.error("Scan API is not configured:", {
+			error: error instanceof Error ? error.message : String(error),
+		});
+		return NextResponse.json(
+			{ error: "Scan service is not configured" },
+			{ status: 503 },
+		);
+	}
+
 	let body: unknown;
 	try {
 		body = await req.json();
@@ -51,9 +64,7 @@ export async function POST(req: NextRequest) {
 		const headers: Record<string, string> = {
 			"Content-Type": "application/json",
 		};
-		if (BACKEND_API_KEY) {
-			headers.Authorization = `Bearer ${BACKEND_API_KEY}`;
-		}
+		headers.Authorization = `Bearer ${backendConfig.backendApiKey}`;
 
 		const scanBody: Record<string, string | number> = { repo_url: repoUrl };
 		if (githubToken) {
@@ -63,7 +74,7 @@ export async function POST(req: NextRequest) {
 			scanBody.requester_user_id = requesterUserId;
 		}
 
-		const res = await fetch(`${API_URL}/api/scan`, {
+		const res = await fetch(`${backendConfig.apiUrl}/api/scan`, {
 			method: "POST",
 			headers,
 			body: JSON.stringify(scanBody),
@@ -96,7 +107,18 @@ export async function POST(req: NextRequest) {
 		}
 
 		try {
-			return NextResponse.json(JSON.parse(text), { status: res.status });
+			const parsed = scanResponseSchema.safeParse(JSON.parse(text));
+			if (!parsed.success) {
+				console.error("Invalid upstream scan response:", {
+					issues: parsed.error.issues,
+				});
+				return NextResponse.json(
+					{ error: "Invalid upstream response" },
+					{ status: 502 },
+				);
+			}
+
+			return NextResponse.json(parsed.data, { status: res.status });
 		} catch {
 			return NextResponse.json(
 				{ error: "Invalid upstream response" },

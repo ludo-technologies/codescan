@@ -1,6 +1,8 @@
 import { ImageResponse } from "@vercel/og";
 import type { NextRequest } from "next/server";
+import { scanResultSchema } from "@/lib/scan-schema";
 import { getGrade, getGradeLabel, getTier, type Tier } from "@/lib/score-utils";
+import { getBackendConfig } from "@/lib/server-env";
 
 export const runtime = "edge";
 
@@ -94,20 +96,22 @@ export async function GET(
 		return new Response("Invalid scan ID", { status: 400 });
 	}
 
-	const apiUrl = process.env.API_URL ?? "";
-	const backendApiKey = process.env.BACKEND_API_KEY ?? "";
+	let backendConfig: ReturnType<typeof getBackendConfig>;
+	try {
+		backendConfig = getBackendConfig();
+	} catch {
+		return new Response("Backend unavailable", { status: 503 });
+	}
 
 	const controller = new AbortController();
 	const timeoutId = setTimeout(() => controller.abort(), 8000);
 
 	const headers: Record<string, string> = {};
-	if (backendApiKey) {
-		headers.Authorization = `Bearer ${backendApiKey}`;
-	}
+	headers.Authorization = `Bearer ${backendConfig.backendApiKey}`;
 
 	let res: Response;
 	try {
-		res = await fetch(`${apiUrl}/api/scan/${id}`, {
+		res = await fetch(`${backendConfig.apiUrl}/api/scan/${id}`, {
 			headers,
 			signal: controller.signal,
 		});
@@ -121,7 +125,11 @@ export async function GET(
 		return new Response("Scan not found", { status: 404 });
 	}
 
-	const data = await res.json();
+	const parsed = scanResultSchema.safeParse(await res.json());
+	if (!parsed.success) {
+		return new Response("Invalid scan result", { status: 502 });
+	}
+	const data = parsed.data;
 	if (data.status !== "completed") {
 		return new Response("Scan not completed", { status: 404 });
 	}

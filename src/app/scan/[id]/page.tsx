@@ -3,7 +3,9 @@ import Link from "next/link";
 import ErrorBoundary from "@/components/ErrorBoundary";
 import ScanResultView from "@/components/ScanResult";
 import { getSession } from "@/lib/auth";
+import { scanResultSchema } from "@/lib/scan-schema";
 import { getGrade } from "@/lib/score-utils";
+import { getBackendConfig } from "@/lib/server-env";
 import { getSiteUrl } from "@/lib/site-url";
 
 interface PageProps {
@@ -16,33 +18,32 @@ export async function generateMetadata({
 	params,
 }: PageProps): Promise<Metadata> {
 	const { id } = await params;
-	const apiUrl = process.env.API_URL ?? "";
-	const backendApiKey = process.env.BACKEND_API_KEY ?? "";
 
 	if (!SCAN_ID_PATTERN.test(id)) {
 		return { title: "Invalid Scan | codescan.dev" };
 	}
 
-	const headers: Record<string, string> = {};
-	if (backendApiKey) {
-		headers.Authorization = `Bearer ${backendApiKey}`;
+	try {
+		const backendConfig = getBackendConfig();
+		const headers: Record<string, string> = {
+			Authorization: `Bearer ${backendConfig.backendApiKey}`,
+		};
 
-		// Only assert the viewer's identity over an authenticated backend channel
-		// (see the scan proxy route). The owner of a private scan then gets a
-		// descriptive title; everyone else falls through to the generic metadata.
+		// Only assert the viewer's identity over an authenticated backend channel.
 		const session = await getSession();
 		if (session?.userId) {
 			headers["X-Viewer-User-ID"] = String(session.userId);
 		}
-	}
 
-	try {
-		const res = await fetch(`${apiUrl}/api/scan/${id}`, {
+		const res = await fetch(`${backendConfig.apiUrl}/api/scan/${id}`, {
 			headers,
 			cache: "no-store",
 		});
 		if (res.ok) {
-			const data = await res.json();
+			const parsed = scanResultSchema.safeParse(await res.json());
+			if (!parsed.success) return { title: `Scan Results | codescan.dev` };
+
+			const data = parsed.data;
 			if (data.status === "completed") {
 				const grade = getGrade(data.total_score ?? 0);
 				const title = `${data.owner}/${data.repo} — Security Grade ${grade} | codescan.dev`;

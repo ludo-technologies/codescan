@@ -25,7 +25,10 @@ const scanners = [
 	},
 ];
 
-const proofPoints = [...scanners.map((s) => s.title), "No sign-up"];
+const proofPoints = [
+	...scanners.map((s) => s.title),
+	"Public scans no sign-up",
+];
 
 const steps = [
 	{
@@ -170,8 +173,7 @@ export default function Home() {
 						Paste a GitHub repo URL
 					</h2>
 					<p className="mx-auto mb-6 max-w-xl text-sm text-[var(--text-secondary)] sm:mb-8 sm:text-base">
-						No sign-up. Results in under a minute, with a shareable letter
-						grade.
+						Public scans need no sign-up. Sign in with GitHub for private repos.
 					</p>
 					<div className="mx-auto w-full max-w-2xl text-left animate-in fade-in zoom-in-95 fill-mode-both duration-1000 delay-300 ease-out">
 						<ScanForm />
@@ -256,7 +258,7 @@ export default function Home() {
 						How it works
 					</h2>
 					<p className="mb-10 max-w-3xl text-[var(--text-secondary)]">
-						No installation, no GitHub app, no sign-up.
+						No installation or GitHub app. Public scans need no sign-up.
 					</p>
 					<ol className="grid gap-4 sm:grid-cols-3">
 						{steps.map((s, i) => (
