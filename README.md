@@ -32,6 +32,16 @@ https://github.com/user-attachments/assets/db41df8e-881e-4303-9634-d3aba7c853e1
 
 No installation. No GitHub app. Public repos need no sign-up.
 
+## Add a badge to your README
+
+Show your latest security grade. Scan your repo, then hit **Copy README Badge** on the report card — or use:
+
+```markdown
+[![codescan security grade](https://codescan.dev/badge/OWNER/REPO)](https://codescan.dev)
+```
+
+The badge reflects the most recent public scan and refreshes automatically when you re-scan. Repos that haven't been scanned yet show a neutral badge instead of a broken image.
+
 ## Who it's for
 
 - **Maintainers** — Get a quick security baseline before publishing a release or accepting a large pull request.
