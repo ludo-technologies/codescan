@@ -13,7 +13,10 @@ export default function ShareActions({ result }: ShareActionsProps) {
 	const siteUrl =
 		process.env.NEXT_PUBLIC_SITE_URL ??
 		(typeof window === "undefined" ? "" : window.location.origin);
-	const shareUrl = `${siteUrl.replace(/\/$/, "")}/scan/${result.id}`;
+	const base = siteUrl.replace(/\/$/, "");
+	const shareUrl = `${base}/scan/${result.id}`;
+	// Markdown for embedding the live grade badge in a README, linked to the report.
+	const badgeMarkdown = `[![codescan security grade](${base}/badge/${result.owner}/${result.repo})](${shareUrl})`;
 
 	const handleDownload = useCallback(() => {
 		try {
@@ -40,6 +43,15 @@ export default function ShareActions({ result }: ShareActionsProps) {
 			console.error("Failed to copy link");
 		}
 	}, [shareUrl]);
+
+	const handleCopyBadge = useCallback(async () => {
+		try {
+			await navigator.clipboard.writeText(badgeMarkdown);
+		} catch {
+			// Clipboard API may fail in insecure contexts
+			console.error("Failed to copy badge markdown");
+		}
+	}, [badgeMarkdown]);
 
 	const grade = getGrade(result.total_score);
 	const shareText = `${result.owner}/${result.repo} earned grade ${grade} on codescan.dev`;
@@ -102,6 +114,27 @@ export default function ShareActions({ result }: ShareActionsProps) {
 					<path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1" />
 				</svg>
 				Copy Link
+			</button>
+			<button
+				type="button"
+				onClick={handleCopyBadge}
+				className="inline-flex items-center gap-2 rounded-lg bg-[var(--bg-subtle)] border border-[var(--border-light)] px-4 py-2 text-xs font-medium text-[var(--text-primary)] transition-colors hover:bg-[var(--bg-subtle-hover)]"
+			>
+				<svg
+					aria-hidden="true"
+					className="h-3.5 w-3.5"
+					viewBox="0 0 24 24"
+					fill="none"
+					stroke="currentColor"
+					strokeWidth="2"
+					strokeLinecap="round"
+					strokeLinejoin="round"
+				>
+					<path d="M7 7h10v10" />
+					<path d="M7 17 17 7" />
+					<rect x="3" y="3" width="18" height="18" rx="2" />
+				</svg>
+				Copy README Badge
 			</button>
 		</div>
 	);
