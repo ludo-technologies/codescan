@@ -14,7 +14,7 @@ Risky code, exposed keys, outdated packages — one shareable grade.
 
 ## Demo
 
-https://github.com/user-attachments/assets/db41df8e-881e-4303-9634-d3aba7c853e1
+[https://github.com/user-attachments/assets/db41df8e-881e-4303-9634-d3aba7c853e1](https://github.com/user-attachments/assets/206d84be-585a-4f5c-966f-e4a70ef8664f)
 
 ## What it checks
 
