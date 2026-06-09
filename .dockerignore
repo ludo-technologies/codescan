@@ -1,0 +1,9 @@
+node_modules
+.next
+.git
+.vercel
+engine
+video
+*.md
+.env*
+!.env.example

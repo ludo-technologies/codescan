@@ -1,0 +1,46 @@
+# Run the whole codescan product locally: Postgres + scan engine + frontend.
+#
+#   BACKEND_API_KEY=dev-secret docker compose up --build
+#
+# Then open http://localhost:3000 and scan any public GitHub repository.
+services:
+  db:
+    image: postgres:16-alpine
+    environment:
+      POSTGRES_USER: codescan
+      POSTGRES_PASSWORD: codescan
+      POSTGRES_DB: codescan
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U codescan"]
+      interval: 5s
+      timeout: 3s
+      retries: 10
+    ports:
+      - "5432:5432"
+
+  engine:
+    build: ./engine
+    environment:
+      DATABASE_URL: postgres://codescan:codescan@db:5432/codescan?sslmode=disable
+      BACKEND_API_KEY: ${BACKEND_API_KEY:-dev-secret}
+      GITHUB_PUBLIC_TOKEN: ${GITHUB_PUBLIC_TOKEN:-}
+      CORS_ALLOWED_ORIGINS: http://localhost:3000
+      TRUSTED_PROXY_COUNT: "0"
+      PORT: "8080"
+    depends_on:
+      db:
+        condition: service_healthy
+    ports:
+      - "8080:8080"
+
+  web:
+    build: .
+    environment:
+      API_URL: http://engine:8080
+      BACKEND_API_KEY: ${BACKEND_API_KEY:-dev-secret}
+      NEXT_PUBLIC_SITE_URL: http://localhost:3000
+      SITE_URL: http://localhost:3000
+    depends_on:
+      - engine
+    ports:
+      - "3000:3000"
