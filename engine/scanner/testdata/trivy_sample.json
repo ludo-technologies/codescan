@@ -1,0 +1,2630 @@
+{
+  "SchemaVersion": 2,
+  "Trivy": {
+    "Version": "0.70.0"
+  },
+  "ReportID": "019e28f4-a4ee-759b-8f64-c45ee979ea4e",
+  "CreatedAt": "2026-05-15T00:06:22.190368551Z",
+  "ArtifactName": "/src",
+  "ArtifactType": "filesystem",
+  "Results": [
+    {
+      "Target": "requirements.txt",
+      "Class": "lang-pkgs",
+      "Type": "pip",
+      "Packages": [
+        {
+          "Name": "django",
+          "Identifier": {
+            "PURL": "pkg:pypi/django@1.11.0",
+            "UID": "d5ea94dfb38d4e43"
+          },
+          "Version": "1.11.0",
+          "Locations": [
+            {
+              "StartLine": 1,
+              "EndLine": 1
+            }
+          ],
+          "AnalyzedBy": "pip"
+        },
+        {
+          "Name": "flask",
+          "Identifier": {
+            "PURL": "pkg:pypi/flask@0.12.2",
+            "UID": "9d631b08895d90b4"
+          },
+          "Version": "0.12.2",
+          "Locations": [
+            {
+              "StartLine": 2,
+              "EndLine": 2
+            }
+          ],
+          "AnalyzedBy": "pip"
+        },
+        {
+          "Name": "pyyaml",
+          "Identifier": {
+            "PURL": "pkg:pypi/pyyaml@3.13",
+            "UID": "1bc4b3622096254d"
+          },
+          "Version": "3.13",
+          "Locations": [
+            {
+              "StartLine": 4,
+              "EndLine": 4
+            }
+          ],
+          "AnalyzedBy": "pip"
+        },
+        {
+          "Name": "requests",
+          "Identifier": {
+            "PURL": "pkg:pypi/requests@2.19.0",
+            "UID": "3261ccffde65871d"
+          },
+          "Version": "2.19.0",
+          "Locations": [
+            {
+              "StartLine": 3,
+              "EndLine": 3
+            }
+          ],
+          "AnalyzedBy": "pip"
+        }
+      ],
+      "Vulnerabilities": [
+        {
+          "VulnerabilityID": "CVE-2019-14234",
+          "VendorIDs": [
+            "GHSA-6r97-cj55-9hrq"
+          ],
+          "PkgName": "django",
+          "PkgIdentifier": {
+            "PURL": "pkg:pypi/django@1.11.0",
+            "UID": "d5ea94dfb38d4e43"
+          },
+          "InstalledVersion": "1.11.0",
+          "FixedVersion": "1.11.23, 2.1.11, 2.2.4",
+          "Status": "fixed",
+          "SeveritySource": "ghsa",
+          "PrimaryURL": "https://avd.aquasec.com/nvd/cve-2019-14234",
+          "DataSource": {
+            "ID": "ghsa",
+            "Name": "GitHub Security Advisory pip",
+            "URL": "https://github.com/advisories?query=type%3Areviewed+ecosystem%3Apip"
+          },
+          "Fingerprint": "sha256:398eee643b5b41387a6093cbd1fa9d4807e9a8abca7e0546facebc9fb590396e",
+          "Title": "Django: SQL injection possibility in key and index lookups for JSONField/HStoreField",
+          "Description": "An issue was discovered in Django 1.11.x before 1.11.23, 2.1.x before 2.1.11, and 2.2.x before 2.2.4. Due to an error in shallow key transformation, key and index lookups for django.contrib.postgres.fields.JSONField, and key lookups for django.contrib.postgres.fields.HStoreField, were subject to SQL injection. This could, for example, be exploited via crafted use of \"OR 1=1\" in a key or index name to return all records, using a suitably crafted dictionary, with dictionary expansion, as the **kwargs passed to the QuerySet.filter() function.",
+          "Severity": "CRITICAL",
+          "CweIDs": [
+            "CWE-89"
+          ],
+          "VendorSeverity": {
+            "ghsa": 4,
+            "nvd": 4,
+            "redhat": 2,
+            "ubuntu": 2
+          },
+          "CVSS": {
+            "ghsa": {
+              "V3Vector": "CVSS:3.0/AV:N/AC:L/PR:N/UI:N/S:U/C:H/I:H/A:H",
+              "V40Vector": "CVSS:4.0/AV:N/AC:L/AT:N/PR:N/UI:N/VC:H/VI:H/VA:H/SC:N/SI:N/SA:N",
+              "V3Score": 9.8,
+              "V40Score": 9.3
+            },
+            "nvd": {
+              "V2Vector": "AV:N/AC:L/Au:N/C:P/I:P/A:P",
+              "V3Vector": "CVSS:3.0/AV:N/AC:L/PR:N/UI:N/S:U/C:H/I:H/A:H",
+              "V2Score": 7.5,
+              "V3Score": 9.8
+            },
+            "redhat": {
+              "V3Vector": "CVSS:3.0/AV:N/AC:L/PR:N/UI:N/S:U/C:L/I:N/A:N",
+              "V3Score": 5.3
+            }
+          },
+          "References": [
+            "http://lists.opensuse.org/opensuse-security-announce/2019-08/msg00025.html",
+            "https://access.redhat.com/security/cve/CVE-2019-14234",
+            "https://docs.djangoproject.com/en/dev/releases/security",
+            "https://docs.djangoproject.com/en/dev/releases/security/",
+            "https://github.com/advisories/GHSA-6r97-cj55-9hrq",
+            "https://github.com/django/django",
+            "https://github.com/django/django/commit/4f5b58f5cd3c57fee9972ab074f8dc6895d8f387",
+            "https://github.com/django/django/commit/ed682a24fca774818542757651bfba576c3fc3ef",
+            "https://github.com/django/django/commit/f74b3ae3628c26e1b4f8db3d13a91d52a833a975",
+            "https://github.com/pypa/advisory-database/tree/main/vulns/django/PYSEC-2019-13.yaml",
+            "https://groups.google.com/forum/#!topic/django-announce/jIoju2-KLDs",
+            "https://groups.google.com/forum/#%21topic/django-announce/jIoju2-KLDs",
+            "https://lists.fedoraproject.org/archives/list/package-announce%40lists.fedoraproject.org/message/STVX7X7IDWAH5SKE6MBMY3TEI6ZODBTK/",
+            "https://lists.fedoraproject.org/archives/list/package-announce@lists.fedoraproject.org/message/STVX7X7IDWAH5SKE6MBMY3TEI6ZODBTK",
+            "https://nvd.nist.gov/vuln/detail/CVE-2019-14234",
+            "https://seclists.org/bugtraq/2019/Aug/15",
+            "https://security.gentoo.org/glsa/202004-17",
+            "https://security.netapp.com/advisory/ntap-20190828-0002",
+            "https://security.netapp.com/advisory/ntap-20190828-0002/",
+            "https://ubuntu.com/security/notices/USN-4084-1",
+            "https://www.cve.org/CVERecord?id=CVE-2019-14234",
+            "https://www.debian.org/security/2019/dsa-4498",
+            "https://www.djangoproject.com/weblog/2019/aug/01/security-releases",
+            "https://www.djangoproject.com/weblog/2019/aug/01/security-releases/"
+          ],
+          "PublishedDate": "2019-08-09T13:15:11.777Z",
+          "LastModifiedDate": "2024-11-21T04:26:15.537Z"
+        },
+        {
+          "VulnerabilityID": "CVE-2019-19844",
+          "VendorIDs": [
+            "GHSA-vfq6-hq5r-27r6"
+          ],
+          "PkgName": "django",
+          "PkgIdentifier": {
+            "PURL": "pkg:pypi/django@1.11.0",
+            "UID": "d5ea94dfb38d4e43"
+          },
+          "InstalledVersion": "1.11.0",
+          "FixedVersion": "1.11.27, 2.2.9, 3.0.1",
+          "Status": "fixed",
+          "SeveritySource": "ghsa",
+          "PrimaryURL": "https://avd.aquasec.com/nvd/cve-2019-19844",
+          "DataSource": {
+            "ID": "ghsa",
+            "Name": "GitHub Security Advisory pip",
+            "URL": "https://github.com/advisories?query=type%3Areviewed+ecosystem%3Apip"
+          },
+          "Fingerprint": "sha256:94692e91da6d0539c8abd71e0249c17e2844c724f287bf9e9f0c339c9176a089",
+          "Title": "Django: crafted email address allows account takeover",
+          "Description": "Django before 1.11.27, 2.x before 2.2.9, and 3.x before 3.0.1 allows account takeover. A suitably crafted email address (that is equal to an existing user's email address after case transformation of Unicode characters) would allow an attacker to be sent a password reset token for the matched user account. (One mitigation in the new releases is to send password reset tokens only to the registered user email address.)",
+          "Severity": "CRITICAL",
+          "CweIDs": [
+            "CWE-640"
+          ],
+          "VendorSeverity": {
+            "ghsa": 4,
+            "nvd": 4,
+            "redhat": 4,
+            "ubuntu": 3
+          },
+          "CVSS": {
+            "ghsa": {
+              "V3Vector": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:H/I:H/A:H",
+              "V40Vector": "CVSS:4.0/AV:N/AC:L/AT:N/PR:N/UI:N/VC:H/VI:H/VA:H/SC:N/SI:N/SA:N",
+              "V3Score": 9.8,
+              "V40Score": 9.3
+            },
+            "nvd": {
+              "V2Vector": "AV:N/AC:L/Au:N/C:N/I:P/A:N",
+              "V3Vector": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:H/I:H/A:H",
+              "V2Score": 5,
+              "V3Score": 9.8
+            },
+            "redhat": {
+              "V3Vector": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:H/I:H/A:H",
+              "V3Score": 9.8
+            }
+          },
+          "References": [
+            "http://packetstormsecurity.com/files/155872/Django-Account-Hijack.html",
+            "https://access.redhat.com/security/cve/CVE-2019-19844",
+            "https://docs.djangoproject.com/en/dev/releases/security",
+            "https://docs.djangoproject.com/en/dev/releases/security/",
+            "https://github.com/advisories/GHSA-vfq6-hq5r-27r6",
+            "https://github.com/django/django",
+            "https://github.com/django/django/commit/302a4ff1e8b1c798aab97673909c7a3dfda42c26",
+            "https://github.com/django/django/commit/4d334bea06cac63dc1272abcec545b85136cca0e",
+            "https://github.com/django/django/commit/5b1fbcef7a8bec991ebe7b2a18b5d5a95d72cb70",
+            "https://github.com/django/django/commit/f4cff43bf921fcea6a29b726eb66767f67753fa2",
+            "https://github.com/pypa/advisory-database/tree/main/vulns/django/PYSEC-2019-16.yaml",
+            "https://groups.google.com/forum/#!topic/django-announce/3oaB2rVH3a0",
+            "https://groups.google.com/forum/#%21topic/django-announce/3oaB2rVH3a0",
+            "https://lists.fedoraproject.org/archives/list/package-announce%40lists.fedoraproject.org/message/HCM2DPUI7TOZWN4A6JFQFUVQ2XGE7GUD/",
+            "https://lists.fedoraproject.org/archives/list/package-announce@lists.fedoraproject.org/message/HCM2DPUI7TOZWN4A6JFQFUVQ2XGE7GUD",
+            "https://nvd.nist.gov/vuln/detail/CVE-2019-19844",
+            "https://seclists.org/bugtraq/2020/Jan/9",
+            "https://security.gentoo.org/glsa/202004-17",
+            "https://security.netapp.com/advisory/ntap-20200110-0003",
+            "https://security.netapp.com/advisory/ntap-20200110-0003/",
+            "https://ubuntu.com/security/notices/USN-4224-1",
+            "https://ubuntu.com/security/notices/USN-6722-1",
+            "https://usn.ubuntu.com/4224-1",
+            "https://usn.ubuntu.com/4224-1/",
+            "https://www.cve.org/CVERecord?id=CVE-2019-19844",
+            "https://www.debian.org/security/2020/dsa-4598",
+            "https://www.djangoproject.com/weblog/2019/dec/18/security-releases",
+            "https://www.djangoproject.com/weblog/2019/dec/18/security-releases/"
+          ],
+          "PublishedDate": "2019-12-18T19:15:11.78Z",
+          "LastModifiedDate": "2024-11-21T04:35:30.833Z"
+        },
+        {
+          "VulnerabilityID": "CVE-2020-7471",
+          "VendorIDs": [
+            "GHSA-hmr4-m2h5-33qx"
+          ],
+          "PkgName": "django",
+          "PkgIdentifier": {
+            "PURL": "pkg:pypi/django@1.11.0",
+            "UID": "d5ea94dfb38d4e43"
+          },
+          "InstalledVersion": "1.11.0",
+          "FixedVersion": "1.11.28, 2.2.10, 3.0.3",
+          "Status": "fixed",
+          "SeveritySource": "ghsa",
+          "PrimaryURL": "https://avd.aquasec.com/nvd/cve-2020-7471",
+          "DataSource": {
+            "ID": "ghsa",
+            "Name": "GitHub Security Advisory pip",
+            "URL": "https://github.com/advisories?query=type%3Areviewed+ecosystem%3Apip"
+          },
+          "Fingerprint": "sha256:bfc8a946311cb998540fab1a8bea2e000422a13a3492e97614c953e054949ba5",
+          "Title": "django: potential SQL injection via StringAgg(delimiter)",
+          "Description": "Django 1.11 before 1.11.28, 2.2 before 2.2.10, and 3.0 before 3.0.3 allows SQL Injection if untrusted data is used as a StringAgg delimiter (e.g., in Django applications that offer downloads of data as a series of rows with a user-specified column delimiter). By passing a suitably crafted delimiter to a contrib.postgres.aggregates.StringAgg instance, it was possible to break escaping and inject malicious SQL.",
+          "Severity": "CRITICAL",
+          "CweIDs": [
+            "CWE-89"
+          ],
+          "VendorSeverity": {
+            "bitnami": 4,
+            "ghsa": 4,
+            "nvd": 4,
+            "redhat": 3,
+            "ubuntu": 2
+          },
+          "CVSS": {
+            "bitnami": {
+              "V3Vector": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:H/I:H/A:H",
+              "V3Score": 9.8
+            },
+            "ghsa": {
+              "V3Vector": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:H/I:H/A:H",
+              "V40Vector": "CVSS:4.0/AV:N/AC:L/AT:N/PR:N/UI:N/VC:H/VI:H/VA:H/SC:N/SI:N/SA:N",
+              "V3Score": 9.8,
+              "V40Score": 9.3
+            },
+            "nvd": {
+              "V2Vector": "AV:N/AC:L/Au:N/C:P/I:P/A:P",
+              "V3Vector": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:H/I:H/A:H",
+              "V2Score": 7.5,
+              "V3Score": 9.8
+            },
+            "redhat": {
+              "V3Vector": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:H/I:H/A:H",
+              "V3Score": 9.8
+            }
+          },
+          "References": [
+            "http://www.openwall.com/lists/oss-security/2020/02/03/1",
+            "https://access.redhat.com/security/cve/CVE-2020-7471",
+            "https://docs.djangoproject.com/en/3.0/releases/security",
+            "https://docs.djangoproject.com/en/3.0/releases/security/",
+            "https://github.com/advisories/GHSA-hmr4-m2h5-33qx",
+            "https://github.com/django/django",
+            "https://github.com/django/django/commit/001b0634cd309e372edb6d7d95d083d02b8e37bd",
+            "https://github.com/django/django/commit/505826b469b16ab36693360da9e11fd13213421b",
+            "https://github.com/django/django/commit/c67a368c16e4680b324b4f385398d638db4d8147",
+            "https://github.com/django/django/commit/eb31d845323618d688ad429479c6dda973056136",
+            "https://github.com/pypa/advisory-database/tree/main/vulns/django/PYSEC-2020-35.yaml",
+            "https://groups.google.com/forum/#!topic/django-announce/X45S86X5bZI",
+            "https://groups.google.com/forum/#%21topic/django-announce/X45S86X5bZI",
+            "https://lists.fedoraproject.org/archives/list/package-announce%40lists.fedoraproject.org/message/4A2AP4T7RKPBCLTI2NNQG3T6MINDUUMZ/",
+            "https://lists.fedoraproject.org/archives/list/package-announce@lists.fedoraproject.org/message/4A2AP4T7RKPBCLTI2NNQG3T6MINDUUMZ",
+            "https://nvd.nist.gov/vuln/detail/CVE-2020-7471",
+            "https://seclists.org/bugtraq/2020/Feb/30",
+            "https://security.gentoo.org/glsa/202004-17",
+            "https://security.netapp.com/advisory/ntap-20200221-0006",
+            "https://security.netapp.com/advisory/ntap-20200221-0006/",
+            "https://ubuntu.com/security/notices/USN-4264-1",
+            "https://usn.ubuntu.com/4264-1",
+            "https://usn.ubuntu.com/4264-1/",
+            "https://www.cve.org/CVERecord?id=CVE-2020-7471",
+            "https://www.debian.org/security/2020/dsa-4629",
+            "https://www.djangoproject.com/weblog/2020/feb/03/security-releases",
+            "https://www.djangoproject.com/weblog/2020/feb/03/security-releases/",
+            "https://www.openwall.com/lists/oss-security/2020/02/03/1"
+          ],
+          "PublishedDate": "2020-02-03T12:15:26.993Z",
+          "LastModifiedDate": "2024-11-21T05:37:12.667Z"
+        },
+        {
+          "VulnerabilityID": "CVE-2025-64459",
+          "VendorIDs": [
+            "GHSA-frmv-pr5f-9mcr"
+          ],
+          "PkgName": "django",
+          "PkgIdentifier": {
+            "PURL": "pkg:pypi/django@1.11.0",
+            "UID": "d5ea94dfb38d4e43"
+          },
+          "InstalledVersion": "1.11.0",
+          "FixedVersion": "5.2.8, 5.1.14, 4.2.26",
+          "Status": "fixed",
+          "SeveritySource": "ghsa",
+          "PrimaryURL": "https://avd.aquasec.com/nvd/cve-2025-64459",
+          "DataSource": {
+            "ID": "ghsa",
+            "Name": "GitHub Security Advisory pip",
+            "URL": "https://github.com/advisories?query=type%3Areviewed+ecosystem%3Apip"
+          },
+          "Fingerprint": "sha256:c0b2e7efdf1e25327fe1d05cb11d826c0d3d682789fa5a78fae1da46fba35beb",
+          "Title": "django: Django SQL injection",
+          "Description": "An issue was discovered in 5.1 before 5.1.14, 4.2 before 4.2.26, and 5.2 before 5.2.8.\nThe methods `QuerySet.filter()`, `QuerySet.exclude()`, and `QuerySet.get()`, and the class `Q()`, are subject to SQL injection when using a suitably crafted dictionary, with dictionary expansion, as the `_connector` argument.\nEarlier, unsupported Django series (such as 5.0.x, 4.1.x, and 3.2.x) were not evaluated and may also be affected.\nDjango would like to thank cyberstan for reporting this issue.",
+          "Severity": "CRITICAL",
+          "CweIDs": [
+            "CWE-89"
+          ],
+          "VendorSeverity": {
+            "bitnami": 4,
+            "ghsa": 4,
+            "redhat": 3,
+            "ubuntu": 2
+          },
+          "CVSS": {
+            "bitnami": {
+              "V3Vector": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:H/I:H/A:N",
+              "V3Score": 9.1
+            },
+            "ghsa": {
+              "V3Vector": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:H/I:H/A:N",
+              "V3Score": 9.1
+            },
+            "redhat": {
+              "V3Vector": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:C/C:L/I:L/A:L",
+              "V3Score": 8.3
+            }
+          },
+          "References": [
+            "https://access.redhat.com/security/cve/CVE-2025-64459",
+            "https://docs.djangoproject.com/en/dev/releases/security",
+            "https://docs.djangoproject.com/en/dev/releases/security/",
+            "https://github.com/django/django",
+            "https://github.com/django/django/commit/06dd38324ac3d60d83d9f3adabf0dcdf423d2a85",
+            "https://github.com/django/django/commit/59ae82e67053d281ff4562a24bbba21299f0a7d4",
+            "https://github.com/django/django/commit/6703f364d767e949c5b0e4016433ef75063b4f9b",
+            "https://github.com/django/django/commit/72d2c87431f2ae0431d65d0ec792047f078c8241",
+            "https://github.com/django/django/commit/c880530ddd4fabd5939bab0e148bebe36699432a",
+            "https://github.com/omarkurt/django-connector-CVE-2025-64459-testbed",
+            "https://groups.google.com/g/django-announce",
+            "https://nvd.nist.gov/vuln/detail/CVE-2025-64459",
+            "https://shivasurya.me/security/django/2025/11/07/django-sql-injection-CVE-2025-64459.html",
+            "https://ubuntu.com/security/notices/USN-7859-1",
+            "https://www.cve.org/CVERecord?id=CVE-2025-64459",
+            "https://www.djangoproject.com/weblog/2025/nov/05/security-releases",
+            "https://www.djangoproject.com/weblog/2025/nov/05/security-releases/"
+          ],
+          "PublishedDate": "2025-11-05T15:15:41.08Z",
+          "LastModifiedDate": "2025-11-10T18:25:59.883Z"
+        },
+        {
+          "VulnerabilityID": "CVE-2019-14232",
+          "VendorIDs": [
+            "GHSA-c4qh-4vgv-qc6g"
+          ],
+          "PkgName": "django",
+          "PkgIdentifier": {
+            "PURL": "pkg:pypi/django@1.11.0",
+            "UID": "d5ea94dfb38d4e43"
+          },
+          "InstalledVersion": "1.11.0",
+          "FixedVersion": "1.11.23, 2.1.11, 2.2.4",
+          "Status": "fixed",
+          "SeveritySource": "ghsa",
+          "PrimaryURL": "https://avd.aquasec.com/nvd/cve-2019-14232",
+          "DataSource": {
+            "ID": "ghsa",
+            "Name": "GitHub Security Advisory pip",
+            "URL": "https://github.com/advisories?query=type%3Areviewed+ecosystem%3Apip"
+          },
+          "Fingerprint": "sha256:e6206f983fa24aded50a54bec4e8cbbf35c30c88ca3f4789b77e6d63c8cefee1",
+          "Title": "Django: backtracking in a regular expression in django.utils.text.Truncator leads to DoS",
+          "Description": "An issue was discovered in Django 1.11.x before 1.11.23, 2.1.x before 2.1.11, and 2.2.x before 2.2.4. If django.utils.text.Truncator's chars() and words() methods were passed the html=True argument, they were extremely slow to evaluate certain inputs due to a catastrophic backtracking vulnerability in a regular expression. The chars() and words() methods are used to implement the truncatechars_html and truncatewords_html template filters, which were thus vulnerable.",
+          "Severity": "HIGH",
+          "CweIDs": [
+            "CWE-400"
+          ],
+          "VendorSeverity": {
+            "ghsa": 3,
+            "nvd": 3,
+            "redhat": 2,
+            "ubuntu": 2
+          },
+          "CVSS": {
+            "ghsa": {
+              "V3Vector": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:N/A:H",
+              "V40Vector": "CVSS:4.0/AV:N/AC:L/AT:N/PR:N/UI:N/VC:N/VI:N/VA:H/SC:N/SI:N/SA:N",
+              "V3Score": 7.5,
+              "V40Score": 8.7
+            },
+            "nvd": {
+              "V2Vector": "AV:N/AC:L/Au:N/C:N/I:N/A:P",
+              "V3Vector": "CVSS:3.0/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:N/A:H",
+              "V2Score": 5,
+              "V3Score": 7.5
+            },
+            "redhat": {
+              "V3Vector": "CVSS:3.0/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:N/A:L",
+              "V3Score": 5.3
+            }
+          },
+          "References": [
+            "http://lists.opensuse.org/opensuse-security-announce/2019-08/msg00006.html",
+            "http://lists.opensuse.org/opensuse-security-announce/2019-08/msg00025.html",
+            "http://www.openwall.com/lists/oss-security/2023/10/04/6",
+            "http://www.openwall.com/lists/oss-security/2024/03/04/1",
+            "https://access.redhat.com/security/cve/CVE-2019-14232",
+            "https://docs.djangoproject.com/en/dev/releases/security",
+            "https://docs.djangoproject.com/en/dev/releases/security/",
+            "https://github.com/advisories/GHSA-c4qh-4vgv-qc6g",
+            "https://github.com/django/django",
+            "https://github.com/pypa/advisory-database/tree/main/vulns/django/PYSEC-2019-11.yaml",
+            "https://github.com/pypa/advisory-db/tree/main/vulns/django/PYSEC-2019-11.yaml",
+            "https://groups.google.com/forum/#!topic/django-announce/jIoju2-KLDs",
+            "https://groups.google.com/forum/#%21topic/django-announce/jIoju2-KLDs",
+            "https://lists.fedoraproject.org/archives/list/package-announce%40lists.fedoraproject.org/message/STVX7X7IDWAH5SKE6MBMY3TEI6ZODBTK",
+            "https://lists.fedoraproject.org/archives/list/package-announce%40lists.fedoraproject.org/message/STVX7X7IDWAH5SKE6MBMY3TEI6ZODBTK/",
+            "https://lists.fedoraproject.org/archives/list/package-announce@lists.fedoraproject.org/message/STVX7X7IDWAH5SKE6MBMY3TEI6ZODBTK",
+            "https://lists.opensuse.org/archives/list/security-announce@lists.opensuse.org/message/3LGJSPCN3VEG2UJPYCUB6TU75JTIV2TQ",
+            "https://lists.opensuse.org/archives/list/security-announce@lists.opensuse.org/message/5XTP44JEOSNXRVW4JDZXA5XGMBDZLWSW",
+            "https://nvd.nist.gov/vuln/detail/CVE-2019-14232",
+            "https://seclists.org/bugtraq/2019/Aug/15",
+            "https://security.gentoo.org/glsa/202004-17",
+            "https://security.netapp.com/advisory/ntap-20190828-0002",
+            "https://security.netapp.com/advisory/ntap-20190828-0002/",
+            "https://ubuntu.com/security/notices/USN-4084-1",
+            "https://www.cve.org/CVERecord?id=CVE-2019-14232",
+            "https://www.debian.org/security/2019/dsa-4498",
+            "https://www.djangoproject.com/weblog/2019/aug/01/security-releases",
+            "https://www.djangoproject.com/weblog/2019/aug/01/security-releases/",
+            "https://www.openwall.com/lists/oss-security/2023/10/04/6"
+          ],
+          "PublishedDate": "2019-08-02T15:15:11.88Z",
+          "LastModifiedDate": "2024-11-21T04:26:15.113Z"
+        },
+        {
+          "VulnerabilityID": "CVE-2019-14233",
+          "VendorIDs": [
+            "GHSA-h5jv-4p7w-64jg"
+          ],
+          "PkgName": "django",
+          "PkgIdentifier": {
+            "PURL": "pkg:pypi/django@1.11.0",
+            "UID": "d5ea94dfb38d4e43"
+          },
+          "InstalledVersion": "1.11.0",
+          "FixedVersion": "1.11.23, 2.1.11, 2.2.4",
+          "Status": "fixed",
+          "SeveritySource": "ghsa",
+          "PrimaryURL": "https://avd.aquasec.com/nvd/cve-2019-14233",
+          "DataSource": {
+            "ID": "ghsa",
+            "Name": "GitHub Security Advisory pip",
+            "URL": "https://github.com/advisories?query=type%3Areviewed+ecosystem%3Apip"
+          },
+          "Fingerprint": "sha256:4d0d77de629aaf95695c02325336e7eb144f3dd42ee8a3f37de63bc0af9c4f9f",
+          "Title": "Django: the behavior of the underlying HTMLParser leading to DoS",
+          "Description": "An issue was discovered in Django 1.11.x before 1.11.23, 2.1.x before 2.1.11, and 2.2.x before 2.2.4. Due to the behaviour of the underlying HTMLParser, django.utils.html.strip_tags would be extremely slow to evaluate certain inputs containing large sequences of nested incomplete HTML entities.",
+          "Severity": "HIGH",
+          "CweIDs": [
+            "CWE-400"
+          ],
+          "VendorSeverity": {
+            "ghsa": 3,
+            "nvd": 3,
+            "redhat": 2,
+            "ubuntu": 2
+          },
+          "CVSS": {
+            "ghsa": {
+              "V3Vector": "CVSS:3.0/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:N/A:H",
+              "V40Vector": "CVSS:4.0/AV:N/AC:L/AT:N/PR:N/UI:N/VC:N/VI:N/VA:H/SC:N/SI:N/SA:N",
+              "V3Score": 7.5,
+              "V40Score": 8.7
+            },
+            "nvd": {
+              "V2Vector": "AV:N/AC:L/Au:N/C:N/I:N/A:P",
+              "V3Vector": "CVSS:3.0/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:N/A:H",
+              "V2Score": 5,
+              "V3Score": 7.5
+            },
+            "redhat": {
+              "V3Vector": "CVSS:3.0/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:N/A:L",
+              "V3Score": 5.3
+            }
+          },
+          "References": [
+            "http://lists.opensuse.org/opensuse-security-announce/2019-08/msg00006.html",
+            "http://lists.opensuse.org/opensuse-security-announce/2019-08/msg00025.html",
+            "https://access.redhat.com/security/cve/CVE-2019-14233",
+            "https://docs.djangoproject.com/en/dev/releases/security",
+            "https://docs.djangoproject.com/en/dev/releases/security/",
+            "https://github.com/advisories/GHSA-h5jv-4p7w-64jg",
+            "https://github.com/django/django",
+            "https://github.com/pypa/advisory-database/tree/main/vulns/django/PYSEC-2019-12.yaml",
+            "https://groups.google.com/forum/#!topic/django-announce/jIoju2-KLDs",
+            "https://groups.google.com/forum/#%21topic/django-announce/jIoju2-KLDs",
+            "https://lists.fedoraproject.org/archives/list/package-announce%40lists.fedoraproject.org/message/STVX7X7IDWAH5SKE6MBMY3TEI6ZODBTK/",
+            "https://lists.fedoraproject.org/archives/list/package-announce@lists.fedoraproject.org/message/STVX7X7IDWAH5SKE6MBMY3TEI6ZODBTK",
+            "https://nvd.nist.gov/vuln/detail/CVE-2019-14233",
+            "https://seclists.org/bugtraq/2019/Aug/15",
+            "https://security.gentoo.org/glsa/202004-17",
+            "https://security.netapp.com/advisory/ntap-20190828-0002",
+            "https://security.netapp.com/advisory/ntap-20190828-0002/",
+            "https://ubuntu.com/security/notices/USN-4084-1",
+            "https://www.cve.org/CVERecord?id=CVE-2019-14233",
+            "https://www.debian.org/security/2019/dsa-4498",
+            "https://www.djangoproject.com/weblog/2019/aug/01/security-releases",
+            "https://www.djangoproject.com/weblog/2019/aug/01/security-releases/"
+          ],
+          "PublishedDate": "2019-08-02T15:15:11.943Z",
+          "LastModifiedDate": "2024-11-21T04:26:15.367Z"
+        },
+        {
+          "VulnerabilityID": "CVE-2019-14235",
+          "VendorIDs": [
+            "GHSA-v9qg-3j8p-r63v"
+          ],
+          "PkgName": "django",
+          "PkgIdentifier": {
+            "PURL": "pkg:pypi/django@1.11.0",
+            "UID": "d5ea94dfb38d4e43"
+          },
+          "InstalledVersion": "1.11.0",
+          "FixedVersion": "1.11.23, 2.1.11, 2.2.4",
+          "Status": "fixed",
+          "SeveritySource": "ghsa",
+          "PrimaryURL": "https://avd.aquasec.com/nvd/cve-2019-14235",
+          "DataSource": {
+            "ID": "ghsa",
+            "Name": "GitHub Security Advisory pip",
+            "URL": "https://github.com/advisories?query=type%3Areviewed+ecosystem%3Apip"
+          },
+          "Fingerprint": "sha256:add00109b6bd7bbe881015dcf21c4fcb1304863ae6ec16edac4152dae284bbf0",
+          "Title": "Django: Potential memory exhaustion in django.utils.encoding.uri_to_iri()",
+          "Description": "An issue was discovered in Django 1.11.x before 1.11.23, 2.1.x before 2.1.11, and 2.2.x before 2.2.4. If passed certain inputs, django.utils.encoding.uri_to_iri could lead to significant memory usage due to a recursion when repercent-encoding invalid UTF-8 octet sequences.",
+          "Severity": "HIGH",
+          "CweIDs": [
+            "CWE-674"
+          ],
+          "VendorSeverity": {
+            "ghsa": 3,
+            "nvd": 3,
+            "redhat": 2,
+            "ubuntu": 2
+          },
+          "CVSS": {
+            "ghsa": {
+              "V3Vector": "CVSS:3.0/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:N/A:H",
+              "V40Vector": "CVSS:4.0/AV:N/AC:L/AT:N/PR:N/UI:N/VC:N/VI:N/VA:H/SC:N/SI:N/SA:N",
+              "V3Score": 7.5,
+              "V40Score": 8.7
+            },
+            "nvd": {
+              "V2Vector": "AV:N/AC:L/Au:N/C:N/I:N/A:P",
+              "V3Vector": "CVSS:3.0/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:N/A:H",
+              "V2Score": 5,
+              "V3Score": 7.5
+            },
+            "redhat": {
+              "V3Vector": "CVSS:3.0/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:N/A:L",
+              "V3Score": 5.3
+            }
+          },
+          "References": [
+            "http://lists.opensuse.org/opensuse-security-announce/2019-08/msg00006.html",
+            "http://lists.opensuse.org/opensuse-security-announce/2019-08/msg00025.html",
+            "https://access.redhat.com/security/cve/CVE-2019-14235",
+            "https://docs.djangoproject.com/en/dev/releases/security",
+            "https://docs.djangoproject.com/en/dev/releases/security/",
+            "https://github.com/advisories/GHSA-v9qg-3j8p-r63v",
+            "https://github.com/django/django",
+            "https://github.com/pypa/advisory-database/tree/main/vulns/django/PYSEC-2019-14.yaml",
+            "https://groups.google.com/forum/#!topic/django-announce/jIoju2-KLDs",
+            "https://groups.google.com/forum/#%21topic/django-announce/jIoju2-KLDs",
+            "https://lists.fedoraproject.org/archives/list/package-announce%40lists.fedoraproject.org/message/STVX7X7IDWAH5SKE6MBMY3TEI6ZODBTK/",
+            "https://lists.fedoraproject.org/archives/list/package-announce@lists.fedoraproject.org/message/STVX7X7IDWAH5SKE6MBMY3TEI6ZODBTK",
+            "https://nvd.nist.gov/vuln/detail/CVE-2019-14235",
+            "https://seclists.org/bugtraq/2019/Aug/15",
+            "https://security.gentoo.org/glsa/202004-17",
+            "https://security.netapp.com/advisory/ntap-20190828-0002",
+            "https://security.netapp.com/advisory/ntap-20190828-0002/",
+            "https://ubuntu.com/security/notices/USN-4084-1",
+            "https://www.cve.org/CVERecord?id=CVE-2019-14235",
+            "https://www.debian.org/security/2019/dsa-4498",
+            "https://www.djangoproject.com/weblog/2019/aug/01/security-releases",
+            "https://www.djangoproject.com/weblog/2019/aug/01/security-releases/"
+          ],
+          "PublishedDate": "2019-08-02T15:15:12.023Z",
+          "LastModifiedDate": "2024-11-21T04:26:15.69Z"
+        },
+        {
+          "VulnerabilityID": "CVE-2019-3498",
+          "VendorIDs": [
+            "GHSA-337x-4q8g-prc5"
+          ],
+          "PkgName": "django",
+          "PkgIdentifier": {
+            "PURL": "pkg:pypi/django@1.11.0",
+            "UID": "d5ea94dfb38d4e43"
+          },
+          "InstalledVersion": "1.11.0",
+          "FixedVersion": "1.11.18, 2.0.10, 2.1.5",
+          "Status": "fixed",
+          "SeveritySource": "ghsa",
+          "PrimaryURL": "https://avd.aquasec.com/nvd/cve-2019-3498",
+          "DataSource": {
+            "ID": "ghsa",
+            "Name": "GitHub Security Advisory pip",
+            "URL": "https://github.com/advisories?query=type%3Areviewed+ecosystem%3Apip"
+          },
+          "Fingerprint": "sha256:a090737094841e593fbefd005d5fa6ac84975ebd8d4bb55fd44f17c254e0e138",
+          "Title": "python-django: Content spoofing via URL path in default 404 page",
+          "Description": "In Django 1.11.x before 1.11.18, 2.0.x before 2.0.10, and 2.1.x before 2.1.5, an Improper Neutralization of Special Elements in Output Used by a Downstream Component issue exists in django.views.defaults.page_not_found(), leading to content spoofing (in a 404 error page) if a user fails to recognize that a crafted URL has malicious content.",
+          "Severity": "HIGH",
+          "CweIDs": [
+            "CWE-74"
+          ],
+          "VendorSeverity": {
+            "ghsa": 3,
+            "nvd": 2,
+            "redhat": 1,
+            "ubuntu": 2
+          },
+          "CVSS": {
+            "ghsa": {
+              "V3Vector": "CVSS:3.0/AV:N/AC:L/PR:N/UI:R/S:U/C:N/I:H/A:N",
+              "V40Vector": "CVSS:4.0/AV:N/AC:L/AT:N/PR:N/UI:P/VC:N/VI:H/VA:N/SC:N/SI:N/SA:N",
+              "V3Score": 6.5,
+              "V40Score": 7.1
+            },
+            "nvd": {
+              "V2Vector": "AV:N/AC:M/Au:N/C:N/I:P/A:N",
+              "V3Vector": "CVSS:3.0/AV:N/AC:L/PR:N/UI:R/S:U/C:N/I:H/A:N",
+              "V2Score": 4.3,
+              "V3Score": 6.5
+            },
+            "redhat": {
+              "V3Vector": "CVSS:3.0/AV:N/AC:L/PR:N/UI:R/S:U/C:N/I:L/A:N",
+              "V3Score": 4.3
+            }
+          },
+          "References": [
+            "http://www.securityfocus.com/bid/106453",
+            "https://access.redhat.com/security/cve/CVE-2019-3498",
+            "https://docs.djangoproject.com/en/dev/releases/security",
+            "https://docs.djangoproject.com/en/dev/releases/security/",
+            "https://github.com/advisories/GHSA-337x-4q8g-prc5",
+            "https://github.com/django/django",
+            "https://github.com/pypa/advisory-database/tree/main/vulns/django/PYSEC-2019-17.yaml",
+            "https://groups.google.com/forum/#!topic/django-announce/VYU7xQQTEPQ",
+            "https://groups.google.com/forum/#%21topic/django-announce/VYU7xQQTEPQ",
+            "https://lists.debian.org/debian-lts-announce/2019/01/msg00005.html",
+            "https://lists.fedoraproject.org/archives/list/package-announce%40lists.fedoraproject.org/message/HVXDOVCXLD74SHR2BENGCE2OOYYYWJHZ/",
+            "https://lists.fedoraproject.org/archives/list/package-announce@lists.fedoraproject.org/message/HVXDOVCXLD74SHR2BENGCE2OOYYYWJHZ",
+            "https://nvd.nist.gov/vuln/detail/CVE-2019-3498",
+            "https://ubuntu.com/security/notices/USN-3851-1",
+            "https://usn.ubuntu.com/3851-1",
+            "https://usn.ubuntu.com/3851-1/",
+            "https://web.archive.org/web/20200227094237/http://www.securityfocus.com/bid/106453",
+            "https://www.cve.org/CVERecord?id=CVE-2019-3498",
+            "https://www.debian.org/security/2019/dsa-4363",
+            "https://www.djangoproject.com/weblog/2019/jan/04/security-releases",
+            "https://www.djangoproject.com/weblog/2019/jan/04/security-releases/"
+          ],
+          "PublishedDate": "2019-01-09T23:29:05.387Z",
+          "LastModifiedDate": "2024-11-21T04:42:08.733Z"
+        },
+        {
+          "VulnerabilityID": "CVE-2019-6975",
+          "VendorIDs": [
+            "GHSA-wh4h-v3f2-r2pp"
+          ],
+          "PkgName": "django",
+          "PkgIdentifier": {
+            "PURL": "pkg:pypi/django@1.11.0",
+            "UID": "d5ea94dfb38d4e43"
+          },
+          "InstalledVersion": "1.11.0",
+          "FixedVersion": "1.11.19, 2.0.11, 2.1.6",
+          "Status": "fixed",
+          "SeveritySource": "ghsa",
+          "PrimaryURL": "https://avd.aquasec.com/nvd/cve-2019-6975",
+          "DataSource": {
+            "ID": "ghsa",
+            "Name": "GitHub Security Advisory pip",
+            "URL": "https://github.com/advisories?query=type%3Areviewed+ecosystem%3Apip"
+          },
+          "Fingerprint": "sha256:8255dfa724fb9045def6439d9cd191e723681a0ed583956ac79d99a26291cd16",
+          "Title": "python-django: memory exhaustion in django.utils.numberformat.format()",
+          "Description": "Django 1.11.x before 1.11.19, 2.0.x before 2.0.11, and 2.1.x before 2.1.6 allows Uncontrolled Memory Consumption via a malicious attacker-supplied value to the django.utils.numberformat.format() function.",
+          "Severity": "HIGH",
+          "CweIDs": [
+            "CWE-770"
+          ],
+          "VendorSeverity": {
+            "ghsa": 3,
+            "nvd": 3,
+            "redhat": 2,
+            "ubuntu": 2
+          },
+          "CVSS": {
+            "ghsa": {
+              "V3Vector": "CVSS:3.0/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:N/A:H",
+              "V40Vector": "CVSS:4.0/AV:N/AC:L/AT:N/PR:N/UI:N/VC:N/VI:N/VA:H/SC:N/SI:N/SA:N",
+              "V3Score": 7.5,
+              "V40Score": 8.7
+            },
+            "nvd": {
+              "V2Vector": "AV:N/AC:L/Au:N/C:N/I:N/A:P",
+              "V3Vector": "CVSS:3.0/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:N/A:H",
+              "V2Score": 5,
+              "V3Score": 7.5
+            },
+            "redhat": {
+              "V3Vector": "CVSS:3.0/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:N/A:L",
+              "V3Score": 5.3
+            }
+          },
+          "References": [
+            "http://www.securityfocus.com/bid/106964",
+            "https://access.redhat.com/security/cve/CVE-2019-6975",
+            "https://docs.djangoproject.com/en/dev/releases/security",
+            "https://docs.djangoproject.com/en/dev/releases/security/",
+            "https://github.com/advisories/GHSA-wh4h-v3f2-r2pp",
+            "https://github.com/django/django",
+            "https://github.com/django/django/commit/0bbb560183fabf0533289700845dafa94951f227",
+            "https://github.com/django/django/commit/1f42f82566c9d2d73aff1c42790d6b1b243f7676",
+            "https://github.com/django/django/commit/40cd19055773705301c3428ed5e08a036d2091f3",
+            "https://github.com/pypa/advisory-database/tree/main/vulns/django/PYSEC-2019-18.yaml",
+            "https://groups.google.com/forum/#!topic/django-announce/WTwEAprR0IQ",
+            "https://groups.google.com/forum/#%21topic/django-announce/WTwEAprR0IQ",
+            "https://lists.fedoraproject.org/archives/list/package-announce%40lists.fedoraproject.org/message/66WMXHGBXD7GSM3PEXVCMCAGLMQYHZCU/",
+            "https://lists.fedoraproject.org/archives/list/package-announce%40lists.fedoraproject.org/message/HVXDOVCXLD74SHR2BENGCE2OOYYYWJHZ/",
+            "https://lists.fedoraproject.org/archives/list/package-announce@lists.fedoraproject.org/message/66WMXHGBXD7GSM3PEXVCMCAGLMQYHZCU",
+            "https://lists.fedoraproject.org/archives/list/package-announce@lists.fedoraproject.org/message/HVXDOVCXLD74SHR2BENGCE2OOYYYWJHZ",
+            "https://nvd.nist.gov/vuln/detail/CVE-2019-6975",
+            "https://seclists.org/bugtraq/2019/Jul/10",
+            "https://ubuntu.com/security/notices/USN-3890-1",
+            "https://usn.ubuntu.com/3890-1",
+            "https://usn.ubuntu.com/3890-1/",
+            "https://web.archive.org/web/20200227084713/http://www.securityfocus.com/bid/106964",
+            "https://www.cve.org/CVERecord?id=CVE-2019-6975",
+            "https://www.debian.org/security/2019/dsa-4476",
+            "https://www.djangoproject.com/weblog/2019/feb/11/security-releases",
+            "https://www.djangoproject.com/weblog/2019/feb/11/security-releases/",
+            "https://www.openwall.com/lists/oss-security/2019/02/11/1"
+          ],
+          "PublishedDate": "2019-02-11T13:29:00.27Z",
+          "LastModifiedDate": "2024-11-21T04:47:20.663Z"
+        },
+        {
+          "VulnerabilityID": "CVE-2020-9402",
+          "VendorIDs": [
+            "GHSA-3gh2-xw74-jmcw"
+          ],
+          "PkgName": "django",
+          "PkgIdentifier": {
+            "PURL": "pkg:pypi/django@1.11.0",
+            "UID": "d5ea94dfb38d4e43"
+          },
+          "InstalledVersion": "1.11.0",
+          "FixedVersion": "1.11.29, 2.2.11, 3.0.4",
+          "Status": "fixed",
+          "SeveritySource": "ghsa",
+          "PrimaryURL": "https://avd.aquasec.com/nvd/cve-2020-9402",
+          "DataSource": {
+            "ID": "ghsa",
+            "Name": "GitHub Security Advisory pip",
+            "URL": "https://github.com/advisories?query=type%3Areviewed+ecosystem%3Apip"
+          },
+          "Fingerprint": "sha256:ed62430d4c2580f9fd3308b162e7854161cfca27540c683e322cf4b04fdf722a",
+          "Title": "django: potential SQL injection via \"tolerance\" parameter in GIS functions and aggregates on Oracle",
+          "Description": "Django 1.11 before 1.11.29, 2.2 before 2.2.11, and 3.0 before 3.0.4 allows SQL Injection if untrusted data is used as a tolerance parameter in GIS functions and aggregates on Oracle. By passing a suitably crafted tolerance to GIS functions and aggregates on Oracle, it was possible to break escaping and inject malicious SQL.",
+          "Severity": "HIGH",
+          "CweIDs": [
+            "CWE-89"
+          ],
+          "VendorSeverity": {
+            "bitnami": 3,
+            "ghsa": 3,
+            "nvd": 3,
+            "redhat": 2,
+            "ubuntu": 2
+          },
+          "CVSS": {
+            "bitnami": {
+              "V3Vector": "CVSS:3.1/AV:N/AC:L/PR:L/UI:N/S:U/C:H/I:H/A:H",
+              "V3Score": 8.8
+            },
+            "ghsa": {
+              "V3Vector": "CVSS:3.1/AV:N/AC:L/PR:L/UI:N/S:U/C:H/I:H/A:H",
+              "V40Vector": "CVSS:4.0/AV:N/AC:L/AT:N/PR:L/UI:N/VC:H/VI:H/VA:H/SC:N/SI:N/SA:N",
+              "V3Score": 8.8,
+              "V40Score": 8.7
+            },
+            "nvd": {
+              "V2Vector": "AV:N/AC:L/Au:S/C:P/I:P/A:P",
+              "V3Vector": "CVSS:3.1/AV:N/AC:L/PR:L/UI:N/S:U/C:H/I:H/A:H",
+              "V2Score": 6.5,
+              "V3Score": 8.8
+            },
+            "redhat": {
+              "V3Vector": "CVSS:3.1/AV:N/AC:L/PR:L/UI:N/S:U/C:H/I:H/A:H",
+              "V3Score": 8.8
+            }
+          },
+          "References": [
+            "https://access.redhat.com/security/cve/CVE-2020-9402",
+            "https://docs.djangoproject.com/en/3.0/releases/security",
+            "https://docs.djangoproject.com/en/3.0/releases/security/",
+            "https://github.com/advisories/GHSA-3gh2-xw74-jmcw",
+            "https://github.com/django/django",
+            "https://github.com/django/django/commit/6695d29b1c1ce979725816295a26ecc64ae0e927",
+            "https://github.com/pypa/advisory-database/tree/main/vulns/django/PYSEC-2020-36.yaml",
+            "https://groups.google.com/forum/#!topic/django-announce/fLUh_pOaKrY",
+            "https://groups.google.com/forum/#%21topic/django-announce/fLUh_pOaKrY",
+            "https://lists.debian.org/debian-lts-announce/2022/05/msg00035.html",
+            "https://lists.fedoraproject.org/archives/list/package-announce%40lists.fedoraproject.org/message/4A2AP4T7RKPBCLTI2NNQG3T6MINDUUMZ/",
+            "https://lists.fedoraproject.org/archives/list/package-announce%40lists.fedoraproject.org/message/UZMN2NKAGTFE3YKMNM2JVJG7R2W7LLHY/",
+            "https://lists.fedoraproject.org/archives/list/package-announce@lists.fedoraproject.org/message/4A2AP4T7RKPBCLTI2NNQG3T6MINDUUMZ",
+            "https://lists.fedoraproject.org/archives/list/package-announce@lists.fedoraproject.org/message/UZMN2NKAGTFE3YKMNM2JVJG7R2W7LLHY",
+            "https://nvd.nist.gov/vuln/detail/CVE-2020-9402",
+            "https://security.gentoo.org/glsa/202004-17",
+            "https://security.netapp.com/advisory/ntap-20200327-0004",
+            "https://security.netapp.com/advisory/ntap-20200327-0004/",
+            "https://ubuntu.com/security/notices/USN-4296-1",
+            "https://usn.ubuntu.com/4296-1",
+            "https://usn.ubuntu.com/4296-1/",
+            "https://www.cve.org/CVERecord?id=CVE-2020-9402",
+            "https://www.debian.org/security/2020/dsa-4705",
+            "https://www.djangoproject.com/weblog/2020/mar/04/security-releases",
+            "https://www.djangoproject.com/weblog/2020/mar/04/security-releases/"
+          ],
+          "PublishedDate": "2020-03-05T15:15:12.41Z",
+          "LastModifiedDate": "2024-11-21T05:40:33.953Z"
+        },
+        {
+          "VulnerabilityID": "CVE-2022-36359",
+          "VendorIDs": [
+            "GHSA-8x94-hmjh-97hq"
+          ],
+          "PkgName": "django",
+          "PkgIdentifier": {
+            "PURL": "pkg:pypi/django@1.11.0",
+            "UID": "d5ea94dfb38d4e43"
+          },
+          "InstalledVersion": "1.11.0",
+          "FixedVersion": "3.2.15, 4.0.7",
+          "Status": "fixed",
+          "SeveritySource": "ghsa",
+          "PrimaryURL": "https://avd.aquasec.com/nvd/cve-2022-36359",
+          "DataSource": {
+            "ID": "ghsa",
+            "Name": "GitHub Security Advisory pip",
+            "URL": "https://github.com/advisories?query=type%3Areviewed+ecosystem%3Apip"
+          },
+          "Fingerprint": "sha256:41b2cee5cd0d2adcc5ceb0f9927f9c3590b60d44a7ebc3135fe8acfa4fa94200",
+          "Title": "An issue was discovered in the HTTP FileResponse class in Django 3.2 b ...",
+          "Description": "An issue was discovered in the HTTP FileResponse class in Django 3.2 before 3.2.15 and 4.0 before 4.0.7. An application is vulnerable to a reflected file download (RFD) attack that sets the Content-Disposition header of a FileResponse when the filename is derived from user-supplied input.",
+          "Severity": "HIGH",
+          "CweIDs": [
+            "CWE-494"
+          ],
+          "VendorSeverity": {
+            "bitnami": 3,
+            "ghsa": 3,
+            "nvd": 3,
+            "ubuntu": 2
+          },
+          "CVSS": {
+            "bitnami": {
+              "V3Vector": "CVSS:3.1/AV:N/AC:L/PR:N/UI:R/S:U/C:H/I:H/A:H",
+              "V3Score": 8.8
+            },
+            "ghsa": {
+              "V3Vector": "CVSS:3.1/AV:N/AC:L/PR:N/UI:R/S:U/C:H/I:H/A:H",
+              "V3Score": 8.8
+            },
+            "nvd": {
+              "V3Vector": "CVSS:3.1/AV:N/AC:L/PR:N/UI:R/S:U/C:H/I:H/A:H",
+              "V3Score": 8.8
+            }
+          },
+          "References": [
+            "http://www.openwall.com/lists/oss-security/2022/08/03/1",
+            "https://docs.djangoproject.com/en/4.0/releases/security",
+            "https://docs.djangoproject.com/en/4.0/releases/security/",
+            "https://github.com/django/django",
+            "https://github.com/django/django/commit/b3e4494d759202a3b6bf247fd34455bf13be5b80",
+            "https://github.com/django/django/commit/b7d9529cbe0af4adabb6ea5d01ed8dcce3668fb3",
+            "https://github.com/django/django/commit/bd062445cffd3f6cc6dcd20d13e2abed818fa173",
+            "https://github.com/pypa/advisory-database/tree/main/vulns/django/PYSEC-2022-245.yaml",
+            "https://groups.google.com/g/django-announce/c/8cz--gvaJr4",
+            "https://lists.fedoraproject.org/archives/list/package-announce%40lists.fedoraproject.org/message/HWY6DQWRVBALV73BPUVBXC3QIYUM24IK/",
+            "https://lists.fedoraproject.org/archives/list/package-announce%40lists.fedoraproject.org/message/LTZVAKU5ALQWOKFTPISE257VCVIYGFQI/",
+            "https://lists.fedoraproject.org/archives/list/package-announce@lists.fedoraproject.org/message/HWY6DQWRVBALV73BPUVBXC3QIYUM24IK",
+            "https://lists.fedoraproject.org/archives/list/package-announce@lists.fedoraproject.org/message/LTZVAKU5ALQWOKFTPISE257VCVIYGFQI",
+            "https://nvd.nist.gov/vuln/detail/CVE-2022-36359",
+            "https://security.netapp.com/advisory/ntap-20220915-0008",
+            "https://security.netapp.com/advisory/ntap-20220915-0008/",
+            "https://ubuntu.com/security/notices/USN-5549-1",
+            "https://www.cve.org/CVERecord?id=CVE-2022-36359",
+            "https://www.debian.org/security/2022/dsa-5254",
+            "https://www.djangoproject.com/weblog/2022/aug/03/security-releases",
+            "https://www.djangoproject.com/weblog/2022/aug/03/security-releases/"
+          ],
+          "PublishedDate": "2022-08-03T14:15:08.71Z",
+          "LastModifiedDate": "2024-11-21T07:12:51.8Z"
+        },
+        {
+          "VulnerabilityID": "CVE-2025-57833",
+          "VendorIDs": [
+            "GHSA-6w2r-r2m5-xq5w"
+          ],
+          "PkgName": "django",
+          "PkgIdentifier": {
+            "PURL": "pkg:pypi/django@1.11.0",
+            "UID": "d5ea94dfb38d4e43"
+          },
+          "InstalledVersion": "1.11.0",
+          "FixedVersion": "4.2.24, 5.1.12, 5.2.6",
+          "Status": "fixed",
+          "SeveritySource": "ghsa",
+          "PrimaryURL": "https://avd.aquasec.com/nvd/cve-2025-57833",
+          "DataSource": {
+            "ID": "ghsa",
+            "Name": "GitHub Security Advisory pip",
+            "URL": "https://github.com/advisories?query=type%3Areviewed+ecosystem%3Apip"
+          },
+          "Fingerprint": "sha256:997953bb3d177e0eb7698f98a076ea47cecfeba405b1f6254343e3040da2c110",
+          "Title": "django: Django SQL injection in FilteredRelation column aliases",
+          "Description": "An issue was discovered in Django 4.2 before 4.2.24, 5.1 before 5.1.12, and 5.2 before 5.2.6. FilteredRelation is subject to SQL injection in column aliases, using a suitably crafted dictionary, with dictionary expansion, as the **kwargs passed QuerySet.annotate() or QuerySet.alias().",
+          "Severity": "HIGH",
+          "CweIDs": [
+            "CWE-89"
+          ],
+          "VendorSeverity": {
+            "bitnami": 3,
+            "ghsa": 3,
+            "nvd": 3,
+            "redhat": 3,
+            "ubuntu": 2
+          },
+          "CVSS": {
+            "bitnami": {
+              "V3Vector": "CVSS:3.1/AV:N/AC:H/PR:N/UI:N/S:U/C:H/I:H/A:H",
+              "V3Score": 8.1
+            },
+            "ghsa": {
+              "V3Vector": "CVSS:3.1/AV:N/AC:H/PR:L/UI:N/S:C/C:H/I:L/A:N",
+              "V3Score": 7.1
+            },
+            "nvd": {
+              "V3Vector": "CVSS:3.1/AV:N/AC:H/PR:N/UI:N/S:U/C:H/I:H/A:H",
+              "V3Score": 8.1
+            },
+            "redhat": {
+              "V3Vector": "CVSS:3.1/AV:N/AC:H/PR:L/UI:N/S:C/C:H/I:L/A:N",
+              "V3Score": 7.1
+            }
+          },
+          "References": [
+            "http://www.openwall.com/lists/oss-security/2025/09/03/3",
+            "https://access.redhat.com/security/cve/CVE-2025-57833",
+            "https://docs.djangoproject.com/en/dev/releases/security",
+            "https://docs.djangoproject.com/en/dev/releases/security/",
+            "https://github.com/django/django",
+            "https://github.com/django/django/commit/102965ea93072fe3c39a30be437c683ec1106ef5",
+            "https://github.com/django/django/commit/31334e6965ad136a5e369993b01721499c5d1a92",
+            "https://github.com/django/django/commit/4c044fcc866ec226f612c475950b690b0139d243",
+            "https://groups.google.com/g/django-announce",
+            "https://lists.debian.org/debian-lts-announce/2025/09/msg00017.html",
+            "https://medium.com/@EyalSec/django-unauthenticated-0-click-rce-and-sql-injection-using-default-configuration-059964f3f898",
+            "https://nvd.nist.gov/vuln/detail/CVE-2025-57833",
+            "https://ubuntu.com/security/notices/USN-7736-1",
+            "https://www.cve.org/CVERecord?id=CVE-2025-57833",
+            "https://www.djangoproject.com/weblog/2025/sep/03/security-releases",
+            "https://www.djangoproject.com/weblog/2025/sep/03/security-releases/"
+          ],
+          "PublishedDate": "2025-09-03T21:15:32.85Z",
+          "LastModifiedDate": "2025-11-04T22:16:31.93Z"
+        },
+        {
+          "VulnerabilityID": "CVE-2025-64458",
+          "VendorIDs": [
+            "GHSA-qw25-v68c-qjf3"
+          ],
+          "PkgName": "django",
+          "PkgIdentifier": {
+            "PURL": "pkg:pypi/django@1.11.0",
+            "UID": "d5ea94dfb38d4e43"
+          },
+          "InstalledVersion": "1.11.0",
+          "FixedVersion": "5.2.8, 5.1.14, 4.2.26",
+          "Status": "fixed",
+          "SeveritySource": "ghsa",
+          "PrimaryURL": "https://avd.aquasec.com/nvd/cve-2025-64458",
+          "DataSource": {
+            "ID": "ghsa",
+            "Name": "GitHub Security Advisory pip",
+            "URL": "https://github.com/advisories?query=type%3Areviewed+ecosystem%3Apip"
+          },
+          "Fingerprint": "sha256:358e26533021ad4e48bbf8ab9223d2a5acfbaf91eea3520ca22f1332c16caa69",
+          "Title": "Django: Denial-of-service vulnerability in Django on Windows",
+          "Description": "An issue was discovered in 5.1 before 5.1.14, 4.2 before 4.2.26, and 5.2 before 5.2.8.\nNFKC normalization in Python is slow on Windows. As a consequence, `django.http.HttpResponseRedirect`, `django.http.HttpResponsePermanentRedirect`, and the shortcut `django.shortcuts.redirect`  were subject to a potential  denial-of-service attack via certain inputs with a very large number of Unicode characters.\nEarlier, unsupported Django series (such as 5.0.x, 4.1.x, and 3.2.x) were not evaluated and may also be affected.\nDjango would like to thank Seokchan Yoon for reporting this issue.",
+          "Severity": "HIGH",
+          "CweIDs": [
+            "CWE-407"
+          ],
+          "VendorSeverity": {
+            "bitnami": 3,
+            "ghsa": 3,
+            "redhat": 3
+          },
+          "CVSS": {
+            "bitnami": {
+              "V3Vector": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:N/A:H",
+              "V3Score": 7.5
+            },
+            "ghsa": {
+              "V3Vector": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:N/A:H",
+              "V3Score": 7.5
+            },
+            "redhat": {
+              "V3Vector": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:N/A:H",
+              "V3Score": 7.5
+            }
+          },
+          "References": [
+            "https://access.redhat.com/security/cve/CVE-2025-64458",
+            "https://docs.djangoproject.com/en/dev/releases/security",
+            "https://docs.djangoproject.com/en/dev/releases/security/",
+            "https://github.com/django/django",
+            "https://github.com/django/django/commit/3790593781d26168e7306b5b2f8ea0309de16242",
+            "https://github.com/django/django/commit/4f5d904b63751dea9ffc3b0e046404a7fa5881ac",
+            "https://github.com/django/django/commit/6e13348436fccf8f22982921d6a3a3e65c956a9f",
+            "https://github.com/django/django/commit/770eea38d7a0e9ba9455140b5a9a9e33618226a7",
+            "https://groups.google.com/g/django-announce",
+            "https://nvd.nist.gov/vuln/detail/CVE-2025-64458",
+            "https://www.cve.org/CVERecord?id=CVE-2025-64458",
+            "https://www.djangoproject.com/weblog/2025/nov/05/security-releases",
+            "https://www.djangoproject.com/weblog/2025/nov/05/security-releases/"
+          ],
+          "PublishedDate": "2025-11-05T15:15:40.94Z",
+          "LastModifiedDate": "2025-11-10T18:33:02.957Z"
+        },
+        {
+          "VulnerabilityID": "CVE-2017-12794",
+          "VendorIDs": [
+            "GHSA-9r8w-6x8c-6jr9"
+          ],
+          "PkgName": "django",
+          "PkgIdentifier": {
+            "PURL": "pkg:pypi/django@1.11.0",
+            "UID": "d5ea94dfb38d4e43"
+          },
+          "InstalledVersion": "1.11.0",
+          "FixedVersion": "1.10.8, 1.11.5",
+          "Status": "fixed",
+          "SeveritySource": "ghsa",
+          "PrimaryURL": "https://avd.aquasec.com/nvd/cve-2017-12794",
+          "DataSource": {
+            "ID": "ghsa",
+            "Name": "GitHub Security Advisory pip",
+            "URL": "https://github.com/advisories?query=type%3Areviewed+ecosystem%3Apip"
+          },
+          "Fingerprint": "sha256:4f9e8a57896b5cf793edabfd83159b8d78a45f9ef2c945ccd7e9a2407f91a56a",
+          "Title": "python-django: Possible XSS in traceback section of technical 500 debug page",
+          "Description": "In Django 1.10.x before 1.10.8 and 1.11.x before 1.11.5, HTML autoescaping was disabled in a portion of the template for the technical 500 debug page. Given the right circumstances, this allowed a cross-site scripting attack. This vulnerability shouldn't affect most production sites since you shouldn't run with \"DEBUG = True\" (which makes this page accessible) in your production settings.",
+          "Severity": "MEDIUM",
+          "CweIDs": [
+            "CWE-79"
+          ],
+          "VendorSeverity": {
+            "ghsa": 2,
+            "nvd": 2,
+            "redhat": 1,
+            "ubuntu": 1
+          },
+          "CVSS": {
+            "ghsa": {
+              "V3Vector": "CVSS:3.0/AV:N/AC:L/PR:N/UI:R/S:C/C:L/I:L/A:N",
+              "V40Vector": "CVSS:4.0/AV:N/AC:L/AT:N/PR:N/UI:P/VC:N/VI:N/VA:N/SC:L/SI:L/SA:N",
+              "V3Score": 6.1,
+              "V40Score": 5.3
+            },
+            "nvd": {
+              "V2Vector": "AV:N/AC:M/Au:N/C:N/I:P/A:N",
+              "V3Vector": "CVSS:3.0/AV:N/AC:L/PR:N/UI:R/S:C/C:L/I:L/A:N",
+              "V2Score": 4.3,
+              "V3Score": 6.1
+            },
+            "redhat": {
+              "V3Vector": "CVSS:3.0/AV:N/AC:H/PR:N/UI:N/S:C/C:N/I:L/A:N",
+              "V3Score": 4
+            }
+          },
+          "References": [
+            "http://www.securityfocus.com/bid/100643",
+            "http://www.securitytracker.com/id/1039264",
+            "https://access.redhat.com/security/cve/CVE-2017-12794",
+            "https://github.com/advisories/GHSA-9r8w-6x8c-6jr9",
+            "https://github.com/django/django",
+            "https://github.com/django/django/commit/58e08e80e362db79eb0fd775dc81faad90dca47a",
+            "https://github.com/django/django/commit/e35a0c56086924f331e9422daa266e907a4784cc",
+            "https://github.com/pypa/advisory-database/tree/main/vulns/django/PYSEC-2017-44.yaml",
+            "https://nvd.nist.gov/vuln/detail/CVE-2017-12794",
+            "https://ubuntu.com/security/notices/USN-3559-1",
+            "https://usn.ubuntu.com/3559-1",
+            "https://usn.ubuntu.com/3559-1/",
+            "https://web.archive.org/web/20170927072701/http://www.securitytracker.com/id/1039264",
+            "https://web.archive.org/web/20200227150819/http://www.securityfocus.com/bid/100643",
+            "https://www.cve.org/CVERecord?id=CVE-2017-12794",
+            "https://www.djangoproject.com/weblog/2017/sep/05/security-releases",
+            "https://www.djangoproject.com/weblog/2017/sep/05/security-releases/"
+          ],
+          "PublishedDate": "2017-09-07T13:29:00.467Z",
+          "LastModifiedDate": "2026-05-13T00:24:29.033Z"
+        },
+        {
+          "VulnerabilityID": "CVE-2018-14574",
+          "VendorIDs": [
+            "GHSA-5hg3-6c2f-f3wr"
+          ],
+          "PkgName": "django",
+          "PkgIdentifier": {
+            "PURL": "pkg:pypi/django@1.11.0",
+            "UID": "d5ea94dfb38d4e43"
+          },
+          "InstalledVersion": "1.11.0",
+          "FixedVersion": "2.0.8, 1.11.15",
+          "Status": "fixed",
+          "SeveritySource": "ghsa",
+          "PrimaryURL": "https://avd.aquasec.com/nvd/cve-2018-14574",
+          "DataSource": {
+            "ID": "ghsa",
+            "Name": "GitHub Security Advisory pip",
+            "URL": "https://github.com/advisories?query=type%3Areviewed+ecosystem%3Apip"
+          },
+          "Fingerprint": "sha256:4ec2707c0e26623cebe88baebb6547cac406190b248950af26961fd5ef215be8",
+          "Title": "django: Open redirect possibility in CommonMiddleware",
+          "Description": "django.middleware.common.CommonMiddleware in Django 1.11.x before 1.11.15 and 2.0.x before 2.0.8 has an Open Redirect.",
+          "Severity": "MEDIUM",
+          "CweIDs": [
+            "CWE-601"
+          ],
+          "VendorSeverity": {
+            "ghsa": 2,
+            "nvd": 2,
+            "redhat": 2,
+            "ubuntu": 2
+          },
+          "CVSS": {
+            "ghsa": {
+              "V3Vector": "CVSS:3.0/AV:N/AC:L/PR:N/UI:R/S:C/C:L/I:L/A:N",
+              "V40Vector": "CVSS:4.0/AV:N/AC:L/AT:N/PR:N/UI:P/VC:N/VI:N/VA:N/SC:L/SI:L/SA:N",
+              "V3Score": 6.1,
+              "V40Score": 5.3
+            },
+            "nvd": {
+              "V2Vector": "AV:N/AC:M/Au:N/C:P/I:P/A:N",
+              "V3Vector": "CVSS:3.0/AV:N/AC:L/PR:N/UI:R/S:C/C:L/I:L/A:N",
+              "V2Score": 5.8,
+              "V3Score": 6.1
+            },
+            "redhat": {
+              "V3Vector": "CVSS:3.0/AV:N/AC:L/PR:N/UI:R/S:C/C:N/I:L/A:N",
+              "V3Score": 4.7
+            }
+          },
+          "References": [
+            "http://www.securityfocus.com/bid/104970",
+            "http://www.securitytracker.com/id/1041403",
+            "https://access.redhat.com/errata/RHSA-2019:0265",
+            "https://access.redhat.com/security/cve/CVE-2018-14574",
+            "https://github.com/advisories/GHSA-5hg3-6c2f-f3wr",
+            "https://github.com/django/django/commit/6fffc3c6d420e44f4029d5643f38d00a39b08525",
+            "https://github.com/django/django/commit/c4e5ff7fdb5fce447675e90291fd33fddd052b3c",
+            "https://github.com/django/django/commit/d6eaee092709aad477a9894598496c6deec532ff",
+            "https://github.com/pypa/advisory-database/tree/main/vulns/django/PYSEC-2018-2.yaml",
+            "https://nvd.nist.gov/vuln/detail/CVE-2018-14574",
+            "https://ubuntu.com/security/notices/USN-3726-1",
+            "https://usn.ubuntu.com/3726-1",
+            "https://usn.ubuntu.com/3726-1/",
+            "https://web.archive.org/web/20190901075632/http://www.securitytracker.com/id/1041403",
+            "https://web.archive.org/web/20200227115315/http://www.securityfocus.com/bid/104970",
+            "https://www.cve.org/CVERecord?id=CVE-2018-14574",
+            "https://www.debian.org/security/2018/dsa-4264",
+            "https://www.djangoproject.com/weblog/2018/aug/01/security-releases",
+            "https://www.djangoproject.com/weblog/2018/aug/01/security-releases/"
+          ],
+          "PublishedDate": "2018-08-03T17:29:00.25Z",
+          "LastModifiedDate": "2024-11-21T03:49:20.143Z"
+        },
+        {
+          "VulnerabilityID": "CVE-2018-7536",
+          "VendorIDs": [
+            "GHSA-r28v-mw67-m5p9"
+          ],
+          "PkgName": "django",
+          "PkgIdentifier": {
+            "PURL": "pkg:pypi/django@1.11.0",
+            "UID": "d5ea94dfb38d4e43"
+          },
+          "InstalledVersion": "1.11.0",
+          "FixedVersion": "2.0.3, 1.11.11, 1.8.19",
+          "Status": "fixed",
+          "SeveritySource": "ghsa",
+          "PrimaryURL": "https://avd.aquasec.com/nvd/cve-2018-7536",
+          "DataSource": {
+            "ID": "ghsa",
+            "Name": "GitHub Security Advisory pip",
+            "URL": "https://github.com/advisories?query=type%3Areviewed+ecosystem%3Apip"
+          },
+          "Fingerprint": "sha256:9475ac65f4d892c3106d528dcafb12da9dc6c48c24bb6b759cc3d793a3e7205d",
+          "Title": "django: Catastrophic backtracking in regular expressions via 'urlize' and 'urlizetrunc'",
+          "Description": "An issue was discovered in Django 2.0 before 2.0.3, 1.11 before 1.11.11, and 1.8 before 1.8.19. The django.utils.html.urlize() function was extremely slow to evaluate certain inputs due to catastrophic backtracking vulnerabilities in two regular expressions (only one regular expression for Django 1.8.x). The urlize() function is used to implement the urlize and urlizetrunc template filters, which were thus vulnerable.",
+          "Severity": "MEDIUM",
+          "CweIDs": [
+            "CWE-185"
+          ],
+          "VendorSeverity": {
+            "ghsa": 2,
+            "nvd": 2,
+            "redhat": 2,
+            "ubuntu": 2
+          },
+          "CVSS": {
+            "ghsa": {
+              "V3Vector": "CVSS:3.0/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:N/A:L",
+              "V40Vector": "CVSS:4.0/AV:N/AC:L/AT:N/PR:N/UI:N/VC:N/VI:L/VA:N/SC:N/SI:N/SA:N",
+              "V3Score": 5.3,
+              "V40Score": 6.9
+            },
+            "nvd": {
+              "V2Vector": "AV:N/AC:L/Au:N/C:N/I:N/A:P",
+              "V3Vector": "CVSS:3.0/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:N/A:L",
+              "V2Score": 5,
+              "V3Score": 5.3
+            },
+            "redhat": {
+              "V3Vector": "CVSS:3.0/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:N/A:L",
+              "V3Score": 5.3
+            }
+          },
+          "References": [
+            "http://www.securityfocus.com/bid/103361",
+            "https://access.redhat.com/errata/RHSA-2018:2927",
+            "https://access.redhat.com/errata/RHSA-2019:0051",
+            "https://access.redhat.com/errata/RHSA-2019:0082",
+            "https://access.redhat.com/errata/RHSA-2019:0265",
+            "https://access.redhat.com/security/cve/CVE-2018-7536",
+            "https://github.com/advisories/GHSA-r28v-mw67-m5p9",
+            "https://github.com/django/django",
+            "https://github.com/django/django/commit/1ca63a66ef3163149ad822701273e8a1844192c2",
+            "https://github.com/django/django/commit/abf89d729f210c692a50e0ad3f75fb6bec6fae16",
+            "https://github.com/django/django/commit/e157315da3ae7005fa0683ffc9751dbeca7306c8",
+            "https://github.com/pypa/advisory-database/tree/main/vulns/django/PYSEC-2018-5.yaml",
+            "https://lists.debian.org/debian-lts-announce/2018/03/msg00006.html",
+            "https://nvd.nist.gov/vuln/detail/CVE-2018-7536",
+            "https://ubuntu.com/security/notices/USN-3591-1",
+            "https://usn.ubuntu.com/3591-1",
+            "https://usn.ubuntu.com/3591-1/",
+            "https://web.archive.org/web/20200227131019/http://www.securityfocus.com/bid/103361",
+            "https://www.cve.org/CVERecord?id=CVE-2018-7536",
+            "https://www.debian.org/security/2018/dsa-4161",
+            "https://www.djangoproject.com/weblog/2018/mar/06/security-releases",
+            "https://www.djangoproject.com/weblog/2018/mar/06/security-releases/"
+          ],
+          "PublishedDate": "2018-03-09T20:29:00.613Z",
+          "LastModifiedDate": "2024-11-21T04:12:19.07Z"
+        },
+        {
+          "VulnerabilityID": "CVE-2019-12308",
+          "VendorIDs": [
+            "GHSA-7rp2-fm2h-wchj"
+          ],
+          "PkgName": "django",
+          "PkgIdentifier": {
+            "PURL": "pkg:pypi/django@1.11.0",
+            "UID": "d5ea94dfb38d4e43"
+          },
+          "InstalledVersion": "1.11.0",
+          "FixedVersion": "1.11.21, 2.1.9, 2.2.2",
+          "Status": "fixed",
+          "SeveritySource": "ghsa",
+          "PrimaryURL": "https://avd.aquasec.com/nvd/cve-2019-12308",
+          "DataSource": {
+            "ID": "ghsa",
+            "Name": "GitHub Security Advisory pip",
+            "URL": "https://github.com/advisories?query=type%3Areviewed+ecosystem%3Apip"
+          },
+          "Fingerprint": "sha256:378b6b1f3c194ad1d2e0a7ab7e884d6aa623b0aca4f5506f831119af26d30f63",
+          "Title": "django: missing URL validation by AdminURLFieldWidget leads to generation of clickable unsafe JavaScript link causing cross site scripting",
+          "Description": "An issue was discovered in Django 1.11 before 1.11.21, 2.1 before 2.1.9, and 2.2 before 2.2.2. The clickable Current URL value displayed by the AdminURLFieldWidget displays the provided value without validating it as a safe URL. Thus, an unvalidated value stored in the database, or a value provided as a URL query parameter payload, could result in an clickable JavaScript link.",
+          "Severity": "MEDIUM",
+          "CweIDs": [
+            "CWE-79"
+          ],
+          "VendorSeverity": {
+            "ghsa": 2,
+            "nvd": 2,
+            "redhat": 2,
+            "ubuntu": 1
+          },
+          "CVSS": {
+            "ghsa": {
+              "V3Vector": "CVSS:3.0/AV:N/AC:L/PR:N/UI:R/S:C/C:L/I:L/A:N",
+              "V40Vector": "CVSS:4.0/AV:N/AC:L/AT:N/PR:N/UI:P/VC:N/VI:N/VA:N/SC:L/SI:L/SA:N",
+              "V3Score": 6.1,
+              "V40Score": 5.3
+            },
+            "nvd": {
+              "V2Vector": "AV:N/AC:M/Au:N/C:N/I:P/A:N",
+              "V3Vector": "CVSS:3.0/AV:N/AC:L/PR:N/UI:R/S:C/C:L/I:L/A:N",
+              "V2Score": 4.3,
+              "V3Score": 6.1
+            },
+            "redhat": {
+              "V3Vector": "CVSS:3.0/AV:N/AC:L/PR:N/UI:R/S:C/C:N/I:L/A:N",
+              "V3Score": 4.7
+            }
+          },
+          "References": [
+            "http://lists.opensuse.org/opensuse-security-announce/2019-08/msg00006.html",
+            "http://lists.opensuse.org/opensuse-security-announce/2019-08/msg00025.html",
+            "http://www.openwall.com/lists/oss-security/2019/06/03/2",
+            "http://www.securityfocus.com/bid/108559",
+            "https://access.redhat.com/security/cve/CVE-2019-12308",
+            "https://docs.djangoproject.com/en/2.1/releases/2.1.9/",
+            "https://docs.djangoproject.com/en/2.2/releases/1.11.21/",
+            "https://docs.djangoproject.com/en/2.2/releases/2.2.2/",
+            "https://docs.djangoproject.com/en/dev/releases/1.11.21",
+            "https://docs.djangoproject.com/en/dev/releases/1.11.21/",
+            "https://docs.djangoproject.com/en/dev/releases/2.1.9",
+            "https://docs.djangoproject.com/en/dev/releases/2.1.9/",
+            "https://docs.djangoproject.com/en/dev/releases/2.2.2",
+            "https://docs.djangoproject.com/en/dev/releases/2.2.2/",
+            "https://docs.djangoproject.com/en/dev/releases/security",
+            "https://docs.djangoproject.com/en/dev/releases/security/",
+            "https://github.com/advisories/GHSA-7rp2-fm2h-wchj",
+            "https://github.com/django/django",
+            "https://github.com/django/django/commit/09186a13d975de6d049f8b3e05484f66b01ece62",
+            "https://github.com/django/django/commit/afddabf8428ddc89a332f7a78d0d21eaf2b5a673",
+            "https://github.com/django/django/commit/c238701859a52d584f349cce15d56c8e8137c52b",
+            "https://github.com/pypa/advisory-database/tree/main/vulns/django/PYSEC-2019-79.yaml",
+            "https://groups.google.com/forum/#!topic/django-announce/GEbHU7YoVz8",
+            "https://groups.google.com/forum/#%21topic/django-announce/GEbHU7YoVz8",
+            "https://lists.debian.org/debian-lts-announce/2019/06/msg00001.html",
+            "https://lists.debian.org/debian-lts-announce/2019/07/msg00001.html",
+            "https://lists.fedoraproject.org/archives/list/package-announce%40lists.fedoraproject.org/message/USYRARSYB7PE3S2ZQO7PZNWMH7RPGL5G/",
+            "https://lists.fedoraproject.org/archives/list/package-announce@lists.fedoraproject.org/message/USYRARSYB7PE3S2ZQO7PZNWMH7RPGL5G",
+            "https://nvd.nist.gov/vuln/detail/CVE-2019-12308",
+            "https://seclists.org/bugtraq/2019/Jul/10",
+            "https://security.gentoo.org/glsa/202004-17",
+            "https://ubuntu.com/security/notices/USN-4043-1",
+            "https://usn.ubuntu.com/4043-1",
+            "https://usn.ubuntu.com/4043-1/",
+            "https://www.cve.org/CVERecord?id=CVE-2019-12308",
+            "https://www.debian.org/security/2019/dsa-4476",
+            "https://www.djangoproject.com/weblog/2019/jun/03/security-releases",
+            "https://www.djangoproject.com/weblog/2019/jun/03/security-releases/"
+          ],
+          "PublishedDate": "2019-06-03T17:29:01.213Z",
+          "LastModifiedDate": "2024-11-21T04:22:35.753Z"
+        },
+        {
+          "VulnerabilityID": "CVE-2019-12781",
+          "VendorIDs": [
+            "GHSA-6c7v-2f49-8h26"
+          ],
+          "PkgName": "django",
+          "PkgIdentifier": {
+            "PURL": "pkg:pypi/django@1.11.0",
+            "UID": "d5ea94dfb38d4e43"
+          },
+          "InstalledVersion": "1.11.0",
+          "FixedVersion": "2.1.10, 2.2.3, 1.11.22",
+          "Status": "fixed",
+          "SeveritySource": "ghsa",
+          "PrimaryURL": "https://avd.aquasec.com/nvd/cve-2019-12781",
+          "DataSource": {
+            "ID": "ghsa",
+            "Name": "GitHub Security Advisory pip",
+            "URL": "https://github.com/advisories?query=type%3Areviewed+ecosystem%3Apip"
+          },
+          "Fingerprint": "sha256:224b9626390ba2b28b8365025473b989888f6308bd7168a2d4ed50d8f80769b4",
+          "Title": "Django: Incorrect HTTP detection with reverse-proxy connecting via HTTPS",
+          "Description": "An issue was discovered in Django 1.11 before 1.11.22, 2.1 before 2.1.10, and 2.2 before 2.2.3. An HTTP request is not redirected to HTTPS when the SECURE_PROXY_SSL_HEADER and SECURE_SSL_REDIRECT settings are used, and the proxy connects to Django via HTTPS. In other words, django.http.HttpRequest.scheme has incorrect behavior when a client uses HTTP.",
+          "Severity": "MEDIUM",
+          "CweIDs": [
+            "CWE-319"
+          ],
+          "VendorSeverity": {
+            "ghsa": 2,
+            "nvd": 2,
+            "redhat": 2,
+            "ubuntu": 2
+          },
+          "CVSS": {
+            "ghsa": {
+              "V3Vector": "CVSS:3.0/AV:N/AC:L/PR:N/UI:N/S:U/C:L/I:N/A:N",
+              "V40Vector": "CVSS:4.0/AV:N/AC:L/AT:N/PR:N/UI:N/VC:L/VI:N/VA:N/SC:N/SI:N/SA:N",
+              "V3Score": 5.3,
+              "V40Score": 6.9
+            },
+            "nvd": {
+              "V2Vector": "AV:N/AC:L/Au:N/C:P/I:N/A:N",
+              "V3Vector": "CVSS:3.0/AV:N/AC:L/PR:N/UI:N/S:U/C:L/I:N/A:N",
+              "V2Score": 5,
+              "V3Score": 5.3
+            },
+            "redhat": {
+              "V3Vector": "CVSS:3.0/AV:N/AC:H/PR:N/UI:N/S:U/C:L/I:L/A:N",
+              "V3Score": 4.8
+            }
+          },
+          "References": [
+            "http://lists.opensuse.org/opensuse-security-announce/2019-08/msg00006.html",
+            "http://lists.opensuse.org/opensuse-security-announce/2019-08/msg00025.html",
+            "http://www.openwall.com/lists/oss-security/2019/07/01/3",
+            "http://www.securityfocus.com/bid/109018",
+            "https://access.redhat.com/security/cve/CVE-2019-12781",
+            "https://docs.djangoproject.com/en/dev/releases/security",
+            "https://docs.djangoproject.com/en/dev/releases/security/",
+            "https://github.com/advisories/GHSA-6c7v-2f49-8h26",
+            "https://github.com/django/django",
+            "https://github.com/pypa/advisory-database/tree/main/vulns/django/PYSEC-2019-10.yaml",
+            "https://groups.google.com/forum/#!topic/django-announce/Is4kLY9ZcZQ",
+            "https://groups.google.com/forum/#%21topic/django-announce/Is4kLY9ZcZQ",
+            "https://lists.fedoraproject.org/archives/list/package-announce%40lists.fedoraproject.org/message/5VXXWIOQGXOB7JCGJ3CVUW673LDHKEYL/",
+            "https://lists.fedoraproject.org/archives/list/package-announce@lists.fedoraproject.org/message/5VXXWIOQGXOB7JCGJ3CVUW673LDHKEYL",
+            "https://nvd.nist.gov/vuln/detail/CVE-2019-12781",
+            "https://seclists.org/bugtraq/2019/Jul/10",
+            "https://security.netapp.com/advisory/ntap-20190705-0002",
+            "https://security.netapp.com/advisory/ntap-20190705-0002/",
+            "https://ubuntu.com/security/notices/USN-4043-1",
+            "https://usn.ubuntu.com/4043-1",
+            "https://usn.ubuntu.com/4043-1/",
+            "https://www.cve.org/CVERecord?id=CVE-2019-12781",
+            "https://www.debian.org/security/2019/dsa-4476",
+            "https://www.djangoproject.com/weblog/2019/jul/01/security-releases",
+            "https://www.djangoproject.com/weblog/2019/jul/01/security-releases/"
+          ],
+          "PublishedDate": "2019-07-01T14:15:10.847Z",
+          "LastModifiedDate": "2024-11-21T04:23:33.9Z"
+        },
+        {
+          "VulnerabilityID": "CVE-2021-33203",
+          "VendorIDs": [
+            "GHSA-68w8-qjq3-2gfm"
+          ],
+          "PkgName": "django",
+          "PkgIdentifier": {
+            "PURL": "pkg:pypi/django@1.11.0",
+            "UID": "d5ea94dfb38d4e43"
+          },
+          "InstalledVersion": "1.11.0",
+          "FixedVersion": "2.2.24, 3.1.12, 3.2.4",
+          "Status": "fixed",
+          "SeveritySource": "ghsa",
+          "PrimaryURL": "https://avd.aquasec.com/nvd/cve-2021-33203",
+          "DataSource": {
+            "ID": "ghsa",
+            "Name": "GitHub Security Advisory pip",
+            "URL": "https://github.com/advisories?query=type%3Areviewed+ecosystem%3Apip"
+          },
+          "Fingerprint": "sha256:6b03b0635e34ea26b633d58156064425148558e4afa4d0ecbc9ea8042598f189",
+          "Title": "django: Potential directory traversal via ``admindocs``",
+          "Description": "Django before 2.2.24, 3.x before 3.1.12, and 3.2.x before 3.2.4 has a potential directory traversal via django.contrib.admindocs. Staff members could use the TemplateDetailView view to check the existence of arbitrary files. Additionally, if (and only if) the default admindocs templates have been customized by application developers to also show file contents, then not only the existence but also the file contents would have been exposed. In other words, there is directory traversal outside of the template root directories.",
+          "Severity": "MEDIUM",
+          "CweIDs": [
+            "CWE-22"
+          ],
+          "VendorSeverity": {
+            "bitnami": 2,
+            "ghsa": 2,
+            "nvd": 2,
+            "oracle-oval": 3,
+            "redhat": 2,
+            "ubuntu": 1
+          },
+          "CVSS": {
+            "bitnami": {
+              "V3Vector": "CVSS:3.1/AV:N/AC:L/PR:H/UI:N/S:U/C:H/I:N/A:N",
+              "V3Score": 4.9
+            },
+            "ghsa": {
+              "V3Vector": "CVSS:3.1/AV:N/AC:L/PR:H/UI:N/S:U/C:H/I:N/A:N",
+              "V40Vector": "CVSS:4.0/AV:N/AC:L/AT:N/PR:H/UI:N/VC:H/VI:N/VA:N/SC:N/SI:N/SA:N",
+              "V3Score": 4.9,
+              "V40Score": 6.9
+            },
+            "nvd": {
+              "V2Vector": "AV:N/AC:L/Au:S/C:P/I:N/A:N",
+              "V3Vector": "CVSS:3.1/AV:N/AC:L/PR:H/UI:N/S:U/C:H/I:N/A:N",
+              "V2Score": 4,
+              "V3Score": 4.9
+            },
+            "redhat": {
+              "V3Vector": "CVSS:3.1/AV:N/AC:L/PR:H/UI:N/S:U/C:H/I:N/A:N",
+              "V3Score": 4.9
+            }
+          },
+          "References": [
+            "https://access.redhat.com/security/cve/CVE-2021-33203",
+            "https://docs.djangoproject.com/en/3.2/releases/security",
+            "https://docs.djangoproject.com/en/3.2/releases/security/",
+            "https://github.com/advisories/GHSA-68w8-qjq3-2gfm",
+            "https://github.com/django/django",
+            "https://github.com/django/django/commit/053cc9534d174dc89daba36724ed2dcb36755b90",
+            "https://github.com/django/django/commit/20c67a0693c4ede2b09af02574823485e82e4c8f",
+            "https://github.com/django/django/commit/dfaba12cda060b8b292ae1d271b44bf810b1c5b9",
+            "https://github.com/pypa/advisory-database/tree/main/vulns/django/PYSEC-2021-98.yaml",
+            "https://groups.google.com/forum/#!forum/django-announce",
+            "https://groups.google.com/forum/#%21forum/django-announce",
+            "https://linux.oracle.com/cve/CVE-2021-33203.html",
+            "https://linux.oracle.com/errata/ELSA-2022-9341.html",
+            "https://lists.fedoraproject.org/archives/list/package-announce%40lists.fedoraproject.org/message/B4SQG2EAF4WCI2SLRL6XRDJ3RPK3ZRDV/",
+            "https://lists.fedoraproject.org/archives/list/package-announce@lists.fedoraproject.org/message/B4SQG2EAF4WCI2SLRL6XRDJ3RPK3ZRDV",
+            "https://nvd.nist.gov/vuln/detail/CVE-2021-33203",
+            "https://security.netapp.com/advisory/ntap-20210727-0004",
+            "https://security.netapp.com/advisory/ntap-20210727-0004/",
+            "https://ubuntu.com/security/notices/USN-4975-1",
+            "https://ubuntu.com/security/notices/USN-4975-2",
+            "https://www.cve.org/CVERecord?id=CVE-2021-33203",
+            "https://www.djangoproject.com/weblog/2021/jun/02/security-releases",
+            "https://www.djangoproject.com/weblog/2021/jun/02/security-releases/"
+          ],
+          "PublishedDate": "2021-06-08T18:15:08.48Z",
+          "LastModifiedDate": "2024-11-21T06:08:30.487Z"
+        },
+        {
+          "VulnerabilityID": "CVE-2024-45231",
+          "VendorIDs": [
+            "GHSA-rrqc-c2jx-6jgv"
+          ],
+          "PkgName": "django",
+          "PkgIdentifier": {
+            "PURL": "pkg:pypi/django@1.11.0",
+            "UID": "d5ea94dfb38d4e43"
+          },
+          "InstalledVersion": "1.11.0",
+          "FixedVersion": "5.1.1, 5.0.9, 4.2.16",
+          "Status": "fixed",
+          "SeveritySource": "ghsa",
+          "PrimaryURL": "https://avd.aquasec.com/nvd/cve-2024-45231",
+          "DataSource": {
+            "ID": "ghsa",
+            "Name": "GitHub Security Advisory pip",
+            "URL": "https://github.com/advisories?query=type%3Areviewed+ecosystem%3Apip"
+          },
+          "Fingerprint": "sha256:09e59e6c4d6c052322df25992f568aecc756fd6ba49b48f34b2f1ef664efc69f",
+          "Title": "python-django: Potential user email enumeration via response status on password reset",
+          "Description": "An issue was discovered in Django v5.1.1, v5.0.9, and v4.2.16. The django.contrib.auth.forms.PasswordResetForm class, when used in a view implementing password reset flows, allows remote attackers to enumerate user e-mail addresses by sending password reset requests and observing the outcome (only when e-mail sending is consistently failing).",
+          "Severity": "MEDIUM",
+          "CweIDs": [
+            "CWE-203"
+          ],
+          "VendorSeverity": {
+            "bitnami": 2,
+            "ghsa": 2,
+            "nvd": 2,
+            "redhat": 1,
+            "ubuntu": 1
+          },
+          "CVSS": {
+            "bitnami": {
+              "V3Vector": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:L/I:N/A:N",
+              "V3Score": 5.3
+            },
+            "ghsa": {
+              "V3Vector": "CVSS:3.1/AV:N/AC:H/PR:N/UI:N/S:U/C:L/I:N/A:N",
+              "V40Vector": "CVSS:4.0/AV:N/AC:L/AT:P/PR:N/UI:N/VC:L/VI:N/VA:N/SC:N/SI:N/SA:N",
+              "V3Score": 3.7,
+              "V40Score": 6.3
+            },
+            "nvd": {
+              "V3Vector": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:L/I:N/A:N",
+              "V3Score": 5.3
+            },
+            "redhat": {
+              "V3Vector": "CVSS:3.1/AV:N/AC:H/PR:N/UI:N/S:U/C:L/I:N/A:N",
+              "V3Score": 3.7
+            }
+          },
+          "References": [
+            "https://access.redhat.com/security/cve/CVE-2024-45231",
+            "https://docs.djangoproject.com/en/dev/releases/security",
+            "https://docs.djangoproject.com/en/dev/releases/security/",
+            "https://github.com/django/django",
+            "https://github.com/django/django/commit/3c733c78d6f8e50296d6e248968b6516c92a53ca",
+            "https://github.com/django/django/commit/96d84047715ea1715b4bd1594e46122b8a77b9e2",
+            "https://github.com/django/django/commit/bf4888d317ba4506d091eeac6e8b4f1fcc731199",
+            "https://groups.google.com/forum/#%21forum/django-announce",
+            "https://nvd.nist.gov/vuln/detail/CVE-2024-45231",
+            "https://ubuntu.com/security/notices/USN-6987-1",
+            "https://www.cve.org/CVERecord?id=CVE-2024-45231",
+            "https://www.djangoproject.com/weblog/2024/sep/03/security-releases",
+            "https://www.djangoproject.com/weblog/2024/sep/03/security-releases/"
+          ],
+          "PublishedDate": "2024-10-08T16:15:11.997Z",
+          "LastModifiedDate": "2025-03-17T18:15:17.73Z"
+        },
+        {
+          "VulnerabilityID": "CVE-2025-48432",
+          "VendorIDs": [
+            "GHSA-7xr5-9hcq-chf9"
+          ],
+          "PkgName": "django",
+          "PkgIdentifier": {
+            "PURL": "pkg:pypi/django@1.11.0",
+            "UID": "d5ea94dfb38d4e43"
+          },
+          "InstalledVersion": "1.11.0",
+          "FixedVersion": "5.2.2, 5.1.10, 4.2.22",
+          "Status": "fixed",
+          "SeveritySource": "ghsa",
+          "PrimaryURL": "https://avd.aquasec.com/nvd/cve-2025-48432",
+          "DataSource": {
+            "ID": "ghsa",
+            "Name": "GitHub Security Advisory pip",
+            "URL": "https://github.com/advisories?query=type%3Areviewed+ecosystem%3Apip"
+          },
+          "Fingerprint": "sha256:e0371daea732053ea6c60f9d258fd52d8fd440fa0f1d4ecd7ae432c4fc4e1cdf",
+          "Title": "django: Django Path Injection Vulnerability",
+          "Description": "An issue was discovered in Django 5.2 before 5.2.3, 5.1 before 5.1.11, and 4.2 before 4.2.23. Internal HTTP response logging does not escape request.path, which allows remote attackers to potentially manipulate log output via crafted URLs. This may lead to log injection or forgery when logs are viewed in terminals or processed by external systems.",
+          "Severity": "MEDIUM",
+          "CweIDs": [
+            "CWE-117"
+          ],
+          "VendorSeverity": {
+            "bitnami": 2,
+            "ghsa": 2,
+            "nvd": 2,
+            "redhat": 2,
+            "ubuntu": 1
+          },
+          "CVSS": {
+            "bitnami": {
+              "V3Vector": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:L/A:N",
+              "V3Score": 5.3
+            },
+            "ghsa": {
+              "V3Vector": "CVSS:3.1/AV:N/AC:H/PR:N/UI:N/S:C/C:N/I:L/A:N",
+              "V3Score": 4
+            },
+            "nvd": {
+              "V3Vector": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:L/A:N",
+              "V3Score": 5.3
+            },
+            "redhat": {
+              "V3Vector": "CVSS:3.1/AV:N/AC:H/PR:N/UI:N/S:C/C:L/I:L/A:N",
+              "V3Score": 5.4
+            }
+          },
+          "References": [
+            "http://www.openwall.com/lists/oss-security/2025/06/04/5",
+            "http://www.openwall.com/lists/oss-security/2025/06/10/2",
+            "http://www.openwall.com/lists/oss-security/2025/06/10/3",
+            "http://www.openwall.com/lists/oss-security/2025/06/10/4",
+            "https://access.redhat.com/security/cve/CVE-2025-48432",
+            "https://docs.djangoproject.com/en/dev/releases/security",
+            "https://docs.djangoproject.com/en/dev/releases/security/",
+            "https://github.com/django/django",
+            "https://github.com/pypa/advisory-database/tree/main/vulns/django/PYSEC-2025-47.yaml",
+            "https://groups.google.com/g/django-announce",
+            "https://nvd.nist.gov/vuln/detail/CVE-2025-48432",
+            "https://ubuntu.com/security/notices/USN-7555-1",
+            "https://ubuntu.com/security/notices/USN-7555-2",
+            "https://ubuntu.com/security/notices/USN-7555-3",
+            "https://www.cve.org/CVERecord?id=CVE-2025-48432",
+            "https://www.djangoproject.com/weblog/2025/jun/04/security-releases",
+            "https://www.djangoproject.com/weblog/2025/jun/04/security-releases/",
+            "https://www.djangoproject.com/weblog/2025/jun/10/bugfix-releases",
+            "https://www.djangoproject.com/weblog/2025/jun/10/bugfix-releases/"
+          ],
+          "PublishedDate": "2025-06-05T03:15:25.563Z",
+          "LastModifiedDate": "2025-10-15T17:47:56.647Z"
+        },
+        {
+          "VulnerabilityID": "CVE-2018-7537",
+          "VendorIDs": [
+            "GHSA-2f9x-5v75-3qv4"
+          ],
+          "PkgName": "django",
+          "PkgIdentifier": {
+            "PURL": "pkg:pypi/django@1.11.0",
+            "UID": "d5ea94dfb38d4e43"
+          },
+          "InstalledVersion": "1.11.0",
+          "FixedVersion": "2.0.3, 1.11.11, 1.8.19",
+          "Status": "fixed",
+          "SeveritySource": "ghsa",
+          "PrimaryURL": "https://avd.aquasec.com/nvd/cve-2018-7537",
+          "DataSource": {
+            "ID": "ghsa",
+            "Name": "GitHub Security Advisory pip",
+            "URL": "https://github.com/advisories?query=type%3Areviewed+ecosystem%3Apip"
+          },
+          "Fingerprint": "sha256:44a31e04b50598231199ee99bf62b8661003ebfb93345774e741ae91a752310a",
+          "Title": "django: Catastrophic backtracking in regular expressions via 'truncatechars_html' and 'truncatewords_html'",
+          "Description": "An issue was discovered in Django 2.0 before 2.0.3, 1.11 before 1.11.11, and 1.8 before 1.8.19. If django.utils.text.Truncator's chars() and words() methods were passed the html=True argument, they were extremely slow to evaluate certain inputs due to a catastrophic backtracking vulnerability in a regular expression. The chars() and words() methods are used to implement the truncatechars_html and truncatewords_html template filters, which were thus vulnerable.",
+          "Severity": "LOW",
+          "CweIDs": [
+            "CWE-185"
+          ],
+          "VendorSeverity": {
+            "ghsa": 1,
+            "nvd": 2,
+            "redhat": 2,
+            "ubuntu": 2
+          },
+          "CVSS": {
+            "ghsa": {
+              "V3Vector": "CVSS:3.0/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:N/A:L",
+              "V40Vector": "CVSS:4.0/AV:N/AC:L/AT:N/PR:N/UI:N/VC:N/VI:N/VA:L/SC:N/SI:N/SA:N/E:U",
+              "V3Score": 5.3,
+              "V40Score": 2.7
+            },
+            "nvd": {
+              "V2Vector": "AV:N/AC:L/Au:N/C:N/I:N/A:P",
+              "V3Vector": "CVSS:3.0/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:N/A:L",
+              "V2Score": 5,
+              "V3Score": 5.3
+            },
+            "redhat": {
+              "V3Vector": "CVSS:3.0/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:N/A:L",
+              "V3Score": 5.3
+            }
+          },
+          "References": [
+            "http://www.securityfocus.com/bid/103357",
+            "https://access.redhat.com/errata/RHSA-2018:2927",
+            "https://access.redhat.com/errata/RHSA-2019:0265",
+            "https://access.redhat.com/security/cve/CVE-2018-7537",
+            "https://github.com/advisories/GHSA-2f9x-5v75-3qv4",
+            "https://github.com/django/django",
+            "https://github.com/django/django/commit/94c5da1d17a6b0d378866c66b605102c19f7988c",
+            "https://github.com/django/django/commit/a91436360b79a6ff995c3e5018bcc666dfaf1539",
+            "https://github.com/django/django/commit/d17974a287a6ea2e361daff88fcc004cbd6835fa",
+            "https://github.com/pypa/advisory-database/tree/main/vulns/django/PYSEC-2018-6.yaml",
+            "https://lists.debian.org/debian-lts-announce/2018/03/msg00006.html",
+            "https://nvd.nist.gov/vuln/detail/CVE-2018-7537",
+            "https://ubuntu.com/security/notices/USN-3591-1",
+            "https://usn.ubuntu.com/3591-1",
+            "https://usn.ubuntu.com/3591-1/",
+            "https://www.cve.org/CVERecord?id=CVE-2018-7537",
+            "https://www.debian.org/security/2018/dsa-4161",
+            "https://www.djangoproject.com/weblog/2018/mar/06/security-releases",
+            "https://www.djangoproject.com/weblog/2018/mar/06/security-releases/"
+          ],
+          "PublishedDate": "2018-03-09T20:29:00.66Z",
+          "LastModifiedDate": "2024-11-21T04:12:19.227Z"
+        },
+        {
+          "VulnerabilityID": "CVE-2018-1000656",
+          "VendorIDs": [
+            "GHSA-562c-5r94-xh97"
+          ],
+          "PkgName": "flask",
+          "PkgIdentifier": {
+            "PURL": "pkg:pypi/flask@0.12.2",
+            "UID": "9d631b08895d90b4"
+          },
+          "InstalledVersion": "0.12.2",
+          "FixedVersion": "0.12.3",
+          "Status": "fixed",
+          "SeveritySource": "ghsa",
+          "PrimaryURL": "https://avd.aquasec.com/nvd/cve-2018-1000656",
+          "DataSource": {
+            "ID": "ghsa",
+            "Name": "GitHub Security Advisory pip",
+            "URL": "https://github.com/advisories?query=type%3Areviewed+ecosystem%3Apip"
+          },
+          "Fingerprint": "sha256:23585375f136be6911b568e6b4b393e3c96d86345f42e1f116714e3221360058",
+          "Title": "python-flask: Denial of Service via crafted JSON file",
+          "Description": "The Pallets Project flask version Before 0.12.3 contains a CWE-20: Improper Input Validation vulnerability in flask that can result in Large amount of memory usage possibly leading to denial of service. This attack appear to be exploitable via Attacker provides JSON data in incorrect encoding. This vulnerability appears to have been fixed in 0.12.3. NOTE: this may overlap CVE-2019-1010083.",
+          "Severity": "HIGH",
+          "CweIDs": [
+            "CWE-20"
+          ],
+          "VendorSeverity": {
+            "ghsa": 3,
+            "nvd": 3,
+            "redhat": 1,
+            "ubuntu": 1
+          },
+          "CVSS": {
+            "ghsa": {
+              "V3Vector": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:N/A:H",
+              "V40Vector": "CVSS:4.0/AV:N/AC:L/AT:N/PR:N/UI:N/VC:N/VI:N/VA:H/SC:N/SI:N/SA:N",
+              "V3Score": 7.5,
+              "V40Score": 8.7
+            },
+            "nvd": {
+              "V2Vector": "AV:N/AC:L/Au:N/C:N/I:N/A:P",
+              "V3Vector": "CVSS:3.0/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:N/A:H",
+              "V2Score": 5,
+              "V3Score": 7.5
+            },
+            "redhat": {
+              "V3Vector": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:N/A:H",
+              "V3Score": 7.5
+            }
+          },
+          "References": [
+            "https://access.redhat.com/security/cve/CVE-2018-1000656",
+            "https://github.com/advisories/GHSA-562c-5r94-xh97",
+            "https://github.com/pallets/flask",
+            "https://github.com/pallets/flask/commit/b178e89e4456e777b1a7ac6d7199052d0dfdbbbe",
+            "https://github.com/pallets/flask/pull/2691",
+            "https://github.com/pallets/flask/releases/tag/0.12.3",
+            "https://github.com/pypa/advisory-database/tree/main/vulns/flask/PYSEC-2018-66.yaml",
+            "https://lists.debian.org/debian-lts-announce/2019/08/msg00025.html",
+            "https://nvd.nist.gov/vuln/detail/CVE-2018-1000656",
+            "https://security.netapp.com/advisory/ntap-20190221-0001",
+            "https://security.netapp.com/advisory/ntap-20190221-0001/",
+            "https://ubuntu.com/security/notices/USN-4378-1",
+            "https://usn.ubuntu.com/4378-1",
+            "https://usn.ubuntu.com/4378-1/",
+            "https://www.cve.org/CVERecord?id=CVE-2018-1000656"
+          ],
+          "PublishedDate": "2018-08-20T19:31:45.34Z",
+          "LastModifiedDate": "2024-11-21T03:40:20.45Z"
+        },
+        {
+          "VulnerabilityID": "CVE-2019-1010083",
+          "VendorIDs": [
+            "GHSA-5wv5-4vpf-pj6m"
+          ],
+          "PkgName": "flask",
+          "PkgIdentifier": {
+            "PURL": "pkg:pypi/flask@0.12.2",
+            "UID": "9d631b08895d90b4"
+          },
+          "InstalledVersion": "0.12.2",
+          "FixedVersion": "1.0",
+          "Status": "fixed",
+          "SeveritySource": "ghsa",
+          "PrimaryURL": "https://avd.aquasec.com/nvd/cve-2019-1010083",
+          "DataSource": {
+            "ID": "ghsa",
+            "Name": "GitHub Security Advisory pip",
+            "URL": "https://github.com/advisories?query=type%3Areviewed+ecosystem%3Apip"
+          },
+          "Fingerprint": "sha256:5d6b3b32a28e90c16adae36fc029941c1d953212fbcd9119c83fbe2a81fbd0f1",
+          "Title": "python-flask: unexpected memory usage can lead to denial of service via crafted encoded JSON data",
+          "Description": "The Pallets Project Flask before 1.0 is affected by: unexpected memory usage. The impact is: denial of service. The attack vector is: crafted encoded JSON data. The fixed version is: 1. NOTE: this may overlap CVE-2018-1000656.",
+          "Severity": "HIGH",
+          "VendorSeverity": {
+            "ghsa": 3,
+            "nvd": 3,
+            "redhat": 2,
+            "ubuntu": 1
+          },
+          "CVSS": {
+            "ghsa": {
+              "V3Vector": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:N/A:H",
+              "V40Vector": "CVSS:4.0/AV:N/AC:L/AT:N/PR:N/UI:N/VC:N/VI:N/VA:H/SC:N/SI:N/SA:N",
+              "V3Score": 7.5,
+              "V40Score": 8.7
+            },
+            "nvd": {
+              "V2Vector": "AV:N/AC:L/Au:N/C:N/I:N/A:P",
+              "V3Vector": "CVSS:3.0/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:N/A:H",
+              "V2Score": 5,
+              "V3Score": 7.5
+            },
+            "redhat": {
+              "V3Vector": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:N/A:H",
+              "V3Score": 7.5
+            }
+          },
+          "References": [
+            "https://access.redhat.com/security/cve/CVE-2019-1010083",
+            "https://github.com/advisories/GHSA-5wv5-4vpf-pj6m",
+            "https://github.com/pallets/flask",
+            "https://github.com/pypa/advisory-database/tree/main/vulns/flask/PYSEC-2019-179.yaml",
+            "https://nvd.nist.gov/vuln/detail/CVE-2019-1010083",
+            "https://palletsprojects.com/blog/flask-1-0-released/",
+            "https://snyk.io/vuln/SNYK-PYTHON-FLASK-451637",
+            "https://www.cve.org/CVERecord?id=CVE-2019-1010083",
+            "https://www.palletsprojects.com/blog/flask-1-0-released",
+            "https://www.palletsprojects.com/blog/flask-1-0-released/"
+          ],
+          "PublishedDate": "2019-07-17T14:15:11.57Z",
+          "LastModifiedDate": "2024-11-21T04:17:57.66Z"
+        },
+        {
+          "VulnerabilityID": "CVE-2023-30861",
+          "VendorIDs": [
+            "GHSA-m2qf-hxjv-5gpq"
+          ],
+          "PkgName": "flask",
+          "PkgIdentifier": {
+            "PURL": "pkg:pypi/flask@0.12.2",
+            "UID": "9d631b08895d90b4"
+          },
+          "InstalledVersion": "0.12.2",
+          "FixedVersion": "2.3.2, 2.2.5",
+          "Status": "fixed",
+          "SeveritySource": "ghsa",
+          "PrimaryURL": "https://avd.aquasec.com/nvd/cve-2023-30861",
+          "DataSource": {
+            "ID": "ghsa",
+            "Name": "GitHub Security Advisory pip",
+            "URL": "https://github.com/advisories?query=type%3Areviewed+ecosystem%3Apip"
+          },
+          "Fingerprint": "sha256:2de50ceefd1d5212db2a81c3bf0f8f872ae2711556de9d54b93baf19abfd799d",
+          "Title": "flask: Possible disclosure of permanent session cookie due to missing Vary: Cookie header",
+          "Description": "Flask is a lightweight WSGI web application framework. When all of the following conditions are met, a response containing data intended for one client may be cached and subsequently sent by the proxy to other clients. If the proxy also caches `Set-Cookie` headers, it may send one client's `session` cookie to other clients. The severity depends on the application's use of the session and the proxy's behavior regarding cookies. The risk depends on all these conditions being met.\n\n1. The application must be hosted behind a caching proxy that does not strip cookies or ignore responses with cookies.\n2. The application sets `session.permanent = True`\n3. The application does not access or modify the session at any point during a request.\n4. `SESSION_REFRESH_EACH_REQUEST` enabled (the default).\n5. The application does not set a `Cache-Control` header to indicate that a page is private or should not be cached.\n\nThis happens because vulnerable versions of Flask only set the `Vary: Cookie` header when the session is accessed or modified, not when it is refreshed (re-sent to update the expiration) without being accessed or modified. This issue has been fixed in versions 2.3.2 and 2.2.5.",
+          "Severity": "HIGH",
+          "CweIDs": [
+            "CWE-539"
+          ],
+          "VendorSeverity": {
+            "amazon": 3,
+            "ghsa": 3,
+            "nvd": 3,
+            "oracle-oval": 3,
+            "redhat": 3,
+            "ubuntu": 2
+          },
+          "CVSS": {
+            "ghsa": {
+              "V3Vector": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:H/I:N/A:N",
+              "V40Vector": "CVSS:4.0/AV:N/AC:L/AT:N/PR:N/UI:N/VC:H/VI:N/VA:N/SC:N/SI:N/SA:N",
+              "V3Score": 7.5,
+              "V40Score": 8.7
+            },
+            "nvd": {
+              "V3Vector": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:H/I:N/A:N",
+              "V3Score": 7.5
+            },
+            "redhat": {
+              "V3Vector": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:H/I:N/A:N",
+              "V3Score": 7.5
+            }
+          },
+          "References": [
+            "https://access.redhat.com/security/cve/CVE-2023-30861",
+            "https://github.com/pallets/flask",
+            "https://github.com/pallets/flask/commit/70f906c51ce49c485f1d355703e9cc3386b1cc2b",
+            "https://github.com/pallets/flask/commit/8646edca6f47e2cd57464081b3911218d4734f8d (2.2.5)",
+            "https://github.com/pallets/flask/commit/8705dd39c4fa563ea0fe0bf84c85da8fcc98b88d (2.3.2)",
+            "https://github.com/pallets/flask/commit/afd63b16170b7c047f5758eb910c416511e9c965",
+            "https://github.com/pallets/flask/releases/tag/2.2.5",
+            "https://github.com/pallets/flask/releases/tag/2.3.2",
+            "https://github.com/pallets/flask/security/advisories/GHSA-m2qf-hxjv-5gpq",
+            "https://github.com/pypa/advisory-database/tree/main/vulns/flask/PYSEC-2023-62.yaml",
+            "https://linux.oracle.com/cve/CVE-2023-30861.html",
+            "https://linux.oracle.com/errata/ELSA-2023-12710.html",
+            "https://lists.debian.org/debian-lts-announce/2023/08/msg00024.html",
+            "https://nvd.nist.gov/vuln/detail/CVE-2023-30861",
+            "https://security.netapp.com/advisory/ntap-20230818-0006",
+            "https://security.netapp.com/advisory/ntap-20230818-0006/",
+            "https://ubuntu.com/security/notices/USN-6111-1",
+            "https://www.cve.org/CVERecord?id=CVE-2023-30861",
+            "https://www.debian.org/security/2023/dsa-5442"
+          ],
+          "PublishedDate": "2023-05-02T18:15:52.373Z",
+          "LastModifiedDate": "2024-11-21T08:00:59.623Z"
+        },
+        {
+          "VulnerabilityID": "CVE-2026-27205",
+          "VendorIDs": [
+            "GHSA-68rp-wp8r-4726"
+          ],
+          "PkgName": "flask",
+          "PkgIdentifier": {
+            "PURL": "pkg:pypi/flask@0.12.2",
+            "UID": "9d631b08895d90b4"
+          },
+          "InstalledVersion": "0.12.2",
+          "FixedVersion": "3.1.3",
+          "Status": "fixed",
+          "SeveritySource": "ghsa",
+          "PrimaryURL": "https://avd.aquasec.com/nvd/cve-2026-27205",
+          "DataSource": {
+            "ID": "ghsa",
+            "Name": "GitHub Security Advisory pip",
+            "URL": "https://github.com/advisories?query=type%3Areviewed+ecosystem%3Apip"
+          },
+          "Fingerprint": "sha256:f274ff1e302131bc77cbe0f2e3049f060b30b9dc4aee6eb0e681274cc23e1575",
+          "Title": "flask: Flask: Information disclosure via improper caching of session data",
+          "Description": "Flask is a web server gateway interface (WSGI) web application framework. In versions 3.1.2 and below, when the session object is accessed, Flask should set the Vary: Cookie header., resulting in a Use of Cache Containing Sensitive Information vulnerability. The logic instructs caches not to cache the response, as it may contain information specific to a logged in user. This is handled in most cases, but some forms of access such as the Python in operator were overlooked. The severity and risk depend on the application being hosted behind a caching proxy that doesn't ignore responses with cookies, not setting a Cache-Control header to mark pages as private or non-cacheable, and accessing the session in a way that only touches keys without reading values or mutating the session. The issue has been fixed in version 3.1.3.",
+          "Severity": "LOW",
+          "CweIDs": [
+            "CWE-524"
+          ],
+          "VendorSeverity": {
+            "amazon": 2,
+            "ghsa": 1,
+            "nvd": 2,
+            "redhat": 2,
+            "ubuntu": 1
+          },
+          "CVSS": {
+            "ghsa": {
+              "V40Vector": "CVSS:4.0/AV:N/AC:L/AT:P/PR:N/UI:P/VC:L/VI:N/VA:N/SC:N/SI:N/SA:N",
+              "V40Score": 2.3
+            },
+            "nvd": {
+              "V3Vector": "CVSS:3.1/AV:N/AC:L/PR:N/UI:R/S:U/C:L/I:N/A:N",
+              "V3Score": 4.3
+            },
+            "redhat": {
+              "V3Vector": "CVSS:3.1/AV:N/AC:L/PR:N/UI:R/S:U/C:L/I:N/A:N",
+              "V3Score": 4.3
+            }
+          },
+          "References": [
+            "https://access.redhat.com/security/cve/CVE-2026-27205",
+            "https://github.com/pallets/flask",
+            "https://github.com/pallets/flask/commit/089cb86dd22bff589a4eafb7ab8e42dc357623b4",
+            "https://github.com/pallets/flask/releases/tag/3.1.3",
+            "https://github.com/pallets/flask/security/advisories/GHSA-68rp-wp8r-4726",
+            "https://nvd.nist.gov/vuln/detail/CVE-2026-27205",
+            "https://ubuntu.com/security/notices/USN-8104-1",
+            "https://www.cve.org/CVERecord?id=CVE-2026-27205"
+          ],
+          "PublishedDate": "2026-02-21T06:17:00.91Z",
+          "LastModifiedDate": "2026-02-24T21:59:52.183Z"
+        },
+        {
+          "VulnerabilityID": "CVE-2017-18342",
+          "VendorIDs": [
+            "GHSA-rprw-h62v-c2w7"
+          ],
+          "PkgName": "pyyaml",
+          "PkgIdentifier": {
+            "PURL": "pkg:pypi/pyyaml@3.13",
+            "UID": "1bc4b3622096254d"
+          },
+          "InstalledVersion": "3.13",
+          "FixedVersion": "4.1",
+          "Status": "fixed",
+          "SeveritySource": "ghsa",
+          "PrimaryURL": "https://avd.aquasec.com/nvd/cve-2017-18342",
+          "DataSource": {
+            "ID": "ghsa",
+            "Name": "GitHub Security Advisory pip",
+            "URL": "https://github.com/advisories?query=type%3Areviewed+ecosystem%3Apip"
+          },
+          "Fingerprint": "sha256:8c8d8eca759dcbb60752b9e3c1625204f7e3c4ff77b36ee7179cafd97f5a520a",
+          "Title": "PyYAML: yaml.load() API could execute arbitrary code",
+          "Description": "In PyYAML before 5.1, the yaml.load() API could execute arbitrary code if used with untrusted data. The load() function has been deprecated in version 5.1 and the 'UnsafeLoader' has been introduced for backward compatibility with the function.",
+          "Severity": "CRITICAL",
+          "CweIDs": [
+            "CWE-502"
+          ],
+          "VendorSeverity": {
+            "ghsa": 4,
+            "nvd": 4,
+            "oracle-oval": 3,
+            "photon": 4,
+            "redhat": 3
+          },
+          "CVSS": {
+            "ghsa": {
+              "V3Vector": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:H/I:H/A:H",
+              "V3Score": 9.8
+            },
+            "nvd": {
+              "V2Vector": "AV:N/AC:L/Au:N/C:P/I:P/A:P",
+              "V3Vector": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:H/I:H/A:H",
+              "V2Score": 7.5,
+              "V3Score": 9.8
+            },
+            "redhat": {
+              "V3Vector": "CVSS:3.0/AV:N/AC:L/PR:N/UI:N/S:U/C:H/I:H/A:H",
+              "V3Score": 9.8
+            }
+          },
+          "References": [
+            "https://access.redhat.com/security/cve/CVE-2017-18342",
+            "https://github.com/marshmallow-code/apispec/issues/278",
+            "https://github.com/pypa/advisory-database/tree/main/vulns/pyyaml/PYSEC-2018-49.yaml",
+            "https://github.com/yaml/pyyaml",
+            "https://github.com/yaml/pyyaml/blob/master/CHANGES",
+            "https://github.com/yaml/pyyaml/commit/7b68405c81db889f83c32846462b238ccae5be80",
+            "https://github.com/yaml/pyyaml/issues/193",
+            "https://github.com/yaml/pyyaml/pull/74",
+            "https://github.com/yaml/pyyaml/wiki/PyYAML-yaml.load%28input%29-Deprecation",
+            "https://github.com/yaml/pyyaml/wiki/PyYAML-yaml.load(input)-Deprecation",
+            "https://linux.oracle.com/cve/CVE-2017-18342.html",
+            "https://linux.oracle.com/errata/ELSA-2022-9341.html",
+            "https://lists.fedoraproject.org/archives/list/package-announce%40lists.fedoraproject.org/message/JEX7IPV5P2QJITAMA5Z63GQCZA5I6NVZ/",
+            "https://lists.fedoraproject.org/archives/list/package-announce%40lists.fedoraproject.org/message/KSQQMRUQSXBSUXLCRD3TSZYQ7SEZRKCE/",
+            "https://lists.fedoraproject.org/archives/list/package-announce%40lists.fedoraproject.org/message/M6JCFGEIEOFMWWIXGHSELMKQDD4CV2BA/",
+            "https://lists.fedoraproject.org/archives/list/package-announce@lists.fedoraproject.org/message/JEX7IPV5P2QJITAMA5Z63GQCZA5I6NVZ",
+            "https://lists.fedoraproject.org/archives/list/package-announce@lists.fedoraproject.org/message/KSQQMRUQSXBSUXLCRD3TSZYQ7SEZRKCE",
+            "https://lists.fedoraproject.org/archives/list/package-announce@lists.fedoraproject.org/message/M6JCFGEIEOFMWWIXGHSELMKQDD4CV2BA",
+            "https://nvd.nist.gov/vuln/detail/CVE-2017-18342",
+            "https://security.gentoo.org/glsa/202003-45",
+            "https://www.cve.org/CVERecord?id=CVE-2017-18342"
+          ],
+          "PublishedDate": "2018-06-27T12:29:00.21Z",
+          "LastModifiedDate": "2024-11-21T03:19:53.02Z"
+        },
+        {
+          "VulnerabilityID": "CVE-2020-14343",
+          "VendorIDs": [
+            "GHSA-8q59-q68h-6hv4"
+          ],
+          "PkgName": "pyyaml",
+          "PkgIdentifier": {
+            "PURL": "pkg:pypi/pyyaml@3.13",
+            "UID": "1bc4b3622096254d"
+          },
+          "InstalledVersion": "3.13",
+          "FixedVersion": "5.4",
+          "Status": "fixed",
+          "SeveritySource": "ghsa",
+          "PrimaryURL": "https://avd.aquasec.com/nvd/cve-2020-14343",
+          "DataSource": {
+            "ID": "ghsa",
+            "Name": "GitHub Security Advisory pip",
+            "URL": "https://github.com/advisories?query=type%3Areviewed+ecosystem%3Apip"
+          },
+          "Fingerprint": "sha256:755471f94d457ae636b282ae01c6c890ee79575fc0087c6770186d51c56ef96d",
+          "Title": "PyYAML: incomplete fix for CVE-2020-1747",
+          "Description": "A vulnerability was discovered in the PyYAML library in versions before 5.4, where it is susceptible to arbitrary code execution when it processes untrusted YAML files through the full_load method or with the FullLoader loader. Applications that use the library to process untrusted input may be vulnerable to this flaw. This flaw allows an attacker to execute arbitrary code on the system by abusing the python/object/new constructor. This flaw is due to an incomplete fix for CVE-2020-1747.",
+          "Severity": "CRITICAL",
+          "CweIDs": [
+            "CWE-20"
+          ],
+          "VendorSeverity": {
+            "alma": 2,
+            "cbl-mariner": 4,
+            "ghsa": 4,
+            "nvd": 4,
+            "oracle-oval": 2,
+            "photon": 4,
+            "redhat": 2,
+            "rocky": 2,
+            "ubuntu": 2
+          },
+          "CVSS": {
+            "ghsa": {
+              "V3Vector": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:H/I:H/A:H",
+              "V40Vector": "CVSS:4.0/AV:N/AC:L/AT:N/PR:N/UI:N/VC:H/VI:H/VA:H/SC:N/SI:N/SA:N",
+              "V3Score": 9.8,
+              "V40Score": 9.3
+            },
+            "nvd": {
+              "V2Vector": "AV:N/AC:L/Au:N/C:C/I:C/A:C",
+              "V3Vector": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:H/I:H/A:H",
+              "V2Score": 10,
+              "V3Score": 9.8
+            },
+            "redhat": {
+              "V3Vector": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:H/I:H/A:H",
+              "V3Score": 9.8
+            }
+          },
+          "References": [
+            "https://access.redhat.com/security/cve/CVE-2020-14343",
+            "https://bugzilla.redhat.com/show_bug.cgi?id=1860466",
+            "https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2020-14343",
+            "https://errata.almalinux.org/8/ALSA-2021-2583.html",
+            "https://errata.rockylinux.org/RLSA-2021:2583",
+            "https://github.com/SeldonIO/seldon-core/issues/2252",
+            "https://github.com/advisories/GHSA-8q59-q68h-6hv4",
+            "https://github.com/pypa/advisory-database/tree/main/vulns/pyyaml/PYSEC-2021-142.yaml",
+            "https://github.com/yaml/pyyaml",
+            "https://github.com/yaml/pyyaml/commit/a001f2782501ad2d24986959f0239a354675f9dc",
+            "https://github.com/yaml/pyyaml/issues/420",
+            "https://github.com/yaml/pyyaml/issues/420#issuecomment-663673966",
+            "https://github.com/yaml/pyyaml/wiki/PyYAML-yaml.load(input)-Deprecation",
+            "https://linux.oracle.com/cve/CVE-2020-14343.html",
+            "https://linux.oracle.com/errata/ELSA-2021-2583.html",
+            "https://nvd.nist.gov/vuln/detail/CVE-2020-14343",
+            "https://pypi.org/project/PyYAML",
+            "https://ubuntu.com/security/notices/USN-4940-1",
+            "https://www.cve.org/CVERecord?id=CVE-2020-14343",
+            "https://www.oracle.com/security-alerts/cpuapr2022.html",
+            "https://www.oracle.com/security-alerts/cpujul2022.html"
+          ],
+          "PublishedDate": "2021-02-09T21:15:12.707Z",
+          "LastModifiedDate": "2024-11-21T05:03:03.217Z"
+        },
+        {
+          "VulnerabilityID": "CVE-2018-18074",
+          "VendorIDs": [
+            "GHSA-x84v-xcm2-53pg"
+          ],
+          "PkgName": "requests",
+          "PkgIdentifier": {
+            "PURL": "pkg:pypi/requests@2.19.0",
+            "UID": "3261ccffde65871d"
+          },
+          "InstalledVersion": "2.19.0",
+          "FixedVersion": "2.20.0",
+          "Status": "fixed",
+          "SeveritySource": "ghsa",
+          "PrimaryURL": "https://avd.aquasec.com/nvd/cve-2018-18074",
+          "DataSource": {
+            "ID": "ghsa",
+            "Name": "GitHub Security Advisory pip",
+            "URL": "https://github.com/advisories?query=type%3Areviewed+ecosystem%3Apip"
+          },
+          "Fingerprint": "sha256:082136e24eac8569c4ee5ff2870444ca3b0af13007f247c373532c1a7aca4cfd",
+          "Title": "python-requests: Redirect from HTTPS to HTTP does not remove Authorization header",
+          "Description": "The Requests package before 2.20.0 for Python sends an HTTP Authorization header to an http URI upon receiving a same-hostname https-to-http redirect, which makes it easier for remote attackers to discover credentials by sniffing the network.",
+          "Severity": "HIGH",
+          "CweIDs": [
+            "CWE-522"
+          ],
+          "VendorSeverity": {
+            "alma": 2,
+            "amazon": 2,
+            "ghsa": 3,
+            "nvd": 3,
+            "oracle-oval": 2,
+            "photon": 3,
+            "redhat": 1,
+            "rocky": 2,
+            "ubuntu": 2
+          },
+          "CVSS": {
+            "ghsa": {
+              "V3Vector": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:H/I:N/A:N",
+              "V3Score": 7.5
+            },
+            "nvd": {
+              "V2Vector": "AV:N/AC:L/Au:N/C:P/I:N/A:N",
+              "V3Vector": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:H/I:N/A:N",
+              "V2Score": 5,
+              "V3Score": 7.5
+            },
+            "redhat": {
+              "V3Vector": "CVSS:3.0/AV:A/AC:H/PR:N/UI:R/S:U/C:L/I:N/A:N",
+              "V3Score": 2.6
+            }
+          },
+          "References": [
+            "http://docs.python-requests.org/en/master/community/updates/#release-and-version-history",
+            "http://lists.opensuse.org/opensuse-security-announce/2019-07/msg00024.html",
+            "https://access.redhat.com/errata/RHSA-2019:2035",
+            "https://access.redhat.com/security/cve/CVE-2018-18074",
+            "https://bugs.debian.org/910766",
+            "https://bugzilla.redhat.com/show_bug.cgi?id=1643829",
+            "https://bugzilla.redhat.com/show_bug.cgi?id=1649153",
+            "https://bugzilla.redhat.com/show_bug.cgi?id=1659551",
+            "https://bugzilla.redhat.com/show_bug.cgi?id=1700824",
+            "https://bugzilla.redhat.com/show_bug.cgi?id=1702473",
+            "https://bugzilla.redhat.com/show_bug.cgi?id=1740347",
+            "https://bugzilla.redhat.com/show_bug.cgi?id=1749839",
+            "https://bugzilla.redhat.com/show_bug.cgi?id=1762422",
+            "https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2018-18074",
+            "https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2018-20060",
+            "https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2018-20852",
+            "https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2019-11236",
+            "https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2019-11324",
+            "https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2019-16056",
+            "https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2019-16935",
+            "https://errata.almalinux.org/8/ALSA-2020-1605.html",
+            "https://errata.rockylinux.org/RLSA-2020:1605",
+            "https://github.com/pypa/advisory-database/tree/main/vulns/requests/PYSEC-2018-28.yaml",
+            "https://github.com/requests/requests",
+            "https://github.com/requests/requests/commit/c45d7c49ea75133e52ab22a8e9e13173938e36ff",
+            "https://github.com/requests/requests/issues/4716",
+            "https://github.com/requests/requests/pull/4718",
+            "https://linux.oracle.com/cve/CVE-2018-18074.html",
+            "https://linux.oracle.com/errata/ELSA-2020-2081.html",
+            "https://nvd.nist.gov/vuln/detail/CVE-2018-18074",
+            "https://ubuntu.com/security/notices/USN-3790-1",
+            "https://ubuntu.com/security/notices/USN-3790-2",
+            "https://usn.ubuntu.com/3790-1",
+            "https://usn.ubuntu.com/3790-1/",
+            "https://usn.ubuntu.com/3790-2",
+            "https://usn.ubuntu.com/3790-2/",
+            "https://www.cve.org/CVERecord?id=CVE-2018-18074",
+            "https://www.oracle.com/security-alerts/cpujul2022.html"
+          ],
+          "PublishedDate": "2018-10-09T17:29:01.897Z",
+          "LastModifiedDate": "2024-11-21T03:55:26.53Z"
+        },
+        {
+          "VulnerabilityID": "CVE-2023-32681",
+          "VendorIDs": [
+            "GHSA-j8r2-6x86-q33q"
+          ],
+          "PkgName": "requests",
+          "PkgIdentifier": {
+            "PURL": "pkg:pypi/requests@2.19.0",
+            "UID": "3261ccffde65871d"
+          },
+          "InstalledVersion": "2.19.0",
+          "FixedVersion": "2.31.0",
+          "Status": "fixed",
+          "SeveritySource": "ghsa",
+          "PrimaryURL": "https://avd.aquasec.com/nvd/cve-2023-32681",
+          "DataSource": {
+            "ID": "ghsa",
+            "Name": "GitHub Security Advisory pip",
+            "URL": "https://github.com/advisories?query=type%3Areviewed+ecosystem%3Apip"
+          },
+          "Fingerprint": "sha256:abd8d777009b4f1be6ecf76f2fda7522589627cf9f6d7945015adb45a7fe0b69",
+          "Title": "python-requests: Unintended leak of Proxy-Authorization header",
+          "Description": "Requests is a HTTP library. Since Requests 2.3.0, Requests has been leaking Proxy-Authorization headers to destination servers when redirected to an HTTPS endpoint. This is a product of how we use `rebuild_proxies` to reattach the `Proxy-Authorization` header to requests. For HTTP connections sent through the tunnel, the proxy will identify the header in the request itself and remove it prior to forwarding to the destination server. However when sent over HTTPS, the `Proxy-Authorization` header must be sent in the CONNECT request as the proxy has no visibility into the tunneled request. This results in Requests forwarding proxy credentials to the destination server unintentionally, allowing a malicious actor to potentially exfiltrate sensitive information. This issue has been patched in version 2.31.0.",
+          "Severity": "MEDIUM",
+          "CweIDs": [
+            "CWE-200"
+          ],
+          "VendorSeverity": {
+            "alma": 2,
+            "amazon": 2,
+            "cbl-mariner": 2,
+            "ghsa": 2,
+            "nvd": 2,
+            "oracle-oval": 2,
+            "photon": 2,
+            "redhat": 2,
+            "rocky": 2,
+            "ubuntu": 2
+          },
+          "CVSS": {
+            "ghsa": {
+              "V3Vector": "CVSS:3.1/AV:N/AC:H/PR:N/UI:R/S:C/C:H/I:N/A:N",
+              "V3Score": 6.1
+            },
+            "nvd": {
+              "V3Vector": "CVSS:3.1/AV:N/AC:H/PR:N/UI:R/S:C/C:H/I:N/A:N",
+              "V3Score": 6.1
+            },
+            "redhat": {
+              "V3Vector": "CVSS:3.1/AV:N/AC:H/PR:N/UI:R/S:C/C:H/I:N/A:N",
+              "V3Score": 6.1
+            }
+          },
+          "References": [
+            "https://access.redhat.com/errata/RHSA-2023:4350",
+            "https://access.redhat.com/security/cve/CVE-2023-32681",
+            "https://bugzilla.redhat.com/2209469",
+            "https://bugzilla.redhat.com/show_bug.cgi?id=2209469",
+            "https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2023-32681",
+            "https://errata.almalinux.org/9/ALSA-2023-4350.html",
+            "https://errata.rockylinux.org/RLSA-2023:4520",
+            "https://github.com/psf/requests",
+            "https://github.com/psf/requests/commit/74ea7cf7a6a27a4eeb2ae24e162bcc942a6706d5",
+            "https://github.com/psf/requests/releases/tag/v2.31.0",
+            "https://github.com/psf/requests/security/advisories/GHSA-j8r2-6x86-q33q",
+            "https://github.com/pypa/advisory-database/tree/main/vulns/requests/PYSEC-2023-74.yaml",
+            "https://linux.oracle.com/cve/CVE-2023-32681.html",
+            "https://linux.oracle.com/errata/ELSA-2023-7050.html",
+            "https://lists.debian.org/debian-lts-announce/2023/06/msg00018.html",
+            "https://lists.fedoraproject.org/archives/list/package-announce@lists.fedoraproject.org/message/AW7HNFGYP44RT3DUDQXG2QT3OEV2PJ7Y",
+            "https://lists.fedoraproject.org/archives/list/package-announce@lists.fedoraproject.org/message/AW7HNFGYP44RT3DUDQXG2QT3OEV2PJ7Y/",
+            "https://lists.fedoraproject.org/archives/list/package-announce@lists.fedoraproject.org/message/KOYASTZDGQG2BWLSNBPL3TQRL2G7QYNZ",
+            "https://lists.fedoraproject.org/archives/list/package-announce@lists.fedoraproject.org/message/KOYASTZDGQG2BWLSNBPL3TQRL2G7QYNZ/",
+            "https://nvd.nist.gov/vuln/detail/CVE-2023-32681",
+            "https://security.gentoo.org/glsa/202309-08",
+            "https://ubuntu.com/security/notices/USN-6155-1",
+            "https://ubuntu.com/security/notices/USN-6155-2",
+            "https://ubuntu.com/security/notices/USN-7568-1",
+            "https://ubuntu.com/security/notices/USN-7762-1",
+            "https://www.cve.org/CVERecord?id=CVE-2023-32681"
+          ],
+          "PublishedDate": "2023-05-26T18:15:14.147Z",
+          "LastModifiedDate": "2025-02-13T17:16:32.583Z"
+        },
+        {
+          "VulnerabilityID": "CVE-2024-35195",
+          "VendorIDs": [
+            "GHSA-9wx4-h78v-vm56"
+          ],
+          "PkgName": "requests",
+          "PkgIdentifier": {
+            "PURL": "pkg:pypi/requests@2.19.0",
+            "UID": "3261ccffde65871d"
+          },
+          "InstalledVersion": "2.19.0",
+          "FixedVersion": "2.32.0",
+          "Status": "fixed",
+          "SeveritySource": "ghsa",
+          "PrimaryURL": "https://avd.aquasec.com/nvd/cve-2024-35195",
+          "DataSource": {
+            "ID": "ghsa",
+            "Name": "GitHub Security Advisory pip",
+            "URL": "https://github.com/advisories?query=type%3Areviewed+ecosystem%3Apip"
+          },
+          "Fingerprint": "sha256:a3ee868562eab04e8aff3d928020e061461d2d79903c088ac4f159636ce8e1a7",
+          "Title": "requests: subsequent requests to the same host ignore cert verification",
+          "Description": "Requests is a HTTP library. Prior to 2.32.0, when making requests through a Requests `Session`, if the first request is made with `verify=False` to disable cert verification, all subsequent requests to the same host will continue to ignore cert verification regardless of changes to the value of `verify`. This behavior will continue for the lifecycle of the connection in the connection pool. This vulnerability is fixed in 2.32.0.",
+          "Severity": "MEDIUM",
+          "CweIDs": [
+            "CWE-670"
+          ],
+          "VendorSeverity": {
+            "alma": 2,
+            "amazon": 2,
+            "azure": 2,
+            "cbl-mariner": 2,
+            "ghsa": 2,
+            "oracle-oval": 2,
+            "photon": 2,
+            "redhat": 2,
+            "rocky": 2,
+            "ubuntu": 2
+          },
+          "CVSS": {
+            "ghsa": {
+              "V3Vector": "CVSS:3.1/AV:L/AC:H/PR:H/UI:R/S:U/C:H/I:H/A:N",
+              "V3Score": 5.6
+            },
+            "redhat": {
+              "V3Vector": "CVSS:3.1/AV:L/AC:H/PR:H/UI:R/S:U/C:H/I:H/A:N",
+              "V3Score": 5.6
+            }
+          },
+          "References": [
+            "https://access.redhat.com/errata/RHSA-2025:7049",
+            "https://access.redhat.com/security/cve/CVE-2024-35195",
+            "https://bugzilla.redhat.com/2282114",
+            "https://bugzilla.redhat.com/show_bug.cgi?id=2282114",
+            "https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2024-35195",
+            "https://errata.almalinux.org/9/ALSA-2025-7049.html",
+            "https://errata.rockylinux.org/RLSA-2025:7049",
+            "https://github.com/psf/requests",
+            "https://github.com/psf/requests/commit/a58d7f2ffb4d00b46dca2d70a3932a0b37e22fac",
+            "https://github.com/psf/requests/pull/6655",
+            "https://github.com/psf/requests/security/advisories/GHSA-9wx4-h78v-vm56",
+            "https://linux.oracle.com/cve/CVE-2024-35195.html",
+            "https://linux.oracle.com/errata/ELSA-2025-7049.html",
+            "https://lists.fedoraproject.org/archives/list/package-announce@lists.fedoraproject.org/message/IYLSNK5TL46Q6XPRVMHVWS63MVJQOK4Q",
+            "https://lists.fedoraproject.org/archives/list/package-announce@lists.fedoraproject.org/message/IYLSNK5TL46Q6XPRVMHVWS63MVJQOK4Q/",
+            "https://lists.fedoraproject.org/archives/list/package-announce@lists.fedoraproject.org/message/N7WP6EYDSUOCOJYHDK5NX43PYZ4SNHGZ",
+            "https://lists.fedoraproject.org/archives/list/package-announce@lists.fedoraproject.org/message/N7WP6EYDSUOCOJYHDK5NX43PYZ4SNHGZ/",
+            "https://nvd.nist.gov/vuln/detail/CVE-2024-35195",
+            "https://www.cve.org/CVERecord?id=CVE-2024-35195"
+          ],
+          "PublishedDate": "2024-05-20T21:15:09.99Z",
+          "LastModifiedDate": "2026-04-15T00:35:42.02Z"
+        },
+        {
+          "VulnerabilityID": "CVE-2024-47081",
+          "VendorIDs": [
+            "GHSA-9hjg-9r4m-mvj7"
+          ],
+          "PkgName": "requests",
+          "PkgIdentifier": {
+            "PURL": "pkg:pypi/requests@2.19.0",
+            "UID": "3261ccffde65871d"
+          },
+          "InstalledVersion": "2.19.0",
+          "FixedVersion": "2.32.4",
+          "Status": "fixed",
+          "SeveritySource": "ghsa",
+          "PrimaryURL": "https://avd.aquasec.com/nvd/cve-2024-47081",
+          "DataSource": {
+            "ID": "ghsa",
+            "Name": "GitHub Security Advisory pip",
+            "URL": "https://github.com/advisories?query=type%3Areviewed+ecosystem%3Apip"
+          },
+          "Fingerprint": "sha256:96ca7a407181df0889eb341145184b016d3a111ba6d5bfbd2807fe592b24f221",
+          "Title": "requests: Requests vulnerable to .netrc credentials leak via malicious URLs",
+          "Description": "Requests is a HTTP library. Due to a URL parsing issue, Requests releases prior to 2.32.4 may leak .netrc credentials to third parties for specific maliciously-crafted URLs. Users should upgrade to version 2.32.4 to receive a fix. For older versions of Requests, use of the .netrc file can be disabled with `trust_env=False` on one's Requests Session.",
+          "Severity": "MEDIUM",
+          "CweIDs": [
+            "CWE-522"
+          ],
+          "VendorSeverity": {
+            "alma": 2,
+            "amazon": 2,
+            "azure": 2,
+            "cbl-mariner": 2,
+            "ghsa": 2,
+            "oracle-oval": 2,
+            "photon": 2,
+            "redhat": 2,
+            "rocky": 2,
+            "ubuntu": 2
+          },
+          "CVSS": {
+            "ghsa": {
+              "V3Vector": "CVSS:3.1/AV:N/AC:H/PR:N/UI:R/S:U/C:H/I:N/A:N",
+              "V3Score": 5.3
+            },
+            "redhat": {
+              "V3Vector": "CVSS:3.1/AV:N/AC:H/PR:N/UI:R/S:U/C:H/I:N/A:N",
+              "V3Score": 5.3
+            }
+          },
+          "References": [
+            "http://seclists.org/fulldisclosure/2025/Jun/2",
+            "http://www.openwall.com/lists/oss-security/2025/06/03/11",
+            "http://www.openwall.com/lists/oss-security/2025/06/03/9",
+            "http://www.openwall.com/lists/oss-security/2025/06/04/1",
+            "http://www.openwall.com/lists/oss-security/2025/06/04/6",
+            "https://access.redhat.com/errata/RHSA-2025:13604",
+            "https://access.redhat.com/security/cve/CVE-2024-47081",
+            "https://bugzilla.redhat.com/2371272",
+            "https://bugzilla.redhat.com/show_bug.cgi?id=2371272",
+            "https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2024-47081",
+            "https://errata.almalinux.org/10/ALSA-2025-13604.html",
+            "https://errata.rockylinux.org/RLSA-2025:12519",
+            "https://github.com/psf/requests",
+            "https://github.com/psf/requests/commit/96ba401c1296ab1dda74a2365ef36d88f7d144ef",
+            "https://github.com/psf/requests/pull/6965",
+            "https://github.com/psf/requests/security/advisories/GHSA-9hjg-9r4m-mvj7",
+            "https://linux.oracle.com/cve/CVE-2024-47081.html",
+            "https://linux.oracle.com/errata/ELSA-2025-14999.html",
+            "https://nvd.nist.gov/vuln/detail/CVE-2024-47081",
+            "https://requests.readthedocs.io/en/latest/api/#requests.Session.trust_env",
+            "https://seclists.org/fulldisclosure/2025/Jun/2",
+            "https://ubuntu.com/security/notices/USN-7568-1",
+            "https://ubuntu.com/security/notices/USN-7762-1",
+            "https://www.cve.org/CVERecord?id=CVE-2024-47081",
+            "https://www.openwall.com/lists/oss-security/2025/06/03/9"
+          ],
+          "PublishedDate": "2025-06-09T18:15:24.983Z",
+          "LastModifiedDate": "2026-04-15T00:35:42.02Z"
+        },
+        {
+          "VulnerabilityID": "CVE-2026-25645",
+          "VendorIDs": [
+            "GHSA-gc5v-m9x4-r6x2"
+          ],
+          "PkgName": "requests",
+          "PkgIdentifier": {
+            "PURL": "pkg:pypi/requests@2.19.0",
+            "UID": "3261ccffde65871d"
+          },
+          "InstalledVersion": "2.19.0",
+          "FixedVersion": "2.33.0",
+          "Status": "fixed",
+          "SeveritySource": "ghsa",
+          "PrimaryURL": "https://avd.aquasec.com/nvd/cve-2026-25645",
+          "DataSource": {
+            "ID": "ghsa",
+            "Name": "GitHub Security Advisory pip",
+            "URL": "https://github.com/advisories?query=type%3Areviewed+ecosystem%3Apip"
+          },
+          "Fingerprint": "sha256:f9e4a954a3c3570e5175dc04c7898930449bd97d035332c05555903ee9fd6e2c",
+          "Title": "requests: Requests: Security bypass due to predictable temporary file creation",
+          "Description": "Requests is a HTTP library. Prior to version 2.33.0, the `requests.utils.extract_zipped_paths()` utility function uses a predictable filename when extracting files from zip archives into the system temporary directory. If the target file already exists, it is reused without validation. A local attacker with write access to the temp directory could pre-create a malicious file that would be loaded in place of the legitimate one. Standard usage of the Requests library is not affected by this vulnerability. Only applications that call `extract_zipped_paths()` directly are impacted. Starting in version 2.33.0, the library extracts files to a non-deterministic location. If developers are unable to upgrade, they can set `TMPDIR` in their environment to a directory with restricted write access.",
+          "Severity": "MEDIUM",
+          "CweIDs": [
+            "CWE-377"
+          ],
+          "VendorSeverity": {
+            "azure": 2,
+            "ghsa": 2,
+            "nvd": 2,
+            "photon": 2,
+            "redhat": 2
+          },
+          "CVSS": {
+            "ghsa": {
+              "V3Vector": "CVSS:3.1/AV:L/AC:H/PR:L/UI:R/S:U/C:N/I:H/A:N",
+              "V3Score": 4.4
+            },
+            "nvd": {
+              "V3Vector": "CVSS:3.1/AV:L/AC:L/PR:L/UI:N/S:U/C:N/I:H/A:N",
+              "V3Score": 5.5
+            },
+            "redhat": {
+              "V3Vector": "CVSS:3.1/AV:L/AC:H/PR:L/UI:N/S:U/C:N/I:H/A:N",
+              "V3Score": 4.7
+            }
+          },
+          "References": [
+            "https://access.redhat.com/security/cve/CVE-2026-25645",
+            "https://github.com/psf/requests",
+            "https://github.com/psf/requests/commit/66d21cb07bd6255b1280291c4fafb71803cdb3b7",
+            "https://github.com/psf/requests/releases/tag/v2.33.0",
+            "https://github.com/psf/requests/security/advisories/GHSA-gc5v-m9x4-r6x2",
+            "https://nvd.nist.gov/vuln/detail/CVE-2026-25645",
+            "https://www.cve.org/CVERecord?id=CVE-2026-25645"
+          ],
+          "PublishedDate": "2026-03-25T17:16:52.97Z",
+          "LastModifiedDate": "2026-03-30T14:23:16.127Z"
+        }
+      ]
+    }
+  ]
+}

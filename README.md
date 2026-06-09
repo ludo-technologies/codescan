@@ -74,6 +74,27 @@ The grade summarizes how many issues were found and how serious they are, so you
 No. codescan.dev clones the repository to run the scanners and only persists the resulting findings needed to render the report card.
 </details>
 
+## Run it yourself
+
+codescan is fully open source — both the web frontend and the scan engine that runs Semgrep, Gitleaks, and Trivy. Clone and bring the whole stack up with Docker:
+
+```bash
+git clone https://github.com/ludo-technologies/codescan.git
+cd codescan
+BACKEND_API_KEY=dev-secret docker compose up --build
+```
+
+Then open <http://localhost:3000> and scan any public repository. Set `GITHUB_PUBLIC_TOKEN` to lift GitHub's API rate limit from 60/hr to 5000/hr.
+
+## How it's built
+
+| Component | Path | Stack |
+|---|---|---|
+| **Web frontend** | repository root | Next.js (App Router), deployed on Vercel |
+| **Scan engine** | [`engine/`](engine) | Go module — orchestrates Semgrep/Gitleaks/Trivy, scores results, exposes the `/api/scan` API |
+
+The engine is an importable Go module (`github.com/ludo-technologies/codescan/engine`): run it standalone via `engine/cmd/server`, or embed it in your own service by calling `engine.New(...)` and mounting it onto a [chi](https://github.com/go-chi/chi) router.
+
 ## Contributing
 
 See [CONTRIBUTING.md](CONTRIBUTING.md) for development setup and guidelines.

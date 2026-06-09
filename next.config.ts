@@ -15,6 +15,9 @@ const securityHeaders = [
 ];
 
 const nextConfig: NextConfig = {
+	// Emit a self-contained server bundle so the Docker image (docker-compose) can
+	// run the frontend without the full node_modules tree. Ignored by Vercel.
+	output: "standalone",
 	async headers() {
 		return [{ source: "/(.*)", headers: securityHeaders }];
 	},
