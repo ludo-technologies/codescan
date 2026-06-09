@@ -1,12 +1,14 @@
 <div align="center">
 
-# codescan.dev
+# [codescan.dev](https://codescan.dev)
 
 ### Scan any GitHub repo for security issues.
 
 Risky code, exposed keys, outdated packages — one shareable grade.
 
-**[Start a scan](https://codescan.dev)** · [Example report](https://codescan.dev/examples) · [Methodology](https://codescan.dev/methodology)
+[![Scan a repo on codescan.dev](https://img.shields.io/badge/Scan_a_repo-codescan.dev-2563EB?style=for-the-badge&logo=github)](https://codescan.dev)
+
+[Example report](https://codescan.dev/examples) · [Methodology](https://codescan.dev/methodology)
 
 </div>
 
@@ -15,6 +17,8 @@ Risky code, exposed keys, outdated packages — one shareable grade.
 ## Demo
 
 [https://github.com/user-attachments/assets/db41df8e-881e-4303-9634-d3aba7c853e1](https://github.com/user-attachments/assets/206d84be-585a-4f5c-966f-e4a70ef8664f)
+
+▶ **Try it yourself at [codescan.dev](https://codescan.dev)** — paste any public repo URL, no sign-up.
 
 ## What it checks
 
@@ -76,7 +80,7 @@ No. codescan.dev clones the repository to run the scanners and only persists the
 
 ## Run it yourself
 
-codescan is fully open source — both the web frontend and the scan engine that runs Semgrep, Gitleaks, and Trivy. Clone and bring the whole stack up with Docker:
+Most people don't need to — just use the hosted version at **[codescan.dev](https://codescan.dev)** (free, no sign-up for public repos). But codescan is fully open source — both the web frontend and the scan engine that runs Semgrep, Gitleaks, and Trivy — so you can run the whole stack yourself with Docker:
 
 ```bash
 git clone https://github.com/ludo-technologies/codescan.git
