@@ -101,6 +101,40 @@ func TestParseRepoURL(t *testing.T) {
 	}
 }
 
+func TestClientIP(t *testing.T) {
+	tests := []struct {
+		name              string
+		trustedProxyCount int
+		remoteAddr        string
+		xff               string
+		want              string
+	}{
+		// No trusted proxy: XFF is attacker-controlled and must be ignored,
+		// even when present — and must not panic (regression: parts[len(parts)]).
+		{"no proxy ignores xff", 0, "203.0.113.7:54321", "1.2.3.4", "203.0.113.7"},
+		{"no proxy no xff", 0, "203.0.113.7:54321", "", "203.0.113.7"},
+		// One trusted proxy: real client is the rightmost entry.
+		{"one proxy", 1, "10.0.0.1:1234", "1.2.3.4, 10.0.0.1", "10.0.0.1"},
+		// Spoofed extra entries don't help: still take rightmost-N.
+		{"two proxies", 2, "10.0.0.1:1234", "9.9.9.9, 1.2.3.4, 10.0.0.1", "1.2.3.4"},
+		// More trusted proxies than entries: clamp to the leftmost entry.
+		{"count exceeds entries", 5, "10.0.0.1:1234", "1.2.3.4", "1.2.3.4"},
+	}
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			c := NewController(&stubInteractor{}, &stubStore{}, &stubRateLimiter{allow: true}, tt.trustedProxyCount)
+			req := httptest.NewRequest(http.MethodPost, "/api/scan", nil)
+			req.RemoteAddr = tt.remoteAddr
+			if tt.xff != "" {
+				req.Header.Set("X-Forwarded-For", tt.xff)
+			}
+			if got := c.clientIP(req); got != tt.want {
+				t.Fatalf("clientIP() = %q, want %q", got, tt.want)
+			}
+		})
+	}
+}
+
 func TestHandleRequestScan_Success(t *testing.T) {
 	c := NewController(
 		&stubInteractor{scanID: "scan-1", cached: false},

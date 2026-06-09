@@ -148,7 +148,8 @@ func TestUpdateRepositoryInfoPersistsPrivacyAndRequester(t *testing.T) {
 
 	mock.ExpectExec(regexp.QuoteMeta(`
 		UPDATE scan_results
-		SET language = $2, is_private = $3, requester_user_id = $4
+		SET language = $2, is_private = $3, requester_user_id = $4,
+		    token_authenticated = (token_authenticated AND $3)
 		WHERE id = $1
 	`)).
 		WithArgs("scan-1", scan.LanguagePython, true, int64(42)).

@@ -109,6 +109,7 @@ func (i *Interactor) runScan(scanID string, req Request) {
 	}
 	if err := i.scanStore.UpdateRepositoryInfo(ctx, scanID, language, isPrivate, req.RequesterUserID); err != nil {
 		log.Printf("ERROR: scan %s failed to persist repository metadata: %v", scanID, err)
+		_ = i.scanStore.UpdateStatus(ctx, scanID, StatusFailed, userSafeError(err))
 		return
 	}
 

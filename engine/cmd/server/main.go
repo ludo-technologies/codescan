@@ -69,7 +69,9 @@ func run() error {
 
 	r := chi.NewRouter()
 	r.Use(middleware.RequestID)
-	r.Use(middleware.RealIP)
+	// No middleware.RealIP: it rewrites RemoteAddr from the spoofable leftmost
+	// X-Forwarded-For entry. The engine derives the client IP itself, honoring
+	// the configured trusted-proxy count.
 	r.Use(middleware.Recoverer)
 	r.Use(middleware.Timeout(60 * time.Second))
 	r.Get("/health", func(w http.ResponseWriter, _ *http.Request) {

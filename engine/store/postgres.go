@@ -81,10 +81,16 @@ func (s *PgStore) FindLatestPublicByRepo(ctx context.Context, owner, repo string
 }
 
 // UpdateRepositoryInfo persists repository metadata discovered before scanners run.
+//
+// token_authenticated is downgraded to the repo's privacy: a token used against
+// a public repo grants no extra access, so the result is identical to an
+// anonymous public scan and stays eligible for the public cache and README
+// badge. It remains true only when the repo is actually private.
 func (s *PgStore) UpdateRepositoryInfo(ctx context.Context, id, language string, isPrivate bool, requesterUserID int64) error {
 	_, err := s.db.ExecContext(ctx, `
 		UPDATE scan_results
-		SET language = $2, is_private = $3, requester_user_id = $4
+		SET language = $2, is_private = $3, requester_user_id = $4,
+		    token_authenticated = (token_authenticated AND $3)
 		WHERE id = $1
 	`, id, language, isPrivate, requesterUserID)
 	return err

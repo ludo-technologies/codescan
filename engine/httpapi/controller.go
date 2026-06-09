@@ -8,6 +8,7 @@ import (
 	"errors"
 	"fmt"
 	"log"
+	"net"
 	"net/http"
 	"regexp"
 	"strconv"
@@ -49,6 +50,32 @@ func NewController(
 		rateLimiter:       rateLimiter,
 		trustedProxyCount: trustedProxyCount,
 	}
+}
+
+// clientIP derives the client IP used for rate limiting.
+//
+// X-Forwarded-For is only trusted when at least one proxy is configured as
+// trusted: each proxy appends the IP it saw, so with N trusted proxies the
+// real client sits N entries from the right. With no trusted proxy (count 0)
+// the header is fully attacker-controlled and is ignored — we use the TCP peer
+// address instead, which cannot be spoofed. The port is stripped so the key is
+// stable across a client's connections.
+func (c *Controller) clientIP(r *http.Request) string {
+	if c.trustedProxyCount > 0 {
+		if fwd := r.Header.Get("X-Forwarded-For"); fwd != "" {
+			parts := strings.Split(fwd, ",")
+			idx := len(parts) - c.trustedProxyCount
+			if idx < 0 {
+				idx = 0
+			}
+			return strings.TrimSpace(parts[idx])
+		}
+	}
+	host, _, err := net.SplitHostPort(r.RemoteAddr)
+	if err != nil {
+		return r.RemoteAddr
+	}
+	return host
 }
 
 // scanRequest is the JSON request body for POST /api/scan.
@@ -93,18 +120,7 @@ var validNamePattern = regexp.MustCompile(`^[a-zA-Z0-9][a-zA-Z0-9._-]*$`)
 // HandleRequestScan handles POST /api/scan.
 func (c *Controller) HandleRequestScan(w http.ResponseWriter, r *http.Request) {
 	// Rate limit by client IP.
-	// In X-Forwarded-For, each proxy appends the connecting IP. The rightmost N entries
-	// belong to trusted proxies, so the client IP is at position len(parts)-trustedProxyCount.
-	ip := r.RemoteAddr
-	if fwd := r.Header.Get("X-Forwarded-For"); fwd != "" {
-		parts := strings.Split(fwd, ",")
-		idx := len(parts) - c.trustedProxyCount
-		if idx < 0 {
-			idx = 0
-		}
-		ip = strings.TrimSpace(parts[idx])
-	}
-	if !c.rateLimiter.Allow(ip) {
+	if !c.rateLimiter.Allow(c.clientIP(r)) {
 		http.Error(w, "Rate limit exceeded", http.StatusTooManyRequests)
 		return
 	}
