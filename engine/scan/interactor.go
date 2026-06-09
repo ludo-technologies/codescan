@@ -15,7 +15,11 @@ import (
 )
 
 const (
-	maxTarballSize     = 100 * 1024 * 1024 // 100MB
+	maxTarballSize = 100 * 1024 * 1024 // 100MB cap on the compressed download
+	// maxExtractedSize and maxExtractedFiles bound decompression so a crafted
+	// (highly compressible) tarball cannot exhaust disk or inodes during extract.
+	maxExtractedSize   = 500 * 1024 * 1024 // 500MB total uncompressed
+	maxExtractedFiles  = 50000             // total regular files
 	tempDirPrefix      = "codescan-"
 	maxConcurrentScans = 2
 	maxPendingScans    = 10
@@ -285,7 +289,11 @@ func extractTarball(reader io.Reader, targetDir string) (extractDir string, comm
 	defer gzReader.Close()
 
 	tarReader := tar.NewReader(gzReader)
-	var rootDir string
+	var (
+		rootDir      string
+		totalWritten int64
+		fileCount    int
+	)
 
 	for {
 		header, err := tarReader.Next()
@@ -318,6 +326,11 @@ func extractTarball(reader io.Reader, targetDir string) (extractDir string, comm
 				return "", "", fmt.Errorf("failed to create directory: %w", err)
 			}
 		case tar.TypeReg:
+			fileCount++
+			if fileCount > maxExtractedFiles {
+				return "", "", fmt.Errorf("tarball exceeds the %d-file extraction limit", maxExtractedFiles)
+			}
+
 			if err := os.MkdirAll(filepath.Dir(targetPath), 0755); err != nil {
 				return "", "", fmt.Errorf("failed to create parent directory: %w", err)
 			}
@@ -327,11 +340,18 @@ func extractTarball(reader io.Reader, targetDir string) (extractDir string, comm
 				return "", "", fmt.Errorf("failed to create file: %w", err)
 			}
 
-			if _, err := io.Copy(outFile, io.LimitReader(tarReader, maxTarballSize)); err != nil {
-				outFile.Close()
+			// Read one byte past the remaining budget so an over-limit file is
+			// detected rather than silently truncated.
+			remaining := maxExtractedSize - totalWritten
+			n, err := io.Copy(outFile, io.LimitReader(tarReader, remaining+1))
+			outFile.Close()
+			if err != nil {
 				return "", "", fmt.Errorf("failed to write file: %w", err)
 			}
-			outFile.Close()
+			totalWritten += n
+			if totalWritten > maxExtractedSize {
+				return "", "", fmt.Errorf("tarball exceeds the %d-byte extraction limit", maxExtractedSize)
+			}
 		}
 	}
 

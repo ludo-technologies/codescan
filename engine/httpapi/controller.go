@@ -115,6 +115,11 @@ const (
 	repoMaxLen  = 100
 )
 
+// timestampLayout renders times as ISO-8601. The trailing Z is a literal, so the
+// value must be normalized to UTC (.UTC()) before formatting or it would mislabel
+// a non-UTC wall-clock time as UTC.
+const timestampLayout = "2006-01-02T15:04:05Z"
+
 var validNamePattern = regexp.MustCompile(`^[a-zA-Z0-9][a-zA-Z0-9._-]*$`)
 
 // HandleRequestScan handles POST /api/scan.
@@ -259,10 +264,10 @@ func newScanResultResponse(result *scan.Result) scanResultResponse {
 		Secrets:         result.Secrets,
 		Dependencies:    result.Dependencies,
 		ScannerVersions: result.ScannerVersions,
-		RequestedAt:     result.RequestedAt.Format("2006-01-02T15:04:05Z"),
+		RequestedAt:     result.RequestedAt.UTC().Format(timestampLayout),
 	}
 	if result.CompletedAt != nil {
-		t := result.CompletedAt.Format("2006-01-02T15:04:05Z")
+		t := result.CompletedAt.UTC().Format(timestampLayout)
 		resp.CompletedAt = &t
 	}
 	return resp

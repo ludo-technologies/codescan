@@ -1,9 +1,14 @@
 package scan
 
 import (
+	"archive/tar"
+	"bytes"
+	"compress/gzip"
 	"context"
 	"errors"
 	"io"
+	"os"
+	"path/filepath"
 	"testing"
 )
 
@@ -264,5 +269,92 @@ func TestCalculateTotalScore_CombinedAcrossCategories(t *testing.T) {
 			2*PenaltyDepMedium)
 	if got != want {
 		t.Fatalf("expected %d, got %d", want, got)
+	}
+}
+
+// gzipTarball builds an in-memory gzipped tarball from name->content entries,
+// prefixing each with rootDir so it mirrors a GitHub archive layout.
+func gzipTarball(t *testing.T, rootDir string, files map[string]string) io.Reader {
+	t.Helper()
+	var buf bytes.Buffer
+	gz := gzip.NewWriter(&buf)
+	tw := tar.NewWriter(gz)
+
+	if err := tw.WriteHeader(&tar.Header{Name: rootDir + "/", Typeflag: tar.TypeDir, Mode: 0o755}); err != nil {
+		t.Fatal(err)
+	}
+	for name, content := range files {
+		full := rootDir + "/" + name
+		if err := tw.WriteHeader(&tar.Header{Name: full, Typeflag: tar.TypeReg, Mode: 0o644, Size: int64(len(content))}); err != nil {
+			t.Fatal(err)
+		}
+		if _, err := tw.Write([]byte(content)); err != nil {
+			t.Fatal(err)
+		}
+	}
+	if err := tw.Close(); err != nil {
+		t.Fatal(err)
+	}
+	if err := gz.Close(); err != nil {
+		t.Fatal(err)
+	}
+	return &buf
+}
+
+// extractTarball must write file contents in full (no off-by-one truncation from
+// the extraction-size accounting) and recover the commit SHA from the root dir.
+func TestExtractTarball_WritesFullContentAndCommitSHA(t *testing.T) {
+	const (
+		rootDir = "owner-repo-abc123def"
+		mainGo  = "package main\n\nfunc main() {}\n"
+		nested  = "hello from nested\n"
+	)
+	r := gzipTarball(t, rootDir, map[string]string{
+		"main.go":      mainGo,
+		"sub/data.txt": nested,
+	})
+
+	target := t.TempDir()
+	extractDir, commitSHA, err := extractTarball(r, target)
+	if err != nil {
+		t.Fatalf("extractTarball() error = %v", err)
+	}
+	if commitSHA != "abc123def" {
+		t.Fatalf("commitSHA = %q, want abc123def", commitSHA)
+	}
+	if extractDir != filepath.Join(target, rootDir) {
+		t.Fatalf("extractDir = %q, want %q", extractDir, filepath.Join(target, rootDir))
+	}
+
+	for name, want := range map[string]string{"main.go": mainGo, "sub/data.txt": nested} {
+		got, err := os.ReadFile(filepath.Join(extractDir, name))
+		if err != nil {
+			t.Fatalf("ReadFile(%s) error = %v", name, err)
+		}
+		if string(got) != want {
+			t.Fatalf("%s = %q, want %q", name, got, want)
+		}
+	}
+}
+
+// A tarball whose entries escape the target directory must be rejected.
+func TestExtractTarball_RejectsPathTraversal(t *testing.T) {
+	var buf bytes.Buffer
+	gz := gzip.NewWriter(&buf)
+	tw := tar.NewWriter(gz)
+	if err := tw.WriteHeader(&tar.Header{Name: "root/", Typeflag: tar.TypeDir, Mode: 0o755}); err != nil {
+		t.Fatal(err)
+	}
+	if err := tw.WriteHeader(&tar.Header{Name: "../escape.txt", Typeflag: tar.TypeReg, Mode: 0o644, Size: 3}); err != nil {
+		t.Fatal(err)
+	}
+	if _, err := tw.Write([]byte("bad")); err != nil {
+		t.Fatal(err)
+	}
+	tw.Close()
+	gz.Close()
+
+	if _, _, err := extractTarball(&buf, t.TempDir()); err == nil {
+		t.Fatal("extractTarball() error = nil, want path-traversal rejection")
 	}
 }
