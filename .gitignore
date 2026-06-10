@@ -53,3 +53,6 @@ share-card.html
 
 # local tool settings
 .claude/
+
+# local marketing/article drafts (never publish)
+/drafts/
