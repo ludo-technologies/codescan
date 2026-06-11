@@ -62,6 +62,16 @@ type semgrepResultExtra struct {
 	Severity string `json:"severity"`
 }
 
+// Resource guards for memory-constrained hosts (the production instance has
+// 2GB RAM shared with Gitleaks, Trivy, and the host application). Exceeding
+// the memory cap or timing out repeatedly skips the offending file instead of
+// OOM-killing the process or eating the whole 10-minute scan budget.
+const (
+	semgrepMaxMemoryMB      = "1000"
+	semgrepFileTimeoutSec   = "30"
+	semgrepTimeoutThreshold = "3" // skip a file after this many rule timeouts
+)
+
 // Scan runs Semgrep against the directory using the pack for the given language.
 func (g *SemgrepRunner) Scan(ctx context.Context, dir, language string) (*scan.SastFindings, error) {
 	pack := scan.SemgrepConfigFor(language)
@@ -69,6 +79,9 @@ func (g *SemgrepRunner) Scan(ctx context.Context, dir, language string) (*scan.S
 		"--config="+pack,
 		"--json", "--quiet",
 		"--no-rewrite-rule-ids",
+		"--max-memory="+semgrepMaxMemoryMB,
+		"--timeout="+semgrepFileTimeoutSec,
+		"--timeout-threshold="+semgrepTimeoutThreshold,
 		dir,
 	)
 
