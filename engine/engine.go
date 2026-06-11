@@ -75,6 +75,14 @@ func (e *Engine) Migrate() error {
 	return store.Migrate(e.db)
 }
 
+// RecoverOrphanedScans marks scans left pending/running by a previous process
+// as failed, returning how many were recovered. Call once at startup, after
+// Migrate. It assumes a single engine instance per database; with multiple
+// replicas it would fail scans still owned by a live peer.
+func (e *Engine) RecoverOrphanedScans() (int64, error) {
+	return store.FailOrphanedScans(e.db)
+}
+
 // Mount registers the scan API routes onto the given router. The bearer-protected
 // endpoints are wrapped in CORS so the browser frontend can call them.
 func (e *Engine) Mount(r chi.Router) {

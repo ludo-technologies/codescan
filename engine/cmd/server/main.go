@@ -67,6 +67,12 @@ func run() error {
 		return fmt.Errorf("run migrations: %w", err)
 	}
 
+	if n, err := eng.RecoverOrphanedScans(); err != nil {
+		return fmt.Errorf("recover orphaned scans: %w", err)
+	} else if n > 0 {
+		fmt.Printf("marked %d orphaned scan(s) from a previous run as failed\n", n)
+	}
+
 	r := chi.NewRouter()
 	r.Use(middleware.RequestID)
 	// No middleware.RealIP: it rewrites RemoteAddr from the spoofable leftmost

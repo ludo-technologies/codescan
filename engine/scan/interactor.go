@@ -24,6 +24,9 @@ const (
 	maxConcurrentScans = 2
 	maxPendingScans    = 10
 	scanTimeout        = 10 * time.Minute
+	// persistTimeout bounds DB writes that must succeed even after the scan
+	// context has expired (e.g. recording a timed-out scan as failed).
+	persistTimeout = 30 * time.Second
 )
 
 // ErrQueueFull is returned when the scan queue has reached its capacity.
@@ -108,19 +111,19 @@ func (i *Interactor) runScan(scanID string, req Request) {
 	language, isPrivate, err := i.gh.GetRepositoryInfo(ctx, req.Owner, req.Repo, req.GitHubToken)
 	if err != nil {
 		log.Printf("ERROR: scan %s language detection failed: %v", scanID, err)
-		_ = i.scanStore.UpdateStatus(ctx, scanID, StatusFailed, userSafeError(err))
+		i.markFailed(scanID, userSafeError(err))
 		return
 	}
 	if err := i.scanStore.UpdateRepositoryInfo(ctx, scanID, language, isPrivate, req.RequesterUserID); err != nil {
 		log.Printf("ERROR: scan %s failed to persist repository metadata: %v", scanID, err)
-		_ = i.scanStore.UpdateStatus(ctx, scanID, StatusFailed, userSafeError(err))
+		i.markFailed(scanID, userSafeError(err))
 		return
 	}
 
 	extractDir, commitSHA, cleanup, err := i.downloadAndExtract(ctx, req)
 	if err != nil {
 		log.Printf("ERROR: scan %s download failed: %v", scanID, err)
-		_ = i.scanStore.UpdateStatus(ctx, scanID, StatusFailed, userSafeError(err))
+		i.markFailed(scanID, userSafeError(err))
 		return
 	}
 	defer cleanup()
@@ -128,11 +131,16 @@ func (i *Interactor) runScan(scanID string, req Request) {
 	sastResult, secretsResult, depsResult, err := i.runScannersParallel(ctx, extractDir, language)
 	if err != nil {
 		log.Printf("ERROR: scan %s scanner execution failed: %v", scanID, err)
-		_ = i.scanStore.UpdateStatus(ctx, scanID, StatusFailed, userSafeError(err))
+		i.markFailed(scanID, userSafeError(err))
 		return
 	}
 
 	totalScore := calculateTotalScore(sastResult, secretsResult, depsResult)
+
+	// The scan context may be at (or past) its deadline by now; persisting the
+	// finished result must not be cancelled by it.
+	persistCtx, cancelPersist := context.WithTimeout(context.Background(), persistTimeout)
+	defer cancelPersist()
 
 	result := &Result{
 		CommitSHA:       commitSHA,
@@ -144,20 +152,32 @@ func (i *Interactor) runScan(scanID string, req Request) {
 		Secrets:         secretsResult,
 		Dependencies:    depsResult,
 		ScannerVersions: ScannerVersions{
-			Semgrep:  i.sastScan.Version(ctx),
-			Gitleaks: i.secretsScan.Version(ctx),
-			Trivy:    i.depsScan.Version(ctx),
+			Semgrep:  i.sastScan.Version(persistCtx),
+			Gitleaks: i.secretsScan.Version(persistCtx),
+			Trivy:    i.depsScan.Version(persistCtx),
 		},
 	}
 
-	if err := i.scanStore.UpdateResult(ctx, scanID, result); err != nil {
+	if err := i.scanStore.UpdateResult(persistCtx, scanID, result); err != nil {
 		log.Printf("ERROR: scan %s failed to save result: %v", scanID, err)
-		_ = i.scanStore.UpdateStatus(ctx, scanID, StatusFailed, "Failed to save scan results")
+		i.markFailed(scanID, "Failed to save scan results")
 		return
 	}
 
 	log.Printf("INFO: scan %s completed for %s/%s (lang=%s, score=%d)",
 		scanID, req.Owner, req.Repo, language, totalScore)
+}
+
+// markFailed records a failed status using a fresh context. The scan context
+// must never be used here: when a scan times out it is already expired, so an
+// UpdateStatus call carrying it fails immediately and the row would be stuck
+// in "running" forever while clients keep polling.
+func (i *Interactor) markFailed(scanID, msg string) {
+	ctx, cancel := context.WithTimeout(context.Background(), persistTimeout)
+	defer cancel()
+	if err := i.scanStore.UpdateStatus(ctx, scanID, StatusFailed, msg); err != nil {
+		log.Printf("ERROR: scan %s failed to record failed status: %v", scanID, err)
+	}
 }
 
 // runScannersParallel launches the three scanners concurrently and returns their results.
