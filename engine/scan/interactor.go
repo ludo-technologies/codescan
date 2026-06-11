@@ -21,7 +21,10 @@ const (
 	maxExtractedSize   = 500 * 1024 * 1024 // 500MB total uncompressed
 	maxExtractedFiles  = 50000             // total regular files
 	tempDirPrefix      = "codescan-"
-	maxConcurrentScans = 2
+	// One scan at a time: each scan already runs three analyzers in parallel,
+	// and the production host (2GB / 1 CPU, shared with other workloads) cannot
+	// absorb two concurrent scans without timeouts and OOM kills.
+	maxConcurrentScans = 1
 	maxPendingScans    = 10
 	scanTimeout        = 10 * time.Minute
 	// persistTimeout bounds DB writes that must succeed even after the scan
