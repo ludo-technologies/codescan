@@ -12,7 +12,16 @@ interface ScanResultProps {
 }
 
 export default function ScanResult({ id }: ScanResultProps) {
-	const { result, error, isPolling } = useScanPolling(id);
+	const { result, error, isPolling, timedOut } = useScanPolling(id);
+
+	if (timedOut) {
+		return (
+			<ScanResultError
+				title="Scan Timed Out"
+				message="The scan is taking longer than expected. Please try again later."
+			/>
+		);
+	}
 
 	if (error) {
 		return (

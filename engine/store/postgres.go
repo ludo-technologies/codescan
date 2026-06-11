@@ -22,6 +22,22 @@ func NewPgStore(db *sql.DB) *PgStore {
 	return &PgStore{db: db}
 }
 
+// FailOrphanedScans marks every pending/running scan as failed and returns how
+// many rows were updated. Scans run as in-memory goroutines and do not survive
+// a process restart, so on a single-instance deployment any non-terminal row
+// found at startup is an orphan that would otherwise stay "running" forever.
+func FailOrphanedScans(db *sql.DB) (int64, error) {
+	res, err := db.Exec(`
+		UPDATE scan_results SET status = $1, error_message = $2, completed_at = NOW()
+		WHERE status IN ($3, $4)
+	`, scan.StatusFailed, "Scan was interrupted by a server restart. Please try again",
+		scan.StatusPending, scan.StatusRunning)
+	if err != nil {
+		return 0, fmt.Errorf("fail orphaned scans: %w", err)
+	}
+	return res.RowsAffected()
+}
+
 // Create inserts a new scan result record and returns the generated UUID.
 func (s *PgStore) Create(ctx context.Context, req scan.Request) (string, error) {
 	var id string
