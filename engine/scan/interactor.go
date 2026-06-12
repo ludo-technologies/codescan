@@ -8,6 +8,7 @@ import (
 	"io"
 	"log"
 	"os"
+	"path"
 	"path/filepath"
 	"strings"
 	"sync"
@@ -18,9 +19,9 @@ const (
 	maxTarballSize = 100 * 1024 * 1024 // 100MB cap on the compressed download
 	// maxExtractedSize and maxExtractedFiles bound decompression so a crafted
 	// (highly compressible) tarball cannot exhaust disk or inodes during extract.
-	maxExtractedSize   = 500 * 1024 * 1024 // 500MB total uncompressed
-	maxExtractedFiles  = 50000             // total regular files
-	tempDirPrefix      = "codescan-"
+	maxExtractedSize  = 500 * 1024 * 1024 // 500MB total uncompressed
+	maxExtractedFiles = 50000             // total regular files
+	tempDirPrefix     = "codescan-"
 	// One scan at a time: each scan already runs three analyzers in parallel,
 	// and the production host (2GB / 1 CPU, shared with other workloads) cannot
 	// absorb two concurrent scans without timeouts and OOM kills.
@@ -34,6 +35,52 @@ const (
 
 // ErrQueueFull is returned when the scan queue has reached its capacity.
 var ErrQueueFull = fmt.Errorf("scan queue is full")
+
+// skippedDirNames are vendored or generated directories dropped at extraction
+// time. Scanners produce no actionable findings from them, and on large repos
+// they are what exhausts the file-count and size budgets: Trivy reads lockfiles
+// at the project root, Semgrep ignores these paths by default, and Gitleaks
+// only wastes I/O re-scanning third-party code.
+var skippedDirNames = map[string]struct{}{
+	"node_modules":     {},
+	"vendor":           {},
+	"bower_components": {},
+	"dist":             {},
+	"build":            {},
+	".next":            {},
+	"target":           {},
+	"__pycache__":      {},
+	"venv":             {},
+	".venv":            {},
+}
+
+// skippedExtensions are binary or generated formats no scanner extracts findings from.
+var skippedExtensions = map[string]struct{}{
+	".png": {}, ".jpg": {}, ".jpeg": {}, ".gif": {}, ".ico": {}, ".webp": {}, ".bmp": {},
+	".woff": {}, ".woff2": {}, ".ttf": {}, ".otf": {}, ".eot": {},
+	".mp3": {}, ".mp4": {}, ".mov": {}, ".avi": {}, ".webm": {}, ".ogg": {}, ".wav": {},
+	".pdf": {}, ".wasm": {}, ".map": {},
+}
+
+// skipEntry reports whether a tarball entry should be dropped at extraction
+// time. name is the raw tar header path with the archive root prefix included;
+// the root segment is a GitHub-generated "owner-repo-sha" name, so matching
+// skippedDirNames against every segment is safe.
+func skipEntry(name string) bool {
+	for _, seg := range strings.Split(strings.Trim(name, "/"), "/") {
+		if _, ok := skippedDirNames[seg]; ok {
+			return true
+		}
+	}
+	base := strings.ToLower(path.Base(name))
+	if strings.HasSuffix(base, ".min.js") || strings.HasSuffix(base, ".min.css") {
+		return true
+	}
+	if _, ok := skippedExtensions[path.Ext(base)]; ok {
+		return true
+	}
+	return false
+}
 
 // Interactor coordinates a security scan: download tarball, run Semgrep/Gitleaks/Trivy
 // in parallel, compute the total score, and persist the result.
@@ -316,6 +363,7 @@ func extractTarball(reader io.Reader, targetDir string) (extractDir string, comm
 		rootDir      string
 		totalWritten int64
 		fileCount    int
+		skippedCount int
 	)
 
 	for {
@@ -345,10 +393,19 @@ func extractTarball(reader io.Reader, targetDir string) (extractDir string, comm
 
 		switch header.Typeflag {
 		case tar.TypeDir:
+			if skipEntry(header.Name) {
+				continue
+			}
 			if err := os.MkdirAll(targetPath, 0755); err != nil {
 				return "", "", fmt.Errorf("failed to create directory: %w", err)
 			}
 		case tar.TypeReg:
+			// Skipped entries bypass the file/size budgets so vendored bulk
+			// doesn't crowd out the code the scanners should actually see.
+			if skipEntry(header.Name) {
+				skippedCount++
+				continue
+			}
 			fileCount++
 			if fileCount > maxExtractedFiles {
 				return "", "", fmt.Errorf("tarball exceeds the %d-file extraction limit", maxExtractedFiles)
@@ -380,6 +437,10 @@ func extractTarball(reader io.Reader, targetDir string) (extractDir string, comm
 
 	if rootDir == "" {
 		return "", "", fmt.Errorf("empty tarball")
+	}
+
+	if skippedCount > 0 {
+		log.Printf("extract: skipped %d vendored/binary entries (%d files extracted)", skippedCount, fileCount)
 	}
 
 	if lastDash := strings.LastIndex(rootDir, "-"); lastDash != -1 {

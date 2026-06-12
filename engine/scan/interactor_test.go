@@ -337,6 +337,47 @@ func TestExtractTarball_WritesFullContentAndCommitSHA(t *testing.T) {
 	}
 }
 
+// Vendored directories and binary/generated files must be dropped at extraction
+// time so they neither reach the scanners nor count against extraction budgets.
+func TestExtractTarball_SkipsVendoredAndBinaryEntries(t *testing.T) {
+	const rootDir = "owner-repo-abc123def"
+	r := gzipTarball(t, rootDir, map[string]string{
+		"src/main.go":               "package main\n",
+		"package-lock.json":         "{}",
+		"node_modules/lib/index.js": "module.exports = {}\n",
+		"vendor/dep/dep.go":         "package dep\n",
+		"web/.next/chunk.js":        "generated\n",
+		"assets/logo.png":           "\x89PNG fake",
+		"public/app.min.js":         "!function(){}();",
+		"public/app.js.map":         "{}",
+		"docs/manual.PDF":           "%PDF fake",
+	})
+
+	extractDir, _, err := extractTarball(r, t.TempDir())
+	if err != nil {
+		t.Fatalf("extractTarball() error = %v", err)
+	}
+
+	for _, kept := range []string{"src/main.go", "package-lock.json"} {
+		if _, err := os.Stat(filepath.Join(extractDir, kept)); err != nil {
+			t.Errorf("expected %s to be extracted: %v", kept, err)
+		}
+	}
+	for _, dropped := range []string{
+		"node_modules/lib/index.js",
+		"vendor/dep/dep.go",
+		"web/.next/chunk.js",
+		"assets/logo.png",
+		"public/app.min.js",
+		"public/app.js.map",
+		"docs/manual.PDF",
+	} {
+		if _, err := os.Stat(filepath.Join(extractDir, dropped)); err == nil {
+			t.Errorf("expected %s to be skipped, but it was extracted", dropped)
+		}
+	}
+}
+
 // A tarball whose entries escape the target directory must be rejected.
 func TestExtractTarball_RejectsPathTraversal(t *testing.T) {
 	var buf bytes.Buffer
