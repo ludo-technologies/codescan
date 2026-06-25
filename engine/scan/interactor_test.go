@@ -399,3 +399,69 @@ func TestExtractTarball_RejectsPathTraversal(t *testing.T) {
 		t.Fatal("extractTarball() error = nil, want path-traversal rejection")
 	}
 }
+
+type fakeSast struct {
+	result *SastFindings
+	err    error
+}
+
+func (s *fakeSast) Scan(context.Context, string, string) (*SastFindings, error) {
+	return s.result, s.err
+}
+func (s *fakeSast) Version(context.Context) string { return "" }
+
+type fakeSecrets struct {
+	result *SecretsFindings
+	err    error
+}
+
+func (s *fakeSecrets) Scan(context.Context, string) (*SecretsFindings, error) {
+	return s.result, s.err
+}
+func (s *fakeSecrets) Version(context.Context) string { return "" }
+
+type fakeDeps struct {
+	result *DepsFindings
+	err    error
+}
+
+func (s *fakeDeps) Scan(context.Context, string) (*DepsFindings, error) {
+	return s.result, s.err
+}
+func (s *fakeDeps) Version(context.Context) string { return "" }
+
+// A single scanner failing must not discard the other two scanners' results:
+// the scan degrades gracefully instead of failing entirely.
+func TestRunScanners_OneScannerFailsReturnsPartialResults(t *testing.T) {
+	secrets := &SecretsFindings{}
+	deps := &DepsFindings{}
+	i := &Interactor{
+		sastScan:    &fakeSast{err: errors.New("semgrep OOM-killed")},
+		secretsScan: &fakeSecrets{result: secrets},
+		depsScan:    &fakeDeps{result: deps},
+	}
+
+	sastResult, secretsResult, depsResult, err := i.runScanners(context.Background(), "scan-1", "/dir", "Python")
+	if err != nil {
+		t.Fatalf("runScanners() error = %v, want nil (partial success)", err)
+	}
+	if sastResult != nil {
+		t.Fatalf("sastResult = %v, want nil for the failed scanner", sastResult)
+	}
+	if secretsResult != secrets || depsResult != deps {
+		t.Fatal("surviving scanners' results were not returned")
+	}
+}
+
+// When every scanner fails (e.g. the global scan timeout), the whole scan fails.
+func TestRunScanners_AllScannersFailReturnsError(t *testing.T) {
+	i := &Interactor{
+		sastScan:    &fakeSast{err: errors.New("sast boom")},
+		secretsScan: &fakeSecrets{err: errors.New("secrets boom")},
+		depsScan:    &fakeDeps{err: errors.New("deps boom")},
+	}
+
+	if _, _, _, err := i.runScanners(context.Background(), "scan-1", "/dir", "Python"); err == nil {
+		t.Fatal("runScanners() error = nil, want error when all scanners fail")
+	}
+}
