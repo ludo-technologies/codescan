@@ -79,19 +79,37 @@ const (
 	semgrepTimeoutThreshold = "3" // skip a file after this many rule timeouts
 )
 
+// semgrepExcludeDirs are directory names dropped from SAST analysis. Pinning
+// Semgrep to one worker (semgrepJobs) keeps it within the memory budget but
+// makes it single-threaded, so a large repo can exceed the scan timeout. These
+// are test, documentation and example trees that are not the application's
+// shipped source: excluding them roughly halves the file set on large repos and
+// keeps the SAST grade focused on production code. This narrows Semgrep ONLY —
+// Gitleaks (secrets) and Trivy (dependencies) still scan the whole tree, so a
+// secret committed in a test fixture is still caught.
+var semgrepExcludeDirs = []string{
+	"test", "tests", "__tests__", "spec", "specs", "e2e",
+	"testdata", "fixtures", "mocks", "__mocks__",
+	"docs", "doc", "examples", "example", "samples", "website", "benchmarks",
+}
+
 // Scan runs Semgrep against the directory using the pack for the given language.
 func (g *SemgrepRunner) Scan(ctx context.Context, dir, language string) (*scan.SastFindings, error) {
 	pack := scan.SemgrepConfigFor(language)
-	cmd := g.cmdExecutor.CommandContext(ctx, g.semgrepPath,
-		"--config="+pack,
+	args := []string{
+		"--config=" + pack,
 		"--json", "--quiet",
 		"--no-rewrite-rule-ids",
-		"--jobs="+semgrepJobs,
-		"--max-memory="+semgrepMaxMemoryMB,
-		"--timeout="+semgrepFileTimeoutSec,
-		"--timeout-threshold="+semgrepTimeoutThreshold,
-		dir,
-	)
+		"--jobs=" + semgrepJobs,
+		"--max-memory=" + semgrepMaxMemoryMB,
+		"--timeout=" + semgrepFileTimeoutSec,
+		"--timeout-threshold=" + semgrepTimeoutThreshold,
+	}
+	for _, d := range semgrepExcludeDirs {
+		args = append(args, "--exclude="+d)
+	}
+	args = append(args, dir)
+	cmd := g.cmdExecutor.CommandContext(ctx, g.semgrepPath, args...)
 
 	var stdout, stderr bytes.Buffer
 	cmd.Stdout = &stdout

@@ -27,7 +27,10 @@ const (
 	// absorb two concurrent scans without timeouts and OOM kills.
 	maxConcurrentScans = 1
 	maxPendingScans    = 10
-	scanTimeout        = 10 * time.Minute
+	// scanTimeout bounds a full scan. Semgrep runs single-threaded (see
+	// semgrepJobs) to stay within the memory budget, so large repos need more
+	// than 10 minutes even after the non-source directories are excluded.
+	scanTimeout = 15 * time.Minute
 	// persistTimeout bounds DB writes that must succeed even after the scan
 	// context has expired (e.g. recording a timed-out scan as failed).
 	persistTimeout = 30 * time.Second
