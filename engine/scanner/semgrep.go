@@ -67,7 +67,14 @@ type semgrepResultExtra struct {
 // the memory cap or timing out repeatedly skips the offending file instead of
 // OOM-killing the process or eating the whole 10-minute scan budget.
 const (
-	semgrepMaxMemoryMB      = "1000"
+	// semgrepJobs pins Semgrep to a single worker. Without --jobs, Semgrep
+	// spawns one worker per detected CPU, and Python reports the *host's* core
+	// count (not the container's 1-CPU cgroup quota), so a "1 CPU" host spun up
+	// a dozen-plus workers that each loaded the full ruleset — multiplying memory
+	// until the 2GB container was OOM-killed. One worker keeps peak memory flat
+	// and the analysis is identical (only slower).
+	semgrepJobs             = "1"
+	semgrepMaxMemoryMB      = "800"
 	semgrepFileTimeoutSec   = "30"
 	semgrepTimeoutThreshold = "3" // skip a file after this many rule timeouts
 )
@@ -79,6 +86,7 @@ func (g *SemgrepRunner) Scan(ctx context.Context, dir, language string) (*scan.S
 		"--config="+pack,
 		"--json", "--quiet",
 		"--no-rewrite-rule-ids",
+		"--jobs="+semgrepJobs,
 		"--max-memory="+semgrepMaxMemoryMB,
 		"--timeout="+semgrepFileTimeoutSec,
 		"--timeout-threshold="+semgrepTimeoutThreshold,
