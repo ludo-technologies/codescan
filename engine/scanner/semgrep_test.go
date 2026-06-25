@@ -46,8 +46,9 @@ func TestSemgrepScan_PinsJobsAndMemory(t *testing.T) {
 	}
 
 	want := map[string]bool{
-		"--jobs=" + semgrepJobs:             false,
+		"--jobs=" + semgrepJobs:              false,
 		"--max-memory=" + semgrepMaxMemoryMB: false,
+		"--exclude=tests":                    false, // a representative non-source exclusion
 	}
 	for _, a := range rec.args {
 		if _, ok := want[a]; ok {
