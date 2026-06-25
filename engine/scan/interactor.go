@@ -4,6 +4,7 @@ import (
 	"archive/tar"
 	"compress/gzip"
 	"context"
+	"errors"
 	"fmt"
 	"io"
 	"log"
@@ -21,8 +22,8 @@ const (
 	maxExtractedSize  = 500 * 1024 * 1024 // 500MB total uncompressed
 	maxExtractedFiles = 50000             // total regular files
 	tempDirPrefix     = "codescan-"
-	// One scan at a time: each scan already runs three analyzers in parallel,
-	// and the production host (2GB / 1 CPU, shared with other workloads) cannot
+	// One scan at a time: each scan runs three analyzers serially, but the
+	// production host (2GB / 1 CPU, shared with other workloads) cannot
 	// absorb two concurrent scans without timeouts and OOM kills.
 	maxConcurrentScans = 1
 	maxPendingScans    = 10
@@ -248,11 +249,17 @@ func (i *Interactor) runScanners(ctx context.Context, scanID, dir, language stri
 	sastResult, sastErr := i.sastScan.Scan(ctx, dir, language)
 	if sastErr != nil {
 		log.Printf("WARN: scan %s sast scanner failed: %v", scanID, sastErr)
+		if ctx.Err() != nil {
+			return finishScanners(sastResult, sastErr, nil, ctx.Err(), nil, ctx.Err())
+		}
 	}
 
 	secretsResult, secretsErr := i.secretsScan.Scan(ctx, dir)
 	if secretsErr != nil {
 		log.Printf("WARN: scan %s secrets scanner failed: %v", scanID, secretsErr)
+		if ctx.Err() != nil {
+			return finishScanners(sastResult, sastErr, secretsResult, secretsErr, nil, ctx.Err())
+		}
 	}
 
 	depsResult, depsErr := i.depsScan.Scan(ctx, dir)
@@ -260,13 +267,21 @@ func (i *Interactor) runScanners(ctx context.Context, scanID, dir, language stri
 		log.Printf("WARN: scan %s deps scanner failed: %v", scanID, depsErr)
 	}
 
-	if sastErr != nil && secretsErr != nil && depsErr != nil {
-		// Every scanner failed: this is a genuine failure (typically the global
-		// scan timeout, which surfaces as a context error in all three).
-		return nil, nil, nil, fmt.Errorf("all scanners failed: sast: %w; secrets: %v; deps: %v",
-			sastErr, secretsErr, depsErr)
-	}
+	return finishScanners(sastResult, sastErr, secretsResult, secretsErr, depsResult, depsErr)
+}
 
+func finishScanners(
+	sastResult *SastFindings, sastErr error,
+	secretsResult *SecretsFindings, secretsErr error,
+	depsResult *DepsFindings, depsErr error,
+) (*SastFindings, *SecretsFindings, *DepsFindings, error) {
+	if sastErr != nil && secretsErr != nil && depsErr != nil {
+		return nil, nil, nil, fmt.Errorf("all scanners failed: %w", errors.Join(
+			fmt.Errorf("sast: %w", sastErr),
+			fmt.Errorf("secrets: %w", secretsErr),
+			fmt.Errorf("deps: %w", depsErr),
+		))
+	}
 	return sastResult, secretsResult, depsResult, nil
 }
 

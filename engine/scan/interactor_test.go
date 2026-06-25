@@ -9,6 +9,7 @@ import (
 	"io"
 	"os"
 	"path/filepath"
+	"strings"
 	"testing"
 )
 
@@ -430,6 +431,26 @@ func (s *fakeDeps) Scan(context.Context, string) (*DepsFindings, error) {
 }
 func (s *fakeDeps) Version(context.Context) string { return "" }
 
+type countingSecrets struct {
+	fakeSecrets
+	calls *int
+}
+
+func (s *countingSecrets) Scan(ctx context.Context, dir string) (*SecretsFindings, error) {
+	*s.calls++
+	return s.fakeSecrets.Scan(ctx, dir)
+}
+
+type countingDeps struct {
+	fakeDeps
+	calls *int
+}
+
+func (s *countingDeps) Scan(ctx context.Context, dir string) (*DepsFindings, error) {
+	*s.calls++
+	return s.fakeDeps.Scan(ctx, dir)
+}
+
 // A single scanner failing must not discard the other two scanners' results:
 // the scan degrades gracefully instead of failing entirely.
 func TestRunScanners_OneScannerFailsReturnsPartialResults(t *testing.T) {
@@ -453,6 +474,58 @@ func TestRunScanners_OneScannerFailsReturnsPartialResults(t *testing.T) {
 	}
 }
 
+// Two scanners failing must still return the surviving scanner's results.
+func TestRunScanners_TwoScannersFailReturnsPartialResults(t *testing.T) {
+	sast := &SastFindings{}
+	i := &Interactor{
+		sastScan:    &fakeSast{result: sast},
+		secretsScan: &fakeSecrets{err: errors.New("gitleaks timeout")},
+		depsScan:    &fakeDeps{err: errors.New("trivy OOM-killed")},
+	}
+
+	sastResult, secretsResult, depsResult, err := i.runScanners(context.Background(), "scan-1", "/dir", "Python")
+	if err != nil {
+		t.Fatalf("runScanners() error = %v, want nil (partial success)", err)
+	}
+	if sastResult != sast {
+		t.Fatalf("sastResult = %v, want surviving SAST result", sastResult)
+	}
+	if secretsResult != nil || depsResult != nil {
+		t.Fatalf("failed scanners should be nil, got secrets=%v deps=%v", secretsResult, depsResult)
+	}
+}
+
+// When the scan context is already cancelled, remaining scanners are skipped.
+func TestRunScanners_SkipsRemainingScannersAfterContextCancelled(t *testing.T) {
+	ctx, cancel := context.WithCancel(context.Background())
+	cancel()
+
+	secretsCalls := 0
+	depsCalls := 0
+	i := &Interactor{
+		sastScan: &fakeSast{err: context.Canceled},
+		secretsScan: &countingSecrets{
+			fakeSecrets: fakeSecrets{err: context.Canceled},
+			calls:       &secretsCalls,
+		},
+		depsScan: &countingDeps{
+			fakeDeps: fakeDeps{err: context.Canceled},
+			calls:    &depsCalls,
+		},
+	}
+
+	_, _, _, err := i.runScanners(ctx, "scan-1", "/dir", "Python")
+	if err == nil {
+		t.Fatal("runScanners() error = nil, want error when all scanners fail")
+	}
+	if !strings.Contains(err.Error(), "all scanners failed") {
+		t.Fatalf("runScanners() error = %q, want aggregate all-scanners failure", err)
+	}
+	if secretsCalls != 0 || depsCalls != 0 {
+		t.Fatalf("remaining scanners should be skipped after context cancellation, secrets=%d deps=%d", secretsCalls, depsCalls)
+	}
+}
+
 // When every scanner fails (e.g. the global scan timeout), the whole scan fails.
 func TestRunScanners_AllScannersFailReturnsError(t *testing.T) {
 	i := &Interactor{
@@ -461,7 +534,15 @@ func TestRunScanners_AllScannersFailReturnsError(t *testing.T) {
 		depsScan:    &fakeDeps{err: errors.New("deps boom")},
 	}
 
-	if _, _, _, err := i.runScanners(context.Background(), "scan-1", "/dir", "Python"); err == nil {
+	sastResult, secretsResult, depsResult, err := i.runScanners(context.Background(), "scan-1", "/dir", "Python")
+	if err == nil {
 		t.Fatal("runScanners() error = nil, want error when all scanners fail")
+	}
+	if !strings.Contains(err.Error(), "all scanners failed") {
+		t.Fatalf("runScanners() error = %q, want aggregate all-scanners failure", err)
+	}
+	if sastResult != nil || secretsResult != nil || depsResult != nil {
+		t.Fatalf("all result pointers should be nil on total failure, got sast=%v secrets=%v deps=%v",
+			sastResult, secretsResult, depsResult)
 	}
 }
