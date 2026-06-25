@@ -1,12 +1,65 @@
 package scanner
 
 import (
+	"context"
 	"os"
+	"os/exec"
 	"path/filepath"
 	"testing"
 
 	"github.com/ludo-technologies/codescan/engine/scan"
 )
+
+// recordingSemgrepExecutor captures the args Scan passes to the binary and runs
+// a helper process that emits an empty (valid) Semgrep JSON document so Scan
+// completes successfully.
+type recordingSemgrepExecutor struct {
+	args []string
+}
+
+func (r *recordingSemgrepExecutor) CommandContext(ctx context.Context, name string, arg ...string) *exec.Cmd {
+	r.args = append([]string{name}, arg...)
+	cmd := exec.CommandContext(ctx, os.Args[0], "-test.run=TestSemgrepHelperProcess", "--")
+	cmd.Env = append(os.Environ(), "GO_WANT_SEMGREP_HELPER=1")
+	return cmd
+}
+
+func TestSemgrepHelperProcess(t *testing.T) {
+	if os.Getenv("GO_WANT_SEMGREP_HELPER") != "1" {
+		return
+	}
+	if _, err := os.Stdout.WriteString(`{"results":[]}`); err != nil {
+		os.Exit(1)
+	}
+	os.Exit(0)
+}
+
+// The host over-reports CPUs to Semgrep inside a 1-CPU container, so the scan
+// must pin --jobs=1 (one worker, flat memory) and cap per-file memory to stay
+// under the 2GB container budget. Regressing either flag reintroduces the OOM.
+func TestSemgrepScan_PinsJobsAndMemory(t *testing.T) {
+	rec := &recordingSemgrepExecutor{}
+	runner := NewSemgrepRunner(WithSemgrepCommandExecutor(rec))
+
+	if _, err := runner.Scan(context.Background(), "/src", "Python"); err != nil {
+		t.Fatalf("Scan: %v", err)
+	}
+
+	want := map[string]bool{
+		"--jobs=" + semgrepJobs:             false,
+		"--max-memory=" + semgrepMaxMemoryMB: false,
+	}
+	for _, a := range rec.args {
+		if _, ok := want[a]; ok {
+			want[a] = true
+		}
+	}
+	for flag, seen := range want {
+		if !seen {
+			t.Errorf("semgrep args missing %q; got %v", flag, rec.args)
+		}
+	}
+}
 
 func TestParseSemgrepOutput_Fixture(t *testing.T) {
 	data, err := os.ReadFile(filepath.Join("testdata", "semgrep_sample.json"))
