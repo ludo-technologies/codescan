@@ -4,6 +4,7 @@ import (
 	"archive/tar"
 	"compress/gzip"
 	"context"
+	"errors"
 	"fmt"
 	"io"
 	"log"
@@ -11,7 +12,6 @@ import (
 	"path"
 	"path/filepath"
 	"strings"
-	"sync"
 	"time"
 )
 
@@ -22,8 +22,8 @@ const (
 	maxExtractedSize  = 500 * 1024 * 1024 // 500MB total uncompressed
 	maxExtractedFiles = 50000             // total regular files
 	tempDirPrefix     = "codescan-"
-	// One scan at a time: each scan already runs three analyzers in parallel,
-	// and the production host (2GB / 1 CPU, shared with other workloads) cannot
+	// One scan at a time: each scan runs three analyzers serially, but the
+	// production host (2GB / 1 CPU, shared with other workloads) cannot
 	// absorb two concurrent scans without timeouts and OOM kills.
 	maxConcurrentScans = 1
 	maxPendingScans    = 10
@@ -178,7 +178,7 @@ func (i *Interactor) runScan(scanID string, req Request) {
 	}
 	defer cleanup()
 
-	sastResult, secretsResult, depsResult, err := i.runScannersParallel(ctx, extractDir, language)
+	sastResult, secretsResult, depsResult, err := i.runScanners(ctx, scanID, extractDir, language)
 	if err != nil {
 		log.Printf("ERROR: scan %s scanner execution failed: %v", scanID, err)
 		i.markFailed(scanID, userSafeError(err))
@@ -230,64 +230,57 @@ func (i *Interactor) markFailed(scanID, msg string) {
 	}
 }
 
-// runScannersParallel launches the three scanners concurrently and returns their results.
-// If any scanner returns an error, the first error wins and the whole scan is failed.
-func (i *Interactor) runScannersParallel(ctx context.Context, dir, language string) (
+// runScanners runs the three scanners one after another and returns their results.
+//
+// Serial (not parallel) execution is deliberate: on the 2GB / 1-CPU production
+// host with no swap, running Semgrep, Gitleaks and Trivy concurrently makes their
+// peak memory add up and the kernel OOM-kills one of them, which previously failed
+// the whole scan. Running them in sequence caps peak memory at the largest single
+// scanner instead of the sum, so memory-heavy repos complete. The host has a single
+// core anyway, so the wall-clock cost of serializing is small.
+//
+// Graceful degradation: a single scanner failing (e.g. an OOM or per-file timeout
+// on a pathological input) no longer discards the other two scanners' results. The
+// whole scan is failed only when *every* scanner failed — which is also what a
+// global scan timeout looks like, since all three then return context errors.
+func (i *Interactor) runScanners(ctx context.Context, scanID, dir, language string) (
 	*SastFindings, *SecretsFindings, *DepsFindings, error,
 ) {
-	var (
-		wg            sync.WaitGroup
-		mu            sync.Mutex
-		firstErr      error
-		sastResult    *SastFindings
-		secretsResult *SecretsFindings
-		depsResult    *DepsFindings
-	)
-
-	setErr := func(err error) {
-		mu.Lock()
-		if firstErr == nil {
-			firstErr = err
+	sastResult, sastErr := i.sastScan.Scan(ctx, dir, language)
+	if sastErr != nil {
+		log.Printf("WARN: scan %s sast scanner failed: %v", scanID, sastErr)
+		if ctx.Err() != nil {
+			return finishScanners(sastResult, sastErr, nil, ctx.Err(), nil, ctx.Err())
 		}
-		mu.Unlock()
 	}
 
-	wg.Add(3)
-
-	go func() {
-		defer wg.Done()
-		r, err := i.sastScan.Scan(ctx, dir, language)
-		if err != nil {
-			setErr(fmt.Errorf("sast: %w", err))
-			return
+	secretsResult, secretsErr := i.secretsScan.Scan(ctx, dir)
+	if secretsErr != nil {
+		log.Printf("WARN: scan %s secrets scanner failed: %v", scanID, secretsErr)
+		if ctx.Err() != nil {
+			return finishScanners(sastResult, sastErr, secretsResult, secretsErr, nil, ctx.Err())
 		}
-		sastResult = r
-	}()
+	}
 
-	go func() {
-		defer wg.Done()
-		r, err := i.secretsScan.Scan(ctx, dir)
-		if err != nil {
-			setErr(fmt.Errorf("secrets: %w", err))
-			return
-		}
-		secretsResult = r
-	}()
+	depsResult, depsErr := i.depsScan.Scan(ctx, dir)
+	if depsErr != nil {
+		log.Printf("WARN: scan %s deps scanner failed: %v", scanID, depsErr)
+	}
 
-	go func() {
-		defer wg.Done()
-		r, err := i.depsScan.Scan(ctx, dir)
-		if err != nil {
-			setErr(fmt.Errorf("deps: %w", err))
-			return
-		}
-		depsResult = r
-	}()
+	return finishScanners(sastResult, sastErr, secretsResult, secretsErr, depsResult, depsErr)
+}
 
-	wg.Wait()
-
-	if firstErr != nil {
-		return nil, nil, nil, firstErr
+func finishScanners(
+	sastResult *SastFindings, sastErr error,
+	secretsResult *SecretsFindings, secretsErr error,
+	depsResult *DepsFindings, depsErr error,
+) (*SastFindings, *SecretsFindings, *DepsFindings, error) {
+	if sastErr != nil && secretsErr != nil && depsErr != nil {
+		return nil, nil, nil, fmt.Errorf("all scanners failed: %w", errors.Join(
+			fmt.Errorf("sast: %w", sastErr),
+			fmt.Errorf("secrets: %w", secretsErr),
+			fmt.Errorf("deps: %w", depsErr),
+		))
 	}
 	return sastResult, secretsResult, depsResult, nil
 }
