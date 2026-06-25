@@ -28,7 +28,9 @@ func TestSemgrepHelperProcess(t *testing.T) {
 	if os.Getenv("GO_WANT_SEMGREP_HELPER") != "1" {
 		return
 	}
-	os.Stdout.WriteString(`{"results":[]}`)
+	if _, err := os.Stdout.WriteString(`{"results":[]}`); err != nil {
+		os.Exit(1)
+	}
 	os.Exit(0)
 }
 
@@ -43,7 +45,10 @@ func TestSemgrepScan_PinsJobsAndMemory(t *testing.T) {
 		t.Fatalf("Scan: %v", err)
 	}
 
-	want := map[string]bool{"--jobs=1": false, "--max-memory=800": false}
+	want := map[string]bool{
+		"--jobs=" + semgrepJobs:             false,
+		"--max-memory=" + semgrepMaxMemoryMB: false,
+	}
 	for _, a := range rec.args {
 		if _, ok := want[a]; ok {
 			want[a] = true
