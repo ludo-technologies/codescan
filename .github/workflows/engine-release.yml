@@ -1,0 +1,29 @@
+name: Engine release
+
+# Publish a GitHub Release whenever an engine module tag is pushed. The tag
+# (engine/vX.Y.Z) is what `go get` resolves; this workflow just mirrors it into
+# the human-facing Releases page with auto-generated notes from the merged PRs.
+on:
+  push:
+    tags:
+      - "engine/v*"
+
+permissions:
+  contents: write
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0 # full history so release notes can diff against the previous tag
+
+      - name: Create release
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          gh release create "$GITHUB_REF_NAME" \
+            --title "$GITHUB_REF_NAME" \
+            --generate-notes \
+            --verify-tag
