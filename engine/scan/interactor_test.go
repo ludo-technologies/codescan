@@ -521,8 +521,13 @@ func TestRunScanners_SkipsRemainingScannersAfterContextCancelled(t *testing.T) {
 	if !strings.Contains(err.Error(), "all scanners failed") {
 		t.Fatalf("runScanners() error = %q, want aggregate all-scanners failure", err)
 	}
-	if secretsCalls != 0 || depsCalls != 0 {
-		t.Fatalf("remaining scanners should be skipped after context cancellation, secrets=%d deps=%d", secretsCalls, depsCalls)
+	// Secrets runs first; on detecting the cancelled context it short-circuits,
+	// so deps (and the trailing Semgrep pass) are skipped.
+	if secretsCalls != 1 {
+		t.Fatalf("secrets scanner should run once before short-circuiting, got %d", secretsCalls)
+	}
+	if depsCalls != 0 {
+		t.Fatalf("remaining scanners should be skipped after context cancellation, deps=%d", depsCalls)
 	}
 }
 

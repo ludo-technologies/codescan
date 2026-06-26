@@ -246,28 +246,34 @@ func (i *Interactor) markFailed(scanID, msg string) {
 // on a pathological input) no longer discards the other two scanners' results. The
 // whole scan is failed only when *every* scanner failed — which is also what a
 // global scan timeout looks like, since all three then return context errors.
+//
+// Order matters: the fast scanners (Gitleaks, Trivy) run first and Semgrep runs
+// last. Semgrep is the slow one — single-threaded SAST over the whole source tree
+// can run until the scan deadline on a large repo. Running it last means the fast
+// scanners' results are already captured, so a Semgrep timeout degrades to a
+// partial grade (secrets + deps) instead of failing the entire scan.
 func (i *Interactor) runScanners(ctx context.Context, scanID, dir, language string) (
 	*SastFindings, *SecretsFindings, *DepsFindings, error,
 ) {
-	sastResult, sastErr := i.sastScan.Scan(ctx, dir, language)
-	if sastErr != nil {
-		log.Printf("WARN: scan %s sast scanner failed: %v", scanID, sastErr)
-		if ctx.Err() != nil {
-			return finishScanners(sastResult, sastErr, nil, ctx.Err(), nil, ctx.Err())
-		}
-	}
-
 	secretsResult, secretsErr := i.secretsScan.Scan(ctx, dir)
 	if secretsErr != nil {
 		log.Printf("WARN: scan %s secrets scanner failed: %v", scanID, secretsErr)
 		if ctx.Err() != nil {
-			return finishScanners(sastResult, sastErr, secretsResult, secretsErr, nil, ctx.Err())
+			return finishScanners(nil, ctx.Err(), secretsResult, secretsErr, nil, ctx.Err())
 		}
 	}
 
 	depsResult, depsErr := i.depsScan.Scan(ctx, dir)
 	if depsErr != nil {
 		log.Printf("WARN: scan %s deps scanner failed: %v", scanID, depsErr)
+		if ctx.Err() != nil {
+			return finishScanners(nil, ctx.Err(), secretsResult, secretsErr, depsResult, depsErr)
+		}
+	}
+
+	sastResult, sastErr := i.sastScan.Scan(ctx, dir, language)
+	if sastErr != nil {
+		log.Printf("WARN: scan %s sast scanner failed: %v", scanID, sastErr)
 	}
 
 	return finishScanners(sastResult, sastErr, secretsResult, secretsErr, depsResult, depsErr)
