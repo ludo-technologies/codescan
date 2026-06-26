@@ -46,9 +46,10 @@ func TestSemgrepScan_PinsJobsAndMemory(t *testing.T) {
 	}
 
 	want := map[string]bool{
-		"--jobs=" + semgrepJobs:              false,
-		"--max-memory=" + semgrepMaxMemoryMB: false,
-		"--exclude=tests":                    false, // a representative non-source exclusion
+		"--jobs=" + semgrepJobs:                       false,
+		"--max-memory=" + semgrepMaxMemoryMB:          false,
+		"--max-target-bytes=" + semgrepMaxTargetBytes: false, // skip giant monolith files
+		"--exclude=tests":                             false, // a representative non-source exclusion
 	}
 	for _, a := range rec.args {
 		if _, ok := want[a]; ok {
