@@ -73,10 +73,19 @@ const (
 	// a dozen-plus workers that each loaded the full ruleset — multiplying memory
 	// until the 2GB container was OOM-killed. One worker keeps peak memory flat
 	// and the analysis is identical (only slower).
-	semgrepJobs             = "1"
-	semgrepMaxMemoryMB      = "800"
-	semgrepFileTimeoutSec   = "30"
-	semgrepTimeoutThreshold = "3" // skip a file after this many rule timeouts
+	semgrepJobs        = "1"
+	semgrepMaxMemoryMB = "800"
+	// semgrepMaxTargetBytes skips individual files larger than ~300KB (≈7k lines).
+	// Semgrep's dataflow/taint rules scale super-linearly with file size, so a
+	// handful of giant monolith files (real repos ship 10k–18k-line modules)
+	// consume the entire single-threaded time budget while producing low-signal
+	// results. Skipping them keeps ~98% of files fully analyzed and is what lets
+	// large repos finish within the scan timeout. (Semgrep's own default is 1MB.)
+	semgrepMaxTargetBytes = "300000"
+	// Per-file rule timeout. Kept tight (and the threshold low) so a slow file is
+	// abandoned after ~2×20s rather than 3×30s, bounding wasted time on big files.
+	semgrepFileTimeoutSec   = "20"
+	semgrepTimeoutThreshold = "2" // skip a file after this many rule timeouts
 )
 
 // semgrepExcludeDirs are directory names dropped from SAST analysis. Pinning
@@ -100,8 +109,10 @@ func (g *SemgrepRunner) Scan(ctx context.Context, dir, language string) (*scan.S
 		"--config=" + pack,
 		"--json", "--quiet",
 		"--no-rewrite-rule-ids",
+		"--metrics=off",
 		"--jobs=" + semgrepJobs,
 		"--max-memory=" + semgrepMaxMemoryMB,
+		"--max-target-bytes=" + semgrepMaxTargetBytes,
 		"--timeout=" + semgrepFileTimeoutSec,
 		"--timeout-threshold=" + semgrepTimeoutThreshold,
 	}
