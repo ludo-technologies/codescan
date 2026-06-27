@@ -1,6 +1,7 @@
 "use client";
 
 import { useScanPolling } from "@/hooks/useScanPolling";
+import { useScanProgress } from "@/hooks/useScanProgress";
 import FindingsList from "./FindingsList";
 import ScanResultError from "./ScanResultError";
 import ScanResultLoading from "./ScanResultLoading";
@@ -13,6 +14,7 @@ interface ScanResultProps {
 
 export default function ScanResult({ id }: ScanResultProps) {
 	const { result, error, isPolling, timedOut } = useScanPolling(id);
+	const progress = useScanProgress(result, isPolling);
 
 	if (timedOut) {
 		return (
@@ -34,7 +36,7 @@ export default function ScanResult({ id }: ScanResultProps) {
 	}
 
 	if (isPolling) {
-		return <ScanResultLoading />;
+		return <ScanResultLoading progress={progress} />;
 	}
 
 	if (result?.status === "failed") {
