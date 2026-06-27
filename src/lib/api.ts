@@ -42,7 +42,7 @@ export async function requestScan(repoUrl: string): Promise<ScanResponse> {
 }
 
 export async function getScanResult(id: string): Promise<ScanResult> {
-	const res = await fetch(`/api/scan/${id}`);
+	const res = await fetch(`/api/scan/${id}`, { cache: "no-store" });
 	if (!res.ok) {
 		throw new Error(
 			await readErrorMessage(res, `Failed to fetch scan: ${res.status}`),

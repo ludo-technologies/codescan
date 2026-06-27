@@ -31,7 +31,9 @@ export function useScanPolling(id: string) {
 				}
 				return POLL_INTERVAL_MS;
 			},
-			revalidateOnFocus: false,
+			dedupingInterval: 0,
+			revalidateOnFocus: true,
+			revalidateOnReconnect: true,
 			// Keep polling through transient proxy/backend failures.
 			shouldRetryOnError: true,
 			errorRetryCount: 100,

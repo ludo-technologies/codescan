@@ -57,4 +57,34 @@ describe("GET /api/scan/[id]", () => {
 			error: "Failed to reach scan service. Retrying...",
 		});
 	});
+
+	it("does not cache upstream scan status responses", async () => {
+		const fetchMock = vi.fn().mockResolvedValue({
+			ok: true,
+			status: 200,
+			text: () =>
+				Promise.resolve(
+					JSON.stringify({
+						id: "scan-123",
+						owner: "owner",
+						repo: "repo",
+						status: "running",
+						total_score: 0,
+						scanner_versions: {},
+						requested_at: "2026-06-28T00:00:00Z",
+					}),
+				),
+		});
+		vi.stubGlobal("fetch", fetchMock);
+
+		const res = await GET({} as Request, {
+			params: Promise.resolve({ id: "scan-123" }),
+		});
+
+		expect(fetchMock).toHaveBeenCalledWith(
+			"http://engine.test/api/scan/scan-123",
+			expect.objectContaining({ cache: "no-store" }),
+		);
+		expect(res.headers.get("Cache-Control")).toBe("no-store, max-age=0");
+	});
 });
