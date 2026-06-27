@@ -62,7 +62,17 @@ func (c *CachedStore) UpdateStatus(ctx context.Context, id, status, errorMsg str
 	return c.store.UpdateStatus(ctx, id, status, errorMsg)
 }
 
-// UpdateResult delegates to the underlying store.
+// UpdateResult delegates to the underlying store and warms the cache with the
+// terminal result so the next status poll is served from memory.
 func (c *CachedStore) UpdateResult(ctx context.Context, id string, result *scan.Result) error {
-	return c.store.UpdateResult(ctx, id, result)
+	if err := c.store.UpdateResult(ctx, id, result); err != nil {
+		return err
+	}
+
+	stored, err := c.store.FindByID(ctx, id)
+	if err == nil && stored != nil {
+		c.cache.Store(id, stored)
+	}
+
+	return nil
 }

@@ -25,6 +25,10 @@ export default function ScanResult({ id }: ScanResultProps) {
 		);
 	}
 
+	if (isPolling) {
+		return <ScanResultLoading progress={progress} />;
+	}
+
 	if (error) {
 		return (
 			<ScanResultError
@@ -33,10 +37,6 @@ export default function ScanResult({ id }: ScanResultProps) {
 				}
 			/>
 		);
-	}
-
-	if (isPolling) {
-		return <ScanResultLoading progress={progress} />;
 	}
 
 	if (result?.status === "failed") {

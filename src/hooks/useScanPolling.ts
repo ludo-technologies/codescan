@@ -32,10 +32,15 @@ export function useScanPolling(id: string) {
 				return POLL_INTERVAL_MS;
 			},
 			revalidateOnFocus: false,
+			// Keep polling through transient proxy/backend failures.
+			shouldRetryOnError: true,
+			errorRetryCount: 100,
+			errorRetryInterval: POLL_INTERVAL_MS,
 		},
 	);
 
 	const isPolling = !timedOut && (!result || isPollingStatus(result.status));
+	const pollError = isPolling ? undefined : error;
 
-	return { result, error, isPolling, timedOut };
+	return { result, error: pollError, isPolling, timedOut };
 }

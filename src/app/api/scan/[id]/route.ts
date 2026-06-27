@@ -3,7 +3,7 @@ import { getSession } from "@/lib/auth";
 import { scanResultSchema } from "@/lib/scan-schema";
 import { getBackendConfig } from "@/lib/server-env";
 
-const BACKEND_TIMEOUT_MS = 8000; // 8s — kept below Vercel's 10s function limit
+const BACKEND_TIMEOUT_MS = 9500; // just under Vercel's 10s function limit
 
 const SCAN_ID_PATTERN = /^[a-zA-Z0-9_-]+$/;
 
@@ -94,34 +94,22 @@ export async function GET(
 	} catch (error) {
 		clearTimeout(timeoutId);
 
-		// On timeout, treat the scan as still in progress to keep polling alive
 		if (error instanceof Error && error.name === "AbortError") {
 			console.warn("Backend API timeout for scan:", { scanId: id });
-
-			// Return "running" status so the client continues polling
 			return NextResponse.json(
-				{
-					id: id,
-					status: "running",
-					message: "Scan is still in progress",
-				},
-				{ status: 200 },
+				{ error: "Scan service timed out. Retrying..." },
+				{ status: 504 },
 			);
 		}
 
-		// Other network errors — treat as "running" to continue polling
 		console.error("Backend API network error:", {
 			scanId: id,
 			error: error instanceof Error ? error.message : String(error),
 		});
 
 		return NextResponse.json(
-			{
-				id: id,
-				status: "running",
-				message: "Connecting to backend...",
-			},
-			{ status: 200 },
+			{ error: "Failed to reach scan service. Retrying..." },
+			{ status: 503 },
 		);
 	}
 }
