@@ -1,7 +1,11 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import ErrorBoundary from "@/components/ErrorBoundary";
+import FindingsList from "@/components/FindingsList";
 import ScanResultView from "@/components/ScanResult";
+import ScanResultError from "@/components/ScanResultError";
+import ShareActions from "@/components/ShareActions";
+import ShareCard from "@/components/ShareCard";
 import { getSession } from "@/lib/auth";
 import { scanResultSchema } from "@/lib/scan-schema";
 import { getGrade } from "@/lib/score-utils";
@@ -47,6 +51,33 @@ async function fetchInitialScanResult(
 	} catch {
 		return undefined;
 	}
+}
+
+function CompletedScanResult({ result }: { result: ScanResult }) {
+	return (
+		<div className="flex w-full max-w-5xl flex-col items-center gap-5">
+			<ShareCard result={result} />
+			<FindingsList result={result} />
+			<ShareActions result={result} />
+		</div>
+	);
+}
+
+function renderInitialScanResult(id: string, result: ScanResult | undefined) {
+	if (result?.status === "completed") {
+		return <CompletedScanResult result={result} />;
+	}
+
+	if (result?.status === "failed") {
+		return (
+			<ScanResultError
+				title="Scan Failed"
+				message={result.error_message ?? "Unknown error"}
+			/>
+		);
+	}
+
+	return <ScanResultView id={id} initialResult={result} />;
 }
 
 export async function generateMetadata({
@@ -123,7 +154,7 @@ export default async function ScanPage({ params }: PageProps) {
 				</Link>
 			</div>
 			<ErrorBoundary>
-				<ScanResultView id={id} initialResult={initialResult} />
+				{renderInitialScanResult(id, initialResult)}
 			</ErrorBoundary>
 		</main>
 	);
