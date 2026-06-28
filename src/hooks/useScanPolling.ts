@@ -41,9 +41,11 @@ export function useScanPolling(id: string, initialResult?: ScanResult) {
 			errorRetryInterval: POLL_INTERVAL_MS,
 		},
 	);
+	const displayResult = result ?? initialResult;
 
-	const isPolling = !timedOut && (!result || isPollingStatus(result.status));
+	const isPolling =
+		!timedOut && (!displayResult || isPollingStatus(displayResult.status));
 	const pollError = isPolling ? undefined : error;
 
-	return { result, error: pollError, isPolling, timedOut };
+	return { result: displayResult, error: pollError, isPolling, timedOut };
 }
