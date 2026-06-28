@@ -14,7 +14,7 @@ export function isPollingStatus(status: string | undefined): boolean {
 	return status === "pending" || status === "running";
 }
 
-export function useScanPolling(id: string) {
+export function useScanPolling(id: string, initialResult?: ScanResult) {
 	const startedAtRef = useRef<number | null>(null);
 	const [timedOut, setTimedOut] = useState(false);
 
@@ -31,7 +31,10 @@ export function useScanPolling(id: string) {
 				}
 				return POLL_INTERVAL_MS;
 			},
-			revalidateOnFocus: false,
+			dedupingInterval: 0,
+			fallbackData: initialResult,
+			revalidateOnFocus: true,
+			revalidateOnReconnect: true,
 			// Keep polling through transient proxy/backend failures.
 			shouldRetryOnError: true,
 			errorRetryCount: 100,

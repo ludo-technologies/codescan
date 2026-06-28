@@ -7,6 +7,7 @@ import { scanResultSchema } from "@/lib/scan-schema";
 import { getGrade } from "@/lib/score-utils";
 import { getBackendConfig } from "@/lib/server-env";
 import { getSiteUrl } from "@/lib/site-url";
+import type { ScanResult } from "@/types/scan";
 
 interface PageProps {
 	params: Promise<{ id: string }>;
@@ -14,13 +15,11 @@ interface PageProps {
 
 const SCAN_ID_PATTERN = /^[a-zA-Z0-9_-]+$/;
 
-export async function generateMetadata({
-	params,
-}: PageProps): Promise<Metadata> {
-	const { id } = await params;
-
+async function fetchInitialScanResult(
+	id: string,
+): Promise<ScanResult | undefined> {
 	if (!SCAN_ID_PATTERN.test(id)) {
-		return { title: "Invalid Scan | codescan.dev" };
+		return undefined;
 	}
 
 	try {
@@ -39,52 +38,64 @@ export async function generateMetadata({
 			headers,
 			cache: "no-store",
 		});
-		if (res.ok) {
-			const parsed = scanResultSchema.safeParse(await res.json());
-			if (!parsed.success) return { title: `Scan Results | codescan.dev` };
+		if (!res.ok) return undefined;
 
-			const data = parsed.data;
-			if (data.status === "completed") {
-				const grade = getGrade(data.total_score ?? 0);
-				const title = `${data.owner}/${data.repo} — Security Grade ${grade} | codescan.dev`;
-				const description = `${data.owner}/${data.repo} earned grade ${grade} on codescan.dev`;
-				const siteUrl = getSiteUrl();
-				const scanUrl = `${siteUrl}/scan/${id}`;
-				const ogImage = `${scanUrl}/og`;
-				return {
-					title,
-					description,
-					metadataBase: new URL(siteUrl),
-					robots: {
-						index: false,
-						follow: true,
-					},
-					openGraph: {
-						title,
-						description,
-						url: scanUrl,
-						siteName: "codescan.dev",
-						type: "website",
-						images: [
-							{
-								url: ogImage,
-								width: 1200,
-								height: 630,
-								alt: `${data.owner}/${data.repo} security grade card`,
-							},
-						],
-					},
-					twitter: {
-						card: "summary_large_image",
-						title,
-						description,
-						images: [ogImage],
-					},
-				};
-			}
-		}
+		const parsed = scanResultSchema.safeParse(await res.json());
+		if (!parsed.success) return undefined;
+
+		return parsed.data;
 	} catch {
-		// Fall through to defaults
+		return undefined;
+	}
+}
+
+export async function generateMetadata({
+	params,
+}: PageProps): Promise<Metadata> {
+	const { id } = await params;
+
+	if (!SCAN_ID_PATTERN.test(id)) {
+		return { title: "Invalid Scan | codescan.dev" };
+	}
+
+	const data = await fetchInitialScanResult(id);
+	if (data?.status === "completed") {
+		const grade = getGrade(data.total_score ?? 0);
+		const title = `${data.owner}/${data.repo} — Security Grade ${grade} | codescan.dev`;
+		const description = `${data.owner}/${data.repo} earned grade ${grade} on codescan.dev`;
+		const siteUrl = getSiteUrl();
+		const scanUrl = `${siteUrl}/scan/${id}`;
+		const ogImage = `${scanUrl}/og`;
+		return {
+			title,
+			description,
+			metadataBase: new URL(siteUrl),
+			robots: {
+				index: false,
+				follow: true,
+			},
+			openGraph: {
+				title,
+				description,
+				url: scanUrl,
+				siteName: "codescan.dev",
+				type: "website",
+				images: [
+					{
+						url: ogImage,
+						width: 1200,
+						height: 630,
+						alt: `${data.owner}/${data.repo} security grade card`,
+					},
+				],
+			},
+			twitter: {
+				card: "summary_large_image",
+				title,
+				description,
+				images: [ogImage],
+			},
+		};
 	}
 
 	return {
@@ -98,6 +109,7 @@ export async function generateMetadata({
 
 export default async function ScanPage({ params }: PageProps) {
 	const { id } = await params;
+	const initialResult = await fetchInitialScanResult(id);
 
 	return (
 		<main className="flex min-h-screen flex-col items-center px-4 py-6 sm:py-10">
@@ -111,7 +123,7 @@ export default async function ScanPage({ params }: PageProps) {
 				</Link>
 			</div>
 			<ErrorBoundary>
-				<ScanResultView id={id} />
+				<ScanResultView id={id} initialResult={initialResult} />
 			</ErrorBoundary>
 		</main>
 	);

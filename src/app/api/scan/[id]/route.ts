@@ -47,6 +47,7 @@ export async function GET(
 		const res = await fetch(`${backendConfig.apiUrl}/api/scan/${id}`, {
 			headers,
 			signal: controller.signal,
+			cache: "no-store",
 		});
 		clearTimeout(timeoutId);
 
@@ -84,7 +85,12 @@ export async function GET(
 				);
 			}
 
-			return NextResponse.json(parsed.data, { status: res.status });
+			return NextResponse.json(parsed.data, {
+				status: res.status,
+				headers: {
+					"Cache-Control": "no-store, max-age=0",
+				},
+			});
 		} catch {
 			return NextResponse.json(
 				{ error: "Invalid upstream response" },
