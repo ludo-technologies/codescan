@@ -2,6 +2,7 @@
 
 import { useScanPolling } from "@/hooks/useScanPolling";
 import { useScanProgress } from "@/hooks/useScanProgress";
+import type { ScanResult as ScanResultData } from "@/types/scan";
 import FindingsList from "./FindingsList";
 import ScanResultError from "./ScanResultError";
 import ScanResultLoading from "./ScanResultLoading";
@@ -10,10 +11,14 @@ import ShareCard from "./ShareCard";
 
 interface ScanResultProps {
 	id: string;
+	initialResult?: ScanResultData;
 }
 
-export default function ScanResult({ id }: ScanResultProps) {
-	const { result, error, isPolling, timedOut } = useScanPolling(id);
+export default function ScanResult({ id, initialResult }: ScanResultProps) {
+	const { result, error, isPolling, timedOut } = useScanPolling(
+		id,
+		initialResult,
+	);
 	const progress = useScanProgress(result, isPolling);
 
 	if (timedOut) {
